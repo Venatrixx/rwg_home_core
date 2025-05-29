@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the getAvg method from the Subject class, for the Dart programming language.">
+  <title>getAvg method - Subject class - rwg_home_core library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">rwg_home_core</a></li>
+    <li><a href="../../rwg_home_core/">rwg_home_core.dart</a></li>
+    <li><a href="../../rwg_home_core/Subject-class.html">Subject</a></li>
+    <li class="self-crumb">getAvg method</li>
+  </ol>
+  <div class="self-name">getAvg</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="rwg_home_core&#47;Subject-class-sidebar.html"
+    data-below-sidebar="">
+    <div>
+<h1><span class="kind-method">getAvg</span> method 
+</h1></div>
+
+    <section class="multi-line-signature">
+      
+<span class="returntype"><a href="https://api.dart.dev/stable/3.8.0/dart-core/double-class.html">double</a></span>
+<span class="name ">getAvg</span>(<wbr><ol class="parameter-list single-line"> <li><span class="parameter" id="getAvg-param-grades"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.0/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../../rwg_home_core/Grade-class.html">Grade</a></span>&gt;</span></span> <span class="parameter-name">grades</span>, [</span></li>
+<li><span class="parameter" id="getAvg-param-additionalValues"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.0/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/3.8.0/dart-core/int-class.html">int</a></span>&gt;</span>?</span> <span class="parameter-name">additionalValues</span></span></li>
+</ol>])
+
+      
+
+    </section>
+    
+<section class="desc markdown">
+  <p>Helper method used to calculate the average of a list of <a href="../../rwg_home_core/Grade-class.html">Grade</a> elements.</p>
+<p>Also see implementation of <a href="../../rwg_home_core/Subject/getExamsAvg.html">getExamsAvg</a> and <a href="../../rwg_home_core/Subject/getTestsAvg.html">getTestsAvg</a>.</p>
+<p>If <code>additionalValues</code> is provided, those are taken into account as well.</p>
+<p>Grades where <a href="../../rwg_home_core/Grade/ghost.html">Grade.ghost</a> is set to <code>true</code> are ignored.</p>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">double getAvg(List&lt;Grade&gt; grades, [List&lt;int&gt;? additionalValues]) {
+  int sum = 0;
+  int index = 0;
+
+  for (final grade in grades) {
+    if (grade.hasData &amp;&amp; !grade.ghost) {
+      sum += grade.gradeValue!;
+      index++;
+    }
+  }
+  additionalValues?.forEach((element) {
+    sum += element;
+    index++;
+  });
+  return sum &#47; index;
+}</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../../index.html">rwg_home_core</a></li>
+    <li><a href="../../rwg_home_core/">rwg_home_core</a></li>
+    <li><a href="../../rwg_home_core/Subject-class.html">Subject</a></li>
+    <li class="self-crumb">getAvg method</li>
+</ol>
+
+    <h5>Subject class</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div><!--/.sidebar-offcanvas-->
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+</div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    rwg_home_core
+      1.0.0
+  </span>
+  
+</footer>
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

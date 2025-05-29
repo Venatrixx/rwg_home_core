@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the fetchAll method from the DataWrapper class, for the Dart programming language.">
+  <title>fetchAll method - DataWrapper class - rwg_home_core library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">rwg_home_core</a></li>
+    <li><a href="../../rwg_home_core/">rwg_home_core.dart</a></li>
+    <li><a href="../../rwg_home_core/DataWrapper-class.html">DataWrapper</a></li>
+    <li class="self-crumb">fetchAll method</li>
+  </ol>
+  <div class="self-name">fetchAll</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="rwg_home_core&#47;DataWrapper-class-sidebar.html"
+    data-below-sidebar="">
+    <div>
+<h1><span class="kind-method">fetchAll</span> method 
+</h1></div>
+
+    <section class="multi-line-signature">
+      
+<span class="returntype"><a href="https://api.dart.dev/stable/3.8.0/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+<span class="name ">fetchAll</span>(<wbr><ol class="parameter-list single-line"> <li><span class="parameter" id="fetchAll-param-hipConfig"><span class="type-annotation">HipConfig</span> <span class="parameter-name">hipConfig</span></span></li>
+</ol>)
+
+      
+
+    </section>
+    
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; fetchAll(HipConfig hipConfig) async {
+  _loadingState = LoadingState.loading;
+
+  List&lt;LoadingState&gt; states = [];
+
+  try {
+    &#47;&#47;hip = await fetchHipData(hipConfig).timeout(timeoutDuration);
+    hip?.onDataChanged = onDataChanged;
+    states.add(LoadingState.done);
+  } catch (e) {
+    error = e;
+    states.add(LoadingState.error);
+  }
+
+  try {
+    &#47;&#47;schedule = await fetchScheduleData().timeout(timeoutDuration);
+    schedule?.onDataChanged = onDataChanged;
+    states.add(LoadingState.done);
+  } catch (e) {
+    error = e;
+    states.add(LoadingState.error);
+  }
+
+  try {
+    &#47;&#47;calendar = await fetchCalendarData().timeout(timeoutDuration);
+    calendar?.onDataChanged = onDataChanged;
+    states.add(LoadingState.done);
+  } catch (e) {
+    error = e;
+    states.add(LoadingState.error);
+  }
+
+  if (states.any((e) =&gt; e == LoadingState.error)) {
+    if (states.every((e) =&gt; e == LoadingState.error)) {
+      _loadingState = LoadingState.error;
+      return;
+    } else {
+      _loadingState = LoadingState.doneWithError;
+      return;
+    }
+  }
+
+  onDataChanged?.call();
+
+  _loadingState = LoadingState.done;
+  return;
+}</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../../index.html">rwg_home_core</a></li>
+    <li><a href="../../rwg_home_core/">rwg_home_core</a></li>
+    <li><a href="../../rwg_home_core/DataWrapper-class.html">DataWrapper</a></li>
+    <li class="self-crumb">fetchAll method</li>
+</ol>
+
+    <h5>DataWrapper class</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div><!--/.sidebar-offcanvas-->
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+</div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    rwg_home_core
+      1.0.0
+  </span>
+  
+</footer>
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

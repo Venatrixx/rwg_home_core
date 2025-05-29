@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the gradesToImprove method from the Subject class, for the Dart programming language.">
+  <title>gradesToImprove method - Subject class - rwg_home_core library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">rwg_home_core</a></li>
+    <li><a href="../../rwg_home_core/">rwg_home_core.dart</a></li>
+    <li><a href="../../rwg_home_core/Subject-class.html">Subject</a></li>
+    <li class="self-crumb">gradesToImprove method</li>
+  </ol>
+  <div class="self-name">gradesToImprove</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="rwg_home_core&#47;Subject-class-sidebar.html"
+    data-below-sidebar="">
+    <div>
+<h1><span class="kind-method">gradesToImprove</span> method 
+</h1></div>
+
+    <section class="multi-line-signature">
+      
+<span class="returntype"><a href="https://api.dart.dev/stable/3.8.0/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter">(<span class="field"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.0/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/3.8.0/dart-core/int-class.html">int</a></span>&gt;</span></span>, </span><span class="field"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.0/dart-core/double-class.html">double</a></span></span>)</span>&gt;</span></span>
+<span class="name ">gradesToImprove</span>(<wbr><ol class="parameter-list"> <li><span class="parameter" id="gradesToImprove-param-calculateExamWeight"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.0/dart-core/double-class.html">double</a></span> <span class="parameter-name">calculateExamWeight</span>(<ol class="parameter-list single-line"> <li><span class="parameter" id="param-"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.0/dart-core/int-class.html">int</a></span></span></li>
+</ol>), {</span></li>
+<li><span class="parameter" id="gradesToImprove-param-keepAvg"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.0/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">keepAvg</span> = <span class="default-value">false</span>, </span></li>
+<li><span class="parameter" id="gradesToImprove-param-gradesCount"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.0/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">gradesCount</span>, </span></li>
+</ol>})
+
+      
+
+    </section>
+    
+<section class="desc markdown">
+  <p>Returns a list of tuples with a grade and a "Doability" percentage that the user would need to add to get in order to increase his subject average.</p>
+<p>The length of the list is equal to <code>gradesCount</code>. <code>gradesCount</code> defaults to <code>1</code>. Has to be greater than or equal to 1.</p>
+<p>If <code>keepAvg</code> is set to <code>true</code>, the worst grade the user can get without effecting his subject average is calculated. In this case, <code>gradesCount</code> is always <code>1</code>.</p>
+<p>It is recommended to call the method as follows:</p>
+<pre class="language-dart"><code class="language-dart">gradesToImprove(HipWrapper.calculateExamWeight);
+</code></pre>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">List&lt;(List&lt;int&gt;, double)&gt; gradesToImprove(
+  double Function(int) calculateExamWeight, {
+  bool keepAvg = false,
+  int? gradesCount,
+}) {
+  double? totalAvg = getTotalAvg(calculateExamWeight);
+  if ((AppConfig.isSek2 &amp;&amp; totalAvg.round() &gt;= 15 &amp;&amp; !keepAvg) ||
+      (AppConfig.isSek1 &amp;&amp; totalAvg.round() &lt;= 1 &amp;&amp; !keepAvg)) {
+    return [];
+  }
+
+  List&lt;(List&lt;int&gt;, double)&gt; r = [];
+
+  double targetAvg;
+  if (keepAvg) {
+    if (AppConfig.isSek2) {
+      targetAvg = totalAvg.round() - .5;
+    } else {
+      targetAvg = totalAvg.round() + .49;
+    }
+  } else {
+    targetAvg = getTargetAvg(calculateExamWeight)!;
+  }
+
+  (int, int) _tests, _exams;
+
+  int sum = 0, count = 0;
+  for (final elem in tests) {
+    if (elem.ghost || !elem.hasData) continue;
+    sum += elem.gradeValue!;
+    count++;
+  }
+  _tests = (sum, count);
+
+  sum = 0;
+  count = 0;
+  for (final elem in exams) {
+    if (elem.ghost || !elem.hasData) continue;
+    sum += elem.gradeValue!;
+    count++;
+  }
+  _exams = (sum, count);
+
+  double examsWeight;
+  double testsWeight;
+
+  if (exams.every((exam) =&gt; !exam.hasData)) {
+    examsWeight = 0;
+  } else {
+    examsWeight = calculateExamWeight(exams.where((grade) =&gt; grade.hasData).length);
+  }
+
+  testsWeight = 1 - examsWeight;
+
+  &#47;&#47;&#47; amount sets the amount of additional grades (only tests, no exams) with which the [targetAvg] shall be reached
+  double getRemainingPoints(int amount) {
+    double examsAvg = _exams.$1 &#47; _exams.$2;
+    double examsAvgWeighted = examsAvg.isNaN ? 0 : examsAvg * examsWeight;
+    return (targetAvg - examsAvgWeighted) * (_tests.$2 + amount) &#47; testsWeight - _tests.$1;
+  }
+
+  &#47;&#47;&#47; evenly distributes the total amount of points over a set count of grades
+  List&lt;int&gt; distributePoints(double total, int count) {
+    List&lt;int&gt; values = [];
+
+    for (int i = 0; i &lt; count; i++) {
+      if (AppConfig.isSek2 &amp;&amp; total &lt;= 0) {
+        values.add(0);
+        continue;
+      } else if (AppConfig.isSek1 &amp;&amp; total &gt;= 6 * count) {
+        values.add(6);
+        continue;
+      }
+
+      double reducedTotal = total;
+      for (final val in values) {
+        reducedTotal -= val;
+      }
+      if (AppConfig.isSek2) {
+        values.add((reducedTotal &#47; (count - i)).ceil());
+      } else {
+        values.add((reducedTotal &#47; (count - i)).floor());
+      }
+    }
+    return values;
+  }
+
+  double getDoability(List&lt;int&gt; values) {
+    double sum = 0;
+    for (final val in values) {
+      double delta = (totalAvg - val).abs();
+      double max = keepAvg ? (AppConfig.isSek2 ? 0 : 6) : (AppConfig.isSek2 ? 15 : 1);
+      double deltaMax = (max - totalAvg).abs();
+      sum += (deltaMax - delta) &#47; deltaMax;
+    }
+    return sum &#47; values.length;
+  }
+
+  for (int i = 1; i &lt;= (gradesCount ?? 1); i++) {
+    double remainingPoints = getRemainingPoints(i);
+    if ((AppConfig.isSek2 &amp;&amp; remainingPoints &gt; i * 15) || (AppConfig.isSek2 &amp;&amp; remainingPoints &lt; i)) continue;
+    var distributedPoints = distributePoints(remainingPoints, i);
+    r.add((
+      distributedPoints..sort((a, b) =&gt; b.compareTo(a)),
+      roundDecimals(getDoability(distributedPoints), decimals: 3) * 100,
+    ));
+    if (getDoability(distributedPoints) &gt;= .8) break;
+  }
+
+  &#47;&#47;r.sort((a, b) =&gt; b.$2.compareTo(a.$2));
+  return r;
+}</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../../index.html">rwg_home_core</a></li>
+    <li><a href="../../rwg_home_core/">rwg_home_core</a></li>
+    <li><a href="../../rwg_home_core/Subject-class.html">Subject</a></li>
+    <li class="self-crumb">gradesToImprove method</li>
+</ol>
+
+    <h5>Subject class</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div><!--/.sidebar-offcanvas-->
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+</div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    rwg_home_core
+      1.0.0
+  </span>
+  
+</footer>
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

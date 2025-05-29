@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the HipWrapper.fromHipJson constructor from Class HipWrapper from the rwg_home_core library, for the Dart programming language.">
+  <title>HipWrapper.fromHipJson constructor - HipWrapper - rwg_home_core library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">rwg_home_core</a></li>
+    <li><a href="../../rwg_home_core/">rwg_home_core.dart</a></li>
+    <li><a href="../../rwg_home_core/HipWrapper-class.html">HipWrapper</a></li>
+    <li class="self-crumb">HipWrapper.fromHipJson factory constructor</li>
+  </ol>
+  <div class="self-name">HipWrapper.fromHipJson</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+  <div
+      id="dartdoc-main-content"
+      class="main-content"
+      data-above-sidebar="rwg_home_core&#47;HipWrapper-class-sidebar.html"
+      data-below-sidebar="">
+      <div>
+<h1><span class="kind-constructor">HipWrapper.fromHipJson</span> constructor 
+</h1></div>
+
+    <section class="multi-line-signature">
+      
+      <span class="name ">HipWrapper.fromHipJson</span>(<wbr><ol class="parameter-list single-line"> <li><span class="parameter" id="fromHipJson-param-json"><span class="type-annotation">dynamic</span> <span class="parameter-name">json</span></span></li>
+</ol>)
+    </section>
+    
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">factory HipWrapper.fromHipJson(dynamic json) {
+  &#47;&#47; extract subjects
+  List&lt;Subject&gt; subjectsSem1 = [];
+  List&lt;Subject&gt; subjectsSem2 = [];
+
+  for (final jsonSubject in json[&#39;subjects&#39;]! as List&lt;Map&gt;) {
+    List&lt;Grade&gt; gradesSem1 = [];
+    List&lt;Grade&gt; gradesSem2 = [];
+
+    for (final jsonGrade in (jsonSubject[&#39;grades&#39;]! as List&lt;Map&gt;).indexed) {
+      Grade grade;
+      if (AppConfig.isSek1) {
+        grade = Grade.fromStringValue(
+          value: jsonGrade.$2[&#39;value&#39;],
+          key: jsonGrade.$1.toString(),
+          isExam: jsonGrade.$2[&#39;isExam&#39;],
+          description: jsonGrade.$2[&#39;comment&#39;],
+          uploadDate: DateFormat(&#39;dd.MM.yyyy&#39;).parse(jsonGrade.$2[&#39;date&#39;]),
+        );
+      } else {
+        grade = Grade.fromPoints(
+          pointValue: jsonGrade.$2[&#39;value&#39;],
+          key: jsonGrade.$1.toString(),
+          isExam: jsonGrade.$2[&#39;isExam&#39;],
+          description: jsonGrade.$2[&#39;comment&#39;],
+          uploadDate: DateFormat(&#39;dd.MM.yyyy&#39;).parse(jsonGrade.$2[&#39;date&#39;]),
+        );
+      }
+
+      if (jsonGrade.$2[&#39;semester&#39;] == 1) {
+        gradesSem1.add(grade);
+        continue;
+      } else if (jsonGrade.$2[&#39;semester&#39;] == 2) {
+        gradesSem2.add(grade);
+        continue;
+      } else {
+        throw FormatException(&#39;Cannot read semester &quot;${jsonGrade.$2[&#39;semester&#39;]}&quot;.&#39;);
+      }
+    }
+
+    subjectsSem1.add(
+      Subject(
+        name: jsonSubject[&#39;name&#39;],
+        abbr: jsonSubject[&#39;abbr&#39;],
+        onlineGrades: gradesSem1,
+        finalSemesterGrade: jsonSubject[&#39;finalGradeSem1&#39;],
+      ),
+    );
+
+    subjectsSem1.add(
+      Subject(
+        name: jsonSubject[&#39;name&#39;],
+        abbr: jsonSubject[&#39;abbr&#39;],
+        onlineGrades: gradesSem2,
+        finalSemesterGrade: jsonSubject[&#39;finalGradeSem2&#39;],
+      ),
+    );
+  }
+
+  Semester sem1 = Semester(label: &quot;${json[&#39;level&#39;]!}.1&quot;, level: json[&#39;level&#39;], subjects: subjectsSem1);
+  Semester sem2 = Semester(label: &quot;${json[&#39;level&#39;]!}.2&quot;, level: json[&#39;level&#39;], subjects: subjectsSem2);
+
+  return HipWrapper(
+    semesters: [sem1, sem2],
+    totalMissingDays: json[&#39;totalMissingDays&#39;],
+    totalUnexcusedMissingDays: json[&#39;totalUnexcusedMissingDays&#39;],
+    totalMissingHours: json[&#39;totalMissingHours&#39;],
+    totalUnexcusedMissingHours: json[&#39;totalUnexcusedMissingHours&#39;],
+    missingHourData: [
+      for (final day in json[&#39;missingDays&#39;] ?? []) MissingHour.dayFromJson(day),
+
+      for (final hour in json[&#39;missingHours&#39;] ?? []) MissingHour.hourFromJson(hour),
+    ],
+  );
+}</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../../index.html">rwg_home_core</a></li>
+    <li><a href="../../rwg_home_core/">rwg_home_core</a></li>
+    <li><a href="../../rwg_home_core/HipWrapper-class.html">HipWrapper</a></li>
+    <li class="self-crumb">HipWrapper.fromHipJson factory constructor</li>
+</ol>
+
+    <h5>HipWrapper class</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div><!--/.sidebar-offcanvas-left-->
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    rwg_home_core
+      1.0.0
+  </span>
+  
+</footer>
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

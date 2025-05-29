@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the Subject class from the rwg_home_core library, for the Dart programming language.">
+  <title>Subject class - rwg_home_core library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">rwg_home_core</a></li>
+    <li><a href="../rwg_home_core/">rwg_home_core.dart</a></li>
+    <li class="self-crumb">Subject class</li>
+  </ol>
+  <div class="self-name">Subject</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="rwg_home_core&#47;rwg_home_core-library-sidebar.html"
+    data-below-sidebar="rwg_home_core&#47;Subject-class-sidebar.html">
+    <div>
+<h1><span class="kind-class">Subject</span> class 
+ 
+</h1></div>
+
+    
+<section class="desc markdown">
+  <p>A <a href="../rwg_home_core/Subject-class.html">Subject</a> stores a list of <a href="../rwg_home_core/Grade-class.html">Grade</a> elements and additional meta data for a subject.</p>
+<p>A <a href="../rwg_home_core/Subject-class.html">Subject</a> should only ever contain the data for one semester.</p>
+</section>
+
+
+
+    
+  <section class="summary offset-anchor" id="constructors">
+    <h2>Constructors</h2>
+    <dl class="constructor-summary-list">
+        <dt id="Subject.new" class="callable">
+          <span class="name"><a href="../rwg_home_core/Subject/Subject.html">Subject.new</a></span><span class="signature">({<span class="parameter" id="-param-name"><span>required</span> <span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.0/dart-core/String-class.html">String</a></span> <span class="parameter-name">name</span>, </span><span class="parameter" id="-param-abbr"><span>required</span> <span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.0/dart-core/String-class.html">String</a></span> <span class="parameter-name">abbr</span>, </span><span class="parameter" id="-param-onlineGrades"><span>required</span> <span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.0/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../rwg_home_core/Grade-class.html">Grade</a></span>&gt;</span></span> <span class="parameter-name">onlineGrades</span>, </span><span class="parameter" id="-param-customGrades"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.0/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../rwg_home_core/Grade-class.html">Grade</a></span>&gt;</span></span> <span class="parameter-name">customGrades</span> = <span class="default-value">const []</span>, </span><span class="parameter" id="-param-finalSemesterGrade"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.0/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">finalSemesterGrade</span></span>})</span>
+        </dt>
+        <dd>
+          A <a href="../rwg_home_core/Subject-class.html">Subject</a> stores a list of <a href="../rwg_home_core/Grade-class.html">Grade</a> elements and additional meta data for a subject.
+        </dd>
+        <dt id="Subject.detailed" class="callable">
+          <span class="name"><a href="../rwg_home_core/Subject/Subject.detailed.html">Subject.detailed</a></span><span class="signature">(<span class="parameter" id="detailed-param-name"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.0/dart-core/String-class.html">String</a></span> <span class="parameter-name">name</span>, </span><span class="parameter" id="detailed-param-abbr"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.0/dart-core/String-class.html">String</a></span> <span class="parameter-name">abbr</span>, </span><span class="parameter" id="detailed-param-onlineGrades"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.0/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../rwg_home_core/Grade-class.html">Grade</a></span>&gt;</span></span> <span class="parameter-name">onlineGrades</span>, </span><span class="parameter" id="detailed-param-customGrades"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.0/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../rwg_home_core/Grade-class.html">Grade</a></span>&gt;</span></span> <span class="parameter-name">customGrades</span>, </span><span class="parameter" id="detailed-param-finalSemesterGrade"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.0/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">finalSemesterGrade</span></span>)</span>
+        </dt>
+        <dd>
+          
+        </dd>
+        <dt id="Subject.fromJson" class="callable">
+          <span class="name"><a href="../rwg_home_core/Subject/Subject.fromJson.html">Subject.fromJson</a></span><span class="signature">(<span class="parameter" id="fromJson-param-json"><span class="type-annotation">dynamic</span> <span class="parameter-name">json</span></span>)</span>
+        </dt>
+        <dd>
+          Creates a <a href="../rwg_home_core/Subject-class.html">Subject</a> instance from a json map.
+        </dd>
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-properties">
+    <h2>Properties</h2>
+    <dl class="properties">
+        <dt id="abbr" class="property">
+  <span class="name"><a href="../rwg_home_core/Subject/abbr.html">abbr</a></span>
+  <span class="signature">&#8596; <a href="https://api.dart.dev/stable/3.8.0/dart-core/String-class.html">String</a></span>
+  
+
+</dt>
+<dd>
+  Abbreviation for the subject. E.g. "ma" or "en".
+  <div class="features"><span class="feature">getter/setter pair</span></div>
+
+</dd>
+
+        <dt id="allGrades" class="property">
+  <span class="name"><a href="../rwg_home_core/Subject/allGrades.html">allGrades</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.8.0/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../rwg_home_core/Grade-class.html">Grade</a></span>&gt;</span></span>
+  
+
+</dt>
+<dd>
+  List of all grade, online and custom.
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="customGrades" class="property">
+  <span class="name"><a href="../rwg_home_core/Subject/customGrades.html">customGrades</a></span>
+  <span class="signature">&#8596; <a href="https://api.dart.dev/stable/3.8.0/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../rwg_home_core/Grade-class.html">Grade</a></span>&gt;</span></span>
+  
+
+</dt>
+<dd>
+  All grades added by the user.
+  <div class="features"><span class="feature">getter/setter pair</span></div>
+
+</dd>
+
+        <dt id="exams" class="property">
+  <span class="name"><a href="../rwg_home_core/Subject/exams.html">exams</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.8.0/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../rwg_home_core/Grade-class.html">Grade</a></span>&gt;</span></span>
+  
+
+</dt>
+<dd>
+  List of all exams, online and custom.
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="finalSemesterGrade" class="property">
+  <span class="name"><a href="../rwg_home_core/Subject/finalSemesterGrade.html">finalSemesterGrade</a></span>
+  <span class="signature">&#8596; <a href="https://api.dart.dev/stable/3.8.0/dart-core/int-class.html">int</a>?</span>
+  
+
+</dt>
+<dd>
+  The final grade of this subject for a semester.
+  <div class="features"><span class="feature">getter/setter pair</span></div>
+
+</dd>
+
+        <dt id="hasData" class="property">
+  <span class="name"><a href="../rwg_home_core/Subject/hasData.html">hasData</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.8.0/dart-core/bool-class.html">bool</a></span>
+  
+
+</dt>
+<dd>
+  Whether this subject has any grades stored.
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="hashCode" class="property inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.8.0/dart-core/Object/hashCode.html">hashCode</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.8.0/dart-core/int-class.html">int</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  The hash code for this object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="hasUnseenGrades" class="property">
+  <span class="name"><a href="../rwg_home_core/Subject/hasUnseenGrades.html">hasUnseenGrades</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.8.0/dart-core/bool-class.html">bool</a></span>
+  
+
+</dt>
+<dd>
+  Whether this subject has any grades, where <a href="../rwg_home_core/Grade/unSeen.html">Grade.unSeen</a> is <code>true</code>.
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="name" class="property">
+  <span class="name"><a href="../rwg_home_core/Subject/name.html">name</a></span>
+  <span class="signature">&#8596; <a href="https://api.dart.dev/stable/3.8.0/dart-core/String-class.html">String</a></span>
+  
+
+</dt>
+<dd>
+  Display name of the subject.
+  <div class="features"><span class="feature">getter/setter pair</span></div>
+
+</dd>
+
+        <dt id="newOrSimilarGrades" class="property">
+  <span class="name"><a href="../rwg_home_core/Subject/newOrSimilarGrades.html">newOrSimilarGrades</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.8.0/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../rwg_home_core/SpecialGrade-class.html">SpecialGrade</a></span>&gt;</span></span>
+  
+
+</dt>
+<dd>
+  A list of all grades as <a href="../rwg_home_core/SpecialGrade-class.html">SpecialGrade</a> that either have <a href="../rwg_home_core/Grade/unSeen.html">Grade.unSeen</a> set to <code>true</code> or have a possible duplicate.
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="onlineGrades" class="property">
+  <span class="name"><a href="../rwg_home_core/Subject/onlineGrades.html">onlineGrades</a></span>
+  <span class="signature">&#8596; <a href="https://api.dart.dev/stable/3.8.0/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../rwg_home_core/Grade-class.html">Grade</a></span>&gt;</span></span>
+  
+
+</dt>
+<dd>
+  All grades listed on Home.InfoPoint.
+  <div class="features"><span class="feature">getter/setter pair</span></div>
+
+</dd>
+
+        <dt id="runtimeType" class="property inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.8.0/dart-core/Object/runtimeType.html">runtimeType</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.8.0/dart-core/Type-class.html">Type</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  A representation of the runtime type of the object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="similarGrades" class="property">
+  <span class="name"><a href="../rwg_home_core/Subject/similarGrades.html">similarGrades</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.8.0/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../rwg_home_core/SpecialGrade-class.html">SpecialGrade</a></span>&gt;</span></span>
+  
+
+</dt>
+<dd>
+  A list of all grades as <a href="../rwg_home_core/SpecialGrade-class.html">SpecialGrade</a> that where added by the user and might have one or more duplicate grades online.
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="tests" class="property">
+  <span class="name"><a href="../rwg_home_core/Subject/tests.html">tests</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.8.0/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../rwg_home_core/Grade-class.html">Grade</a></span>&gt;</span></span>
+  
+
+</dt>
+<dd>
+  List of all tests, online and custom.
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="unseenGrades" class="property">
+  <span class="name"><a href="../rwg_home_core/Subject/unseenGrades.html">unseenGrades</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.8.0/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../rwg_home_core/SpecialGrade-class.html">SpecialGrade</a></span>&gt;</span></span>
+  
+
+</dt>
+<dd>
+  A list of all grades as <a href="../rwg_home_core/SpecialGrade-class.html">SpecialGrade</a> where <a href="../rwg_home_core/Grade/unSeen.html">Grade.unSeen</a> is <code>true</code>.
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-methods">
+    <h2>Methods</h2>
+    <dl class="callables">
+        <dt id="addGradesFromSubject" class="callable">
+  <span class="name"><a href="../rwg_home_core/Subject/addGradesFromSubject.html">addGradesFromSubject</a></span><span class="signature">(<wbr><span class="parameter" id="addGradesFromSubject-param-other"><span class="type-annotation"><a href="../rwg_home_core/Subject-class.html">Subject</a></span> <span class="parameter-name">other</span>, {</span><span class="parameter" id="addGradesFromSubject-param-keepFinalGrades"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.0/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">keepFinalGrades</span> = <span class="default-value">false</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.8.0/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../rwg_home_core/SpecialGrade-class.html">SpecialGrade</a></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Takes another <a href="../rwg_home_core/Subject-class.html">Subject</a> and adds additional data to <code>this</code>.
+  
+
+</dd>
+
+        <dt id="clone" class="callable">
+  <span class="name"><a href="../rwg_home_core/Subject/clone.html">clone</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="../rwg_home_core/Subject-class.html">Subject</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Creates a duplicate of <code>this</code>.
+  
+
+</dd>
+
+        <dt id="cloneStructure" class="callable">
+  <span class="name"><a href="../rwg_home_core/Subject/cloneStructure.html">cloneStructure</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="../rwg_home_core/Subject-class.html">Subject</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Creates a duplicate of <code>this</code> without all grades.
+  
+
+</dd>
+
+        <dt id="getAvg" class="callable">
+  <span class="name"><a href="../rwg_home_core/Subject/getAvg.html">getAvg</a></span><span class="signature">(<wbr><span class="parameter" id="getAvg-param-grades"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.0/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../rwg_home_core/Grade-class.html">Grade</a></span>&gt;</span></span> <span class="parameter-name">grades</span>, [</span><span class="parameter" id="getAvg-param-additionalValues"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.0/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/3.8.0/dart-core/int-class.html">int</a></span>&gt;</span>?</span> <span class="parameter-name">additionalValues</span></span>])
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.8.0/dart-core/double-class.html">double</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Helper method used to calculate the average of a list of <a href="../rwg_home_core/Grade-class.html">Grade</a> elements.
+  
+
+</dd>
+
+        <dt id="getExamsAvg" class="callable">
+  <span class="name"><a href="../rwg_home_core/Subject/getExamsAvg.html">getExamsAvg</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.8.0/dart-core/double-class.html">double</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns the average of the exams. Does not round.
+  
+
+</dd>
+
+        <dt id="getExamsAvgRounded" class="callable">
+  <span class="name"><a href="../rwg_home_core/Subject/getExamsAvgRounded.html">getExamsAvgRounded</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.8.0/dart-core/double-class.html">double</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns the average of the exams. Does round the final result to two decimal places.
+  
+
+</dd>
+
+        <dt id="getTargetAvg" class="callable">
+  <span class="name"><a href="../rwg_home_core/Subject/getTargetAvg.html">getTargetAvg</a></span><span class="signature">(<wbr><span class="parameter" id="getTargetAvg-param-calculateExamWeight"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.0/dart-core/double-class.html">double</a></span> <span class="parameter-name">calculateExamWeight</span>(<span class="parameter" id="param-"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.0/dart-core/int-class.html">int</a></span></span>)</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.8.0/dart-core/double-class.html">double</a>?</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Internal helper method used by <a href="../rwg_home_core/Subject/gradesToImprove.html">gradesToImprove</a> method.
+  
+
+</dd>
+
+        <dt id="getTestsAvg" class="callable">
+  <span class="name"><a href="../rwg_home_core/Subject/getTestsAvg.html">getTestsAvg</a></span><span class="signature">(<wbr>[<span class="parameter" id="getTestsAvg-param-additionalValues"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.0/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/3.8.0/dart-core/int-class.html">int</a></span>&gt;</span>?</span> <span class="parameter-name">additionalValues</span></span>])
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.8.0/dart-core/double-class.html">double</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns the average of the tests. Does not round.
+  
+
+</dd>
+
+        <dt id="getTestsAvgRounded" class="callable">
+  <span class="name"><a href="../rwg_home_core/Subject/getTestsAvgRounded.html">getTestsAvgRounded</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.8.0/dart-core/double-class.html">double</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns the average of the tests. Does round the final result to two decimal places.
+  
+
+</dd>
+
+        <dt id="getTotalAvg" class="callable">
+  <span class="name"><a href="../rwg_home_core/Subject/getTotalAvg.html">getTotalAvg</a></span><span class="signature">(<wbr><span class="parameter" id="getTotalAvg-param-calculateExamWeight"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.0/dart-core/double-class.html">double</a></span> <span class="parameter-name">calculateExamWeight</span>(<span class="parameter" id="param-"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.0/dart-core/int-class.html">int</a></span></span>), [</span><span class="parameter" id="getTotalAvg-param-additionalValues"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.0/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/3.8.0/dart-core/int-class.html">int</a></span>&gt;</span>?</span> <span class="parameter-name">additionalValues</span></span>])
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.8.0/dart-core/double-class.html">double</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns the total average of this subject.
+  
+
+</dd>
+
+        <dt id="getTotalAvgRounded" class="callable">
+  <span class="name"><a href="../rwg_home_core/Subject/getTotalAvgRounded.html">getTotalAvgRounded</a></span><span class="signature">(<wbr><span class="parameter" id="getTotalAvgRounded-param-getExamWeight"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.0/dart-core/double-class.html">double</a></span> <span class="parameter-name">getExamWeight</span>(<span class="parameter" id="param-"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.0/dart-core/int-class.html">int</a></span></span>)</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.8.0/dart-core/double-class.html">double</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns the total average of this subject. Does round the final result to two decimal places.
+  
+
+</dd>
+
+        <dt id="gradesToImprove" class="callable">
+  <span class="name"><a href="../rwg_home_core/Subject/gradesToImprove.html">gradesToImprove</a></span><span class="signature">(<wbr><span class="parameter" id="gradesToImprove-param-calculateExamWeight"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.0/dart-core/double-class.html">double</a></span> <span class="parameter-name">calculateExamWeight</span>(<span class="parameter" id="param-"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.0/dart-core/int-class.html">int</a></span></span>), {</span><span class="parameter" id="gradesToImprove-param-keepAvg"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.0/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">keepAvg</span> = <span class="default-value">false</span>, </span><span class="parameter" id="gradesToImprove-param-gradesCount"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.0/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">gradesCount</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.8.0/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter">(<span class="field"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.0/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/3.8.0/dart-core/int-class.html">int</a></span>&gt;</span></span>, </span><span class="field"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.0/dart-core/double-class.html">double</a></span></span>)</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns a list of tuples with a grade and a "Doability" percentage that the user would need to add to get in order to increase his subject average.
+  
+
+</dd>
+
+        <dt id="noSuchMethod" class="callable inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.8.0/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.0/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
+    <span class="returntype parameter">&#8594; dynamic</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Invoked when a nonexistent method or property is accessed.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="removeGrade" class="callable">
+  <span class="name"><a href="../rwg_home_core/Subject/removeGrade.html">removeGrade</a></span><span class="signature">(<wbr><span class="parameter" id="removeGrade-param-grade"><span class="type-annotation"><a href="../rwg_home_core/Grade-class.html">Grade</a></span> <span class="parameter-name">grade</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Remove grade. <strong>Note</strong> that only grades from <a href="../rwg_home_core/Subject/customGrades.html">customGrades</a> that where created by the user and be removed.
+  
+
+</dd>
+
+        <dt id="setAllGradesSeen" class="callable">
+  <span class="name"><a href="../rwg_home_core/Subject/setAllGradesSeen.html">setAllGradesSeen</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.8.0/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Sets <a href="../rwg_home_core/Grade/seen.html">Grade.seen</a> to <code>true</code> for all elements of <a href="../rwg_home_core/Subject/onlineGrades.html">onlineGrades</a> and <a href="../rwg_home_core/Subject/customGrades.html">customGrades</a> after a delay of 3 seconds.
+  
+
+</dd>
+
+        <dt id="setAllGradesSeenSync" class="callable">
+  <span class="name"><a href="../rwg_home_core/Subject/setAllGradesSeenSync.html">setAllGradesSeenSync</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Sets <a href="../rwg_home_core/Grade/seen.html">Grade.seen</a> to <code>true</code> for all elements of <a href="../rwg_home_core/Subject/onlineGrades.html">onlineGrades</a> and <a href="../rwg_home_core/Subject/customGrades.html">customGrades</a>.
+  
+
+</dd>
+
+        <dt id="toJson" class="callable">
+  <span class="name"><a href="../rwg_home_core/Subject/toJson.html">toJson</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.8.0/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/3.8.0/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Converts this object into a json map.
+  
+
+</dd>
+
+        <dt id="toString" class="callable inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.8.0/dart-core/Object/toString.html">toString</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.8.0/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  A string representation of this object.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor inherited"
+      id="operators">
+    <h2>Operators</h2>
+    <dl class="callables">
+        <dt id="operator ==" class="callable inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.8.0/dart-core/Object/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.8.0/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.8.0/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  The equality operator.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+    
+    
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">rwg_home_core</a></li>
+    <li><a href="../rwg_home_core/">rwg_home_core</a></li>
+    <li class="self-crumb">Subject class</li>
+</ol>
+
+    <h5>rwg_home_core library</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    rwg_home_core
+      1.0.0
+  </span>
+  
+</footer>
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+
