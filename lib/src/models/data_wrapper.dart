@@ -41,7 +41,7 @@ abstract mixin class DataWrapper {
   ///
   /// **See also:**
   /// * [AppConfig.level] to access the level of the user
-  String mapPercentageToGrade(double percentage);
+  String mapPercentageToGrade(double percentage, {bool isExam = false});
 
   LoadingState __loadingState = LoadingState.unknown;
 
