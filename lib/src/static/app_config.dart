@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:home_info_point_client/home_info_point_client.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:rwg_home_core/rwg_home_core.dart';
@@ -16,6 +18,32 @@ final class AppConfig {
 
   /// Get the path to the app_config.json file.
   static String get configPath => "$documentsDir/app_config.json";
+
+  static AndroidOptions get _aOptions => AndroidOptions(encryptedSharedPreferences: true);
+  static IOSOptions get _iOptions => IOSOptions(accessibility: KeychainAccessibility.first_unlock);
+
+  static final FlutterSecureStorage _secureStorage = FlutterSecureStorage(aOptions: _aOptions, iOptions: _iOptions);
+
+  /// If Home.InfoPoint credentials are available.
+  ///
+  /// **See also:**
+  /// * [setCredentials] for changing the credentials,
+  /// * [deleteCredentials] for deleting the credentials,
+  /// * [hipUsername] for getting the current username and
+  /// * [userHipConfig] for getting the current [HipConfig] for this user.
+  static bool hasCredentials = false;
+
+  /// Returns the current username saved for Home.InfoPoint or `null` if there is no username.
+  static Future<String?> get hipUsername => _secureStorage.read(key: 'username');
+
+  /// Returns a [HipConfig] instance with the current credentials.
+  ///
+  /// If no credentials are found, [HipConfig.username] and [HipConfig.password] are set to empty strings.
+  static Future<HipConfig> get userHipConfig async => HipConfig(
+    schoolCode: 'rwg-waren',
+    username: (await _secureStorage.read(key: 'username') ?? ""),
+    password: (await _secureStorage.read(key: 'password') ?? ""),
+  );
 
   /// Id used to identify the user in the cloud.
   ///
@@ -126,6 +154,8 @@ final class AppConfig {
     } catch (_) {
       return LoadingState.error;
     }
+    hasCredentials =
+        await _secureStorage.read(key: 'username') != null && await _secureStorage.read(key: 'password') != null;
     return loadConfigFileSync();
   }
 
@@ -210,6 +240,28 @@ final class AppConfig {
     saveConfigFileSync();
   }
 
+  /// Updates the credentials for Home.InfoPoint.
+  ///
+  /// If [username] or [password] is `null`, the stored value remains untouched.
+  static Future<void> setCredentials({String? username, String? password}) async {
+    if (username != null) {
+      await _secureStorage.write(key: 'username', value: username);
+      hasCredentials = true;
+    }
+
+    if (password != null) {
+      await _secureStorage.write(key: 'password', value: password);
+      hasCredentials = true;
+    }
+  }
+
+  /// Deletes the credentials for Home.InfoPoint.
+  static Future<void> deleteCredentials() async {
+    await _secureStorage.deleteAll();
+    hasCredentials = false;
+  }
+
+  /// Changes the [userId] and saves the config file.
   static void setUserId(String? id) {
     userId = id;
     saveConfigFileSync();

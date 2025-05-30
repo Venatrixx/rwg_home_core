@@ -1,4 +1,3 @@
-import 'package:home_info_point_client/home_info_point_client.dart';
 import 'package:rwg_home_core/src/calendar/calendar_wrapper.dart';
 import 'package:rwg_home_core/src/hip/hip_wrapper.dart';
 import 'package:rwg_home_core/src/models/cloud_storage.dart';
@@ -43,9 +42,6 @@ abstract mixin class DataWrapper {
   /// **See also:**
   /// * [AppConfig.level] to access the level of the user
   String mapPercentageToGrade(double percentage);
-
-  /// Override this function with a custom implementation that returns the [HipConfig] for the current user.
-  HipConfig getHipConfig();
 
   LoadingState __loadingState = LoadingState.unknown;
 
@@ -108,7 +104,7 @@ abstract mixin class DataWrapper {
 
     if (AppConfig.storeGradesInCloud) {
       try {
-        final onlineData = await CloudStorage.downloadHipDataFromCloud(getHipConfig());
+        final onlineData = await CloudStorage.downloadHipDataFromCloud();
         hip = HipWrapper.fromJson(onlineData);
       } catch (cloudError) {
         try {
@@ -140,7 +136,7 @@ abstract mixin class DataWrapper {
   Future<void> _loadData() async {
     if (AppConfig.storeGradesInCloud) {
       try {
-        final onlineData = await CloudStorage.downloadHipDataFromCloud(getHipConfig());
+        final onlineData = await CloudStorage.downloadHipDataFromCloud();
         hip = HipWrapper.fromJson(onlineData);
       } catch (cloudError) {
         hip = HipWrapper.fromJsonFile(hipPath);
@@ -161,7 +157,7 @@ abstract mixin class DataWrapper {
 
     if (AppConfig.storeGradesInCloud) {
       try {
-        await CloudStorage.uploadHipDataToCloud(hip.toJson(), getHipConfig());
+        await CloudStorage.uploadHipDataToCloud(hip.toJson());
       } catch (cloudError) {
         try {
           hip.saveToFile(hipPath);
@@ -192,7 +188,7 @@ abstract mixin class DataWrapper {
   Future<void> _saveData() async {
     if (AppConfig.storeGradesInCloud) {
       try {
-        await CloudStorage.uploadHipDataToCloud(hip.toJson(), getHipConfig());
+        await CloudStorage.uploadHipDataToCloud(hip.toJson());
       } catch (cloudError) {
         hip.saveToFile(hipPath);
         error = cloudError;
@@ -219,7 +215,7 @@ abstract mixin class DataWrapper {
     }
 
     try {
-      await hip.fetchData(getHipConfig(), rethrowErrors: true);
+      await hip.fetchData(rethrowErrors: true);
     } catch (e) {
       error = e;
       try {
@@ -260,7 +256,7 @@ abstract mixin class DataWrapper {
 
     // hip data
     try {
-      hip.fetchData(getHipConfig(), rethrowErrors: true);
+      hip.fetchData(rethrowErrors: true);
       states.add(LoadingState.done);
     } catch (e) {
       states.add(LoadingState.error);

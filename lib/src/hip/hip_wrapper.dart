@@ -204,11 +204,11 @@ class HipWrapper {
   /// as this will ensure that the data is stored properly.
   ///
   /// Calls [onLoadingStateChanged] if provided.
-  Future<void> fetchData(HipConfig config, {bool rethrowErrors = false}) async {
+  Future<void> fetchData({bool rethrowErrors = false}) async {
     loadingState = LoadingState.loading;
 
     try {
-      final client = HipClient(config);
+      final client = HipClient(await AppConfig.userHipConfig);
 
       await client.fetch();
 

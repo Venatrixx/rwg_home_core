@@ -96,7 +96,7 @@ final class CloudStorage {
   }
 
   /// Internal helper method to fetch data.
-  static Future<Map> _fetchCloudData(HipConfig config) async {
+  static Future<Map> _fetchCloudData() async {
     final res = await Client()
         .get(Uri.https('nice-2know.de', '/rwg-home/cloud/data'), headers: {'id': AppConfig.userId!})
         .timeout(shortTimeoutDuration);
@@ -108,15 +108,16 @@ final class CloudStorage {
     Map<String, String> fetchedData = {};
 
     for (var entry in responseData.entries) {
-      fetchedData[entry.key] = _decryptData(entry.value, config);
+      fetchedData[entry.key] = _decryptData(entry.value, (await AppConfig.userHipConfig));
     }
 
     return fetchedData;
   }
 
   /// Internal helper method to upload data.
-  static Future<void> _uploadDataToCloud(HipConfig config, {dynamic hip, dynamic settings, dynamic wizard}) async {
+  static Future<void> _uploadDataToCloud({dynamic hip, dynamic settings, dynamic wizard}) async {
     final data = {};
+    final config = await AppConfig.userHipConfig;
 
     if (hip != null) data['grades_data'] = _encryptData(hip, config);
 
@@ -139,27 +140,27 @@ final class CloudStorage {
     return;
   }
 
-  static Future<void> uploadHipDataToCloud(dynamic data, HipConfig config) async {
-    if (AppConfig.storeGradesInCloud) await _uploadDataToCloud(config, hip: data);
+  static Future<void> uploadHipDataToCloud(dynamic data) async {
+    if (AppConfig.storeGradesInCloud) await _uploadDataToCloud(hip: data);
   }
 
-  static Future<dynamic> downloadHipDataFromCloud(HipConfig config) async {
-    return (await _fetchCloudData(config))['grades_data'];
+  static Future<dynamic> downloadHipDataFromCloud() async {
+    return (await _fetchCloudData())['grades_data'];
   }
 
-  static Future<void> uploadSettingsDataToCloud(dynamic data, HipConfig config) async {
-    if (AppConfig.storeSettingsInCloud) await _uploadDataToCloud(config, settings: data);
+  static Future<void> uploadSettingsDataToCloud(dynamic data) async {
+    if (AppConfig.storeSettingsInCloud) await _uploadDataToCloud(settings: data);
   }
 
-  static Future<dynamic> downloadSettingsDataFromCloud(HipConfig config) async {
-    return (await _fetchCloudData(config))['settings_data'];
+  static Future<dynamic> downloadSettingsDataFromCloud() async {
+    return (await _fetchCloudData())['settings_data'];
   }
 
-  static Future<void> uploadWizardDataToCloud(dynamic data, HipConfig config) async {
-    if (AppConfig.storeWizardInCloud) await _uploadDataToCloud(config, wizard: data);
+  static Future<void> uploadWizardDataToCloud(dynamic data) async {
+    if (AppConfig.storeWizardInCloud) await _uploadDataToCloud(wizard: data);
   }
 
-  static Future<dynamic> downloadWizardDataTFromCloud(HipConfig config) async {
-    return (await _fetchCloudData(config))['wizard_data'];
+  static Future<dynamic> downloadWizardDataTFromCloud() async {
+    return (await _fetchCloudData())['wizard_data'];
   }
 }
