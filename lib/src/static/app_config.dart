@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:crypto/crypto.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:home_info_point_client/home_info_point_client.dart';
 import 'package:intl/intl.dart';
@@ -156,7 +157,9 @@ final class AppConfig {
     }
     hasCredentials =
         await _secureStorage.read(key: 'username') != null && await _secureStorage.read(key: 'password') != null;
-    return loadConfigFileSync();
+    final status = loadConfigFileSync();
+    await generateUserId();
+    return status;
   }
 
   /// Load the current app_config.json file.
@@ -269,6 +272,18 @@ final class AppConfig {
   /// Changes the [userId] and saves the config file.
   static void setUserId(String? id) {
     userId = id;
+    saveConfigFileSync();
+  }
+
+  /// Use this method to generate a user id from the Home.InfoPoint credentials.
+  ///
+  /// If [hasCredentials] is `false`, this method does nothing.
+  static Future<void> generateUserId() async {
+    if (!hasCredentials) return;
+    final config = await userHipConfig;
+    final rawString = "${config.username}${config.password}";
+    final hash = sha256.convert(utf8.encode(rawString)).toString();
+    userId = hash;
     saveConfigFileSync();
   }
 
