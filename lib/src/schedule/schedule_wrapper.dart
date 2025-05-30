@@ -5,7 +5,6 @@ import 'package:http/http.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:rwg_home_core/rwg_home_core.dart';
-import 'package:rwg_home_core/src/schedule/vp_wrapper.dart';
 import 'package:xml/xml.dart';
 
 /// Contains data for the school schedule.
@@ -57,7 +56,7 @@ class ScheduleWrapper {
               '/stundenplan/vplan/mobdaten/PlanKl${DateFormat('yyyyMMdd').format(date)}.xml',
             ),
           )
-          .timeout(Duration(seconds: 5));
+          .timeout(shortTimeoutDuration);
     } catch (e) {
       error = e;
       loadingState = LoadingState.error;

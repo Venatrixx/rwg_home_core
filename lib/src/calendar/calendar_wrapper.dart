@@ -72,7 +72,12 @@ class CalendarWrapper {
   }
 
   /// Submits a bulletin to the database.
-  Future<void> addBulletin(String title, String description, DateTime date, String? time) async {
+  Future<void> addBulletin({
+    required String title,
+    required String description,
+    required DateTime date,
+    String? time,
+  }) async {
     error = null;
 
     loadingState = LoadingState.loading;
