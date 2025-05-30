@@ -263,7 +263,7 @@ final class AppConfig {
 
   static Future<bool> verifyCredentials() async {
     final client = HipClient(await userHipConfig);
-    return await client.verify();
+    return await client.verify().timeout(shortTimeoutDuration);
   }
 
   /// Changes the [userId] and saves the config file.
