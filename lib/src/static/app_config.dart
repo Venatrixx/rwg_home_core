@@ -261,6 +261,11 @@ final class AppConfig {
     hasCredentials = false;
   }
 
+  static Future<bool> verifyCredentials() async {
+    final client = HipClient(await userHipConfig);
+    return await client.verify();
+  }
+
   /// Changes the [userId] and saves the config file.
   static void setUserId(String? id) {
     userId = id;
