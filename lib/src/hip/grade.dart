@@ -275,4 +275,14 @@ class Grade {
   bool operator ==(covariant Grade other) {
     return key == other.key && isExam == other.isExam;
   }
+
+  // Use this operator to override all variables (except the key) from this grade.
+  void operator <<(Grade other) {
+    dateOfWriting = other.dateOfWriting;
+    uploadDate = other.uploadDate ?? uploadDate;
+    pointsValue = other.points ?? points;
+    description = other.description ?? description;
+    userDescription = other.userDescription;
+    ghost = other.ghost;
+  }
 }

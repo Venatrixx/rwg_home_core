@@ -209,7 +209,7 @@ class Subject {
     return changedGrades;
   }
 
-  /// Remove grade. **Note** that only grades from [customGrades] that where created by the user and be removed.
+  /// Remove grade. **Note** that only grades from [customGrades] that where created by the user can be removed.
   void removeGrade(Grade grade) {
     customGrades.removeWhere((element) => element == grade);
   }
