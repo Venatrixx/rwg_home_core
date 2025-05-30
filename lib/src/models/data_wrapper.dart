@@ -84,8 +84,7 @@ abstract mixin class DataWrapper {
       [...hip.missingHourEvents, ...calendar.allCalendarEvents]..sort((a, b) => a.date.compareTo(b.date));
 
   /// Ensures that the data wrapper is initialized correctly.
-  Future<void> ensureInitialized(String userId) async {
-    userId = userId;
+  Future<void> ensureInitialized() async {
     hip = HipWrapper.fromJson(hipPath);
     hip.onLoadingStateChanged = onHipLoadingStateChanged;
     schedule = ScheduleWrapper();
