@@ -132,7 +132,7 @@ class HipWrapper {
           name: jsonSubject['name'],
           abbr: jsonSubject['abbr'],
           onlineGrades: gradesSem1,
-          finalSemesterGrade: jsonSubject['finalGradeSem1'],
+          finalSemesterGrade: int.tryParse(jsonSubject['finalGradeSem1']),
         ),
       );
 
@@ -141,7 +141,7 @@ class HipWrapper {
           name: jsonSubject['name'],
           abbr: jsonSubject['abbr'],
           onlineGrades: gradesSem2,
-          finalSemesterGrade: jsonSubject['finalGradeSem2'],
+          finalSemesterGrade: int.tryParse(jsonSubject['finalGradeSem2']),
         ),
       );
     }
