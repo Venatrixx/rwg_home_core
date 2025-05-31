@@ -95,7 +95,7 @@ abstract mixin class DataWrapper {
   /// Ensures that the data wrapper is initialized correctly.
   void ensureInitialized() {
     if (File(hipPath).existsSync()) {
-      hip = HipWrapper.fromJson(hipPath);
+      hip = HipWrapper.fromJsonFile(hipPath);
     } else {
       hip = HipWrapper()..saveToFile(hipPath);
     }
