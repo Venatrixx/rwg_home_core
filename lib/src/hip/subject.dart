@@ -416,4 +416,8 @@ class Subject {
       return totalAvg.round() - .51;
     }
   }
+
+  /// Compares to subjects by their [Subject.abbr] property.
+  @override
+  bool operator ==(covariant Subject other) => abbr == other.abbr;
 }
