@@ -263,12 +263,20 @@ final class AppConfig {
   /// If [username] or [password] is `null`, the stored value remains untouched.
   static Future<void> setCredentials({String? username, String? password}) async {
     if (username != null) {
-      await _secureStorage.write(key: 'username', value: username);
+      if (username.trim() != "") {
+        await _secureStorage.write(key: 'username', value: username);
+      } else {
+        await _secureStorage.write(key: 'username', value: null);
+      }
       hasCredentials = true;
     }
 
     if (password != null) {
-      await _secureStorage.write(key: 'password', value: password);
+      if (password.trim() != "") {
+        await _secureStorage.write(key: 'password', value: password);
+      } else {
+        await _secureStorage.write(key: 'password', value: password);
+      }
       hasCredentials = true;
     }
   }
