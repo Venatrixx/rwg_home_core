@@ -139,16 +139,9 @@ abstract mixin class DataWrapper {
         final onlineData = await CloudStorage.downloadHipDataFromCloud();
         hip = HipWrapper.fromJson(onlineData);
       } catch (cloudError) {
-        try {
-          hip = HipWrapper.fromJsonFile(hipPath);
-          error = cloudError;
-          _loadingState = LoadingState.doneWithError;
-          return;
-        } catch (localError) {
-          error = localError;
-          _loadingState = LoadingState.error;
-          return;
-        }
+        error = cloudError;
+        _loadingState = LoadingState.error;
+        return;
       }
     } else {
       try {
@@ -165,16 +158,9 @@ abstract mixin class DataWrapper {
         final onlineData = await CloudStorage.downloadWizardDataFromCloud();
         aLevel = ALevelWrapper.fromJson(onlineData);
       } catch (cloudError) {
-        try {
-          aLevel = ALevelWrapper.fromJsonFile(aLevelPath);
-          error = cloudError;
-          _loadingState = LoadingState.doneWithError;
-          return;
-        } catch (localError) {
-          error = localError;
-          _loadingState = LoadingState.error;
-          return;
-        }
+        error = cloudError;
+        _loadingState = LoadingState.error;
+        return;
       }
     } else {
       try {
@@ -193,29 +179,15 @@ abstract mixin class DataWrapper {
   /// Internal method for loading data. **Does not** catch errors.
   Future<void> _loadData() async {
     if (AppConfig.storeGradesInCloud) {
-      try {
-        final onlineData = await CloudStorage.downloadHipDataFromCloud();
-        hip = HipWrapper.fromJson(onlineData);
-      } catch (cloudError) {
-        hip = HipWrapper.fromJsonFile(hipPath);
-        error = cloudError;
-        _loadingState = LoadingState.doneWithError;
-        return;
-      }
+      final onlineData = await CloudStorage.downloadHipDataFromCloud();
+      hip = HipWrapper.fromJson(onlineData);
     } else {
       hip = HipWrapper.fromJsonFile(hipPath);
     }
 
     if (AppConfig.storeWizardInCloud) {
-      try {
-        final onlineData = await CloudStorage.downloadWizardDataFromCloud();
-        aLevel = ALevelWrapper.fromJson(onlineData);
-      } catch (cloudError) {
-        aLevel = ALevelWrapper.fromJsonFile(aLevelPath);
-        error = cloudError;
-        _loadingState = LoadingState.doneWithError;
-        return;
-      }
+      final onlineData = await CloudStorage.downloadWizardDataFromCloud();
+      aLevel = ALevelWrapper.fromJson(onlineData);
     } else {
       aLevel = ALevelWrapper.fromJsonFile(aLevelPath);
     }
