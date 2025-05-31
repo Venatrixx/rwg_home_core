@@ -103,7 +103,7 @@ final class CloudStorage {
 
     if (res.statusCode != 200) throw CloudException.fromHttp(res);
 
-    Map<String, String> responseData = jsonDecode(res.body) as Map<String, String>;
+    final responseData = Map<String, String>.from(jsonDecode(res.body));
 
     Map<String, String> fetchedData = {};
 
