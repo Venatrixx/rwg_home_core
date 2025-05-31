@@ -162,6 +162,17 @@ final class AppConfig {
     return status;
   }
 
+  /// Deletes the config file and the Home.InfoPoint credentials.
+  ///
+  /// The method calls [recreateDefaultConfig] afterwards.
+  static Future<void> deleteConfig() async {
+    await deleteCredentials();
+    try {
+      File(configPath).deleteSync();
+    } catch (_) {}
+    recreateDefaultConfig();
+  }
+
   /// Load the current app_config.json file.
   ///
   /// Returns [LoadingState.done] if the file was loaded successfully.
@@ -226,7 +237,11 @@ final class AppConfig {
   static void recreateDefaultConfig() {
     final configFile = File(configPath);
 
-    if (configFile.existsSync()) configFile.deleteSync();
+    if (configFile.existsSync()) {
+      try {
+        configFile.deleteSync();
+      } catch (_) {}
+    }
 
     level = 0;
     userClass = '';

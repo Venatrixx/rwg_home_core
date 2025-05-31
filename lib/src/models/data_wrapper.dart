@@ -93,7 +93,7 @@ abstract mixin class DataWrapper {
       [...hip.missingHourEvents, ...calendar.allCalendarEvents]..sort((a, b) => a.date.compareTo(b.date));
 
   /// Ensures that the data wrapper is initialized correctly.
-  Future<void> ensureInitialized() async {
+  void ensureInitialized() {
     if (File(hipPath).existsSync()) {
       hip = HipWrapper.fromJson(hipPath);
     } else {
@@ -110,6 +110,20 @@ abstract mixin class DataWrapper {
       aLevel = ALevelWrapper()..saveToFile(aLevelPath);
     }
     aLevel.onDataChanged = onDataChanged;
+  }
+
+  /// Deletes all relevant user data from this.
+  ///
+  /// The method calls [ensureInitialized] afterwards to make sure, that all functions are available.
+  void deleteData() {
+    try {
+      File(hipPath).deleteSync();
+    } catch (_) {}
+    try {
+      File(aLevelPath).deleteSync();
+    } catch (_) {}
+
+    ensureInitialized();
   }
 
   /// Loads the grades/hip data. Either from the local storage or, if [AppConfig.storeGradesInCloud] is set to `true`, fetches it from the cloud.
