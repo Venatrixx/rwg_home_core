@@ -136,7 +136,7 @@ class HipWrapper {
         ),
       );
 
-      subjectsSem1.add(
+      subjectsSem2.add(
         Subject(
           name: jsonSubject['name'],
           abbr: jsonSubject['abbr'],
@@ -146,8 +146,8 @@ class HipWrapper {
       );
     }
 
-    Semester sem1 = Semester(label: "${json['level']!}.1", level: json['level'], subjects: subjectsSem1);
-    Semester sem2 = Semester(label: "${json['level']!}.2", level: json['level'], subjects: subjectsSem2);
+    Semester sem1 = Semester(label: "${json['level']!}.1", level: json['level'], subjects: List.from(subjectsSem1));
+    Semester sem2 = Semester(label: "${json['level']!}.2", level: json['level'], subjects: List.from(subjectsSem2));
 
     return HipWrapper(
       semesters: [sem1, sem2],

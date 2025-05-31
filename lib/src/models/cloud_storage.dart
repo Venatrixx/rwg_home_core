@@ -103,12 +103,16 @@ final class CloudStorage {
 
     if (res.statusCode != 200) throw CloudException.fromHttp(res);
 
-    final responseData = Map<String, String>.from(jsonDecode(res.body));
+    final responseData = Map<String, dynamic>.from(jsonDecode(res.body));
 
-    Map<String, String> fetchedData = {};
+    Map<String, dynamic> fetchedData = {};
 
     for (var entry in responseData.entries) {
-      fetchedData[entry.key] = _decryptData(entry.value, (await AppConfig.userHipConfig));
+      if (entry.value is String) {
+        fetchedData[entry.key] = _decryptData(entry.value, (await AppConfig.userHipConfig));
+      } else {
+        fetchedData[entry.key] = null;
+      }
     }
 
     return fetchedData;

@@ -343,8 +343,6 @@ abstract mixin class DataWrapper {
       return;
     }
 
-    if (loadingState == LoadingState.doneWithError) return;
-
     _loadingState = LoadingState.done;
   }
 
