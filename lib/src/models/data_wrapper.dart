@@ -297,7 +297,7 @@ abstract mixin class DataWrapper {
   }
 
   /// Calls the [HipWrapper.fetchData] function and stores the data appropriately (locally and/or in the cloud).
-  Future<void> fetchHipData() async {
+  Future<void> fetchHipData({bool hardImport = false}) async {
     error = null;
 
     _loadingState = LoadingState.loading;
@@ -311,7 +311,7 @@ abstract mixin class DataWrapper {
     }
 
     try {
-      await hip.fetchData(rethrowErrors: true);
+      await hip.fetchData(rethrowErrors: true, hardImport: hardImport);
     } catch (e) {
       error = e;
       try {
