@@ -242,14 +242,14 @@ abstract mixin class DataWrapper {
           return;
         }
       }
-    } else {
-      try {
-        hip.saveToFile(hipPath);
-      } catch (e) {
-        error = e;
-        _loadingState = LoadingState.error;
-        return;
-      }
+    }
+
+    try {
+      hip.saveToFile(hipPath);
+    } catch (e) {
+      error = e;
+      _loadingState = LoadingState.error;
+      return;
     }
 
     if (AppConfig.storeWizardInCloud) {
@@ -267,14 +267,13 @@ abstract mixin class DataWrapper {
           return;
         }
       }
-    } else {
-      try {
-        aLevel.saveToFile(aLevelPath);
-      } catch (e) {
-        error = e;
-        _loadingState = LoadingState.error;
-        return;
-      }
+    }
+    try {
+      aLevel.saveToFile(aLevelPath);
+    } catch (e) {
+      error = e;
+      _loadingState = LoadingState.error;
+      return;
     }
 
     _loadingState = LoadingState.done;
@@ -292,9 +291,9 @@ abstract mixin class DataWrapper {
         _loadingState = LoadingState.doneWithError;
         return;
       }
-    } else {
-      hip.saveToFile(hipPath);
     }
+
+    hip.saveToFile(hipPath);
 
     if (AppConfig.storeWizardInCloud) {
       try {
@@ -305,9 +304,9 @@ abstract mixin class DataWrapper {
         _loadingState = LoadingState.doneWithError;
         return;
       }
-    } else {
-      aLevel.saveToFile(aLevelPath);
     }
+
+    aLevel.saveToFile(aLevelPath);
   }
 
   /// Calls the [HipWrapper.fetchData] function and stores the data appropriately (locally and/or in the cloud).
