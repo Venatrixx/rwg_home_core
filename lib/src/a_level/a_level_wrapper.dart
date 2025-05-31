@@ -23,10 +23,10 @@ class ALevelWrapper {
   }
 
   ALevelWrapper.fromJson(dynamic json)
-    : advancedSubjects = json['advancedSubjects'],
+    : advancedSubjects = List<String>.from(json['advancedSubjects'] ?? []),
       writtenExamSubject = json['writtenExamSubject'],
-      oralExamSubjects = json['oralExamSubjects'],
-      hiddenSubjects = json['hiddenSubjects'],
+      oralExamSubjects = List<String>.from(json['oralExamSubjects'] ?? []),
+      hiddenSubjects = List<String>.from(json['hiddenSubjects'] ?? []),
       subjects = [for (final elem in json['subjects']) AbstractSubject.fromJson(elem)],
       unknownSubjects = [for (final elem in json['unknownSubjects']) AbstractSubject.fromJson(elem)];
 

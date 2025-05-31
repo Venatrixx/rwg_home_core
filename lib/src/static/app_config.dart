@@ -198,14 +198,14 @@ final class AppConfig {
       level = data['level'];
       userClass = data['userClass'];
 
-      lessonIds = data['lessonIds'] ?? [];
-      activeLessonIds = data['activeLessonIds'] ?? [];
+      lessonIds = List<String>.from(data['lessonIds'] ?? []);
+      activeLessonIds = List<String>.from(data['activeLessonIds'] ?? []);
 
       storeGradesInCloud = data['storeGradesInCloud'];
       storeSettingsInCloud = data['storeSettingsInCloud'];
       storeWizardInCloud = data['storeWizardInCloud'];
 
-      holidayStrings = data['holidayStrings'] ?? [];
+      holidayStrings = List<String>.from(data['holidayStrings'] ?? []);
 
       if (hasError) return LoadingState.doneWithError;
       return LoadingState.done;
@@ -281,7 +281,9 @@ final class AppConfig {
 
   static Future<bool> verifyCredentials() async {
     final client = HipClient(await userHipConfig);
-    return await client.verify().timeout(shortTimeoutDuration);
+    final isValid = await client.verify().timeout(shortTimeoutDuration);
+    await generateUserId();
+    return isValid;
   }
 
   /// Changes the [userId] and saves the config file.
