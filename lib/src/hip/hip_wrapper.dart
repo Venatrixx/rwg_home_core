@@ -151,10 +151,10 @@ class HipWrapper {
 
     return HipWrapper(
       semesters: [sem1, sem2],
-      totalMissingDays: json['totalMissingDays'],
-      totalUnexcusedMissingDays: json['totalUnexcusedMissingDays'],
-      totalMissingHours: json['totalMissingHours'],
-      totalUnexcusedMissingHours: json['totalUnexcusedMissingHours'],
+      totalMissingDays: int.tryParse(json['totalMissingDays']),
+      totalUnexcusedMissingDays: int.tryParse(json['totalUnexcusedMissingDays']),
+      totalMissingHours: int.tryParse(json['totalMissingHours']),
+      totalUnexcusedMissingHours: int.tryParse(json['totalUnexcusedMissingHours']),
       missingHourData: [
         for (final day in json['missingDays'] ?? []) MissingHour.dayFromJson(day),
         for (final hour in json['missingHours'] ?? []) MissingHour.hourFromJson(hour),
