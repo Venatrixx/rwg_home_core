@@ -7,4 +7,7 @@ class CloudException {
   CloudException([String? message]) : description = message;
 
   CloudException.fromHttp(Response response) : description = "(${response.statusCode}) ${response.body}";
+
+  @override
+  String toString() => "CloudError: $description";
 }
