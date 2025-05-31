@@ -125,7 +125,7 @@ class Grade {
   /// A description provided by the teacher on Home.InfoPoint.
   ///
   /// See [userDescription] to set a custom description.
-  late final String? description;
+  String? description;
 
   /// A custom description set by the user.
   String? userDescription;
@@ -133,7 +133,7 @@ class Grade {
   /// If the grade shall be excluded from calculations.
   bool ghost = false;
 
-  Grade(this.key);
+  Grade(this.key) : description = null;
 
   /// Takes a string representation of the grade in decimal grade system. Can handle appendages (either "+" or "-").
   Grade.fromStringValue({
