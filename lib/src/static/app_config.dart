@@ -156,7 +156,8 @@ final class AppConfig {
       return LoadingState.error;
     }
     hasCredentials =
-        await _secureStorage.read(key: 'username') != null && await _secureStorage.read(key: 'password') != null;
+        ![null, ""].contains((await _secureStorage.read(key: 'username'))?.trim()) &&
+        ![null, ""].contains((await _secureStorage.read(key: 'password'))?.trim());
     final status = loadConfigFileSync();
     await generateUserId();
     return status;
@@ -265,19 +266,21 @@ final class AppConfig {
     if (username != null) {
       if (username.trim() != "") {
         await _secureStorage.write(key: 'username', value: username);
+        hasCredentials = true;
       } else {
         await _secureStorage.write(key: 'username', value: null);
+        hasCredentials = false;
       }
-      hasCredentials = true;
     }
 
     if (password != null) {
       if (password.trim() != "") {
         await _secureStorage.write(key: 'password', value: password);
+        hasCredentials = true;
       } else {
         await _secureStorage.write(key: 'password', value: password);
+        hasCredentials = false;
       }
-      hasCredentials = true;
     }
   }
 
