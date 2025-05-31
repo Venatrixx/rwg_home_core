@@ -52,7 +52,10 @@ class HipWrapper {
 
   /// Returns the index of the last element of [semesters] where [Semester.hasData] is `true`.
   int get currentSemesterIndex {
-    int index = semesters.lastIndexWhere((semester) => semester.hasData);
+    int index = semesters
+        .where((element) => element.level == AppConfig.level)
+        .toList()
+        .lastIndexWhere((semester) => semester.hasData);
     if (index < 0) return 0;
     return index;
   }
@@ -192,13 +195,71 @@ class HipWrapper {
     return;
   }
 
+  /// Returns a list of all subject abbreviations.
+  List<String> get getSubjectAbbr {
+    if (semesters.isEmpty) return [];
+    List<String> r = [];
+    for (final sem in semesters) {
+      for (final sub in sem.subjects) {
+        r.add(sub.abbr.toLowerCase());
+      }
+    }
+    r = [
+      ...{...r},
+    ];
+    if (r.isEmpty) return [];
+    return r;
+  }
+
+  /// Initializes the semesters based on the current [AppConfig.level].
+  Future<void> initializeSemesters() async {
+    error = null;
+
+    _loadingState = LoadingState.loading;
+
+    final client = HipClient(await AppConfig.userHipConfig);
+
+    try {
+      await client.fetch();
+    } catch (e) {
+      error = e;
+      _loadingState = LoadingState.error;
+      rethrow;
+    }
+
+    final rawData = await client.asJson();
+
+    AppConfig.setLevel(rawData['level']);
+    AppConfig.setUserClass(rawData['class']);
+
+    final newData = HipWrapper.fromHipJson(rawData);
+
+    final subjects = [...?newData.semesters.firstOrNull?.cloneStructure().subjects];
+
+    if (AppConfig.isSek1) {
+      semesters = [
+        Semester(label: "${AppConfig.level}.1", level: AppConfig.level, subjects: subjects),
+        Semester(label: "${AppConfig.level}.2", level: AppConfig.level, subjects: subjects),
+      ];
+    } else {
+      semesters = [
+        Semester(label: "11.1", level: 11, subjects: subjects),
+        Semester(label: "11.2", level: 11, subjects: subjects),
+        Semester(label: "12.1", level: 12, subjects: subjects),
+        Semester(label: "12.2", level: 12, subjects: subjects),
+      ];
+    }
+
+    _loadingState = LoadingState.done;
+  }
+
   /// Call this function to fetch new data from Home.InfoPoint.
   ///
   /// It is **important** to call this function via [DataWrapper.fetchHipData],
   /// as this will ensure that the data is stored properly.
   ///
   /// Calls [onLoadingStateChanged] if provided.
-  Future<void> fetchData({bool rethrowErrors = false}) async {
+  Future<void> fetchData({bool hardImport = false, bool rethrowErrors = false}) async {
     loadingState = LoadingState.loading;
 
     try {
@@ -213,7 +274,13 @@ class HipWrapper {
 
       final newData = HipWrapper.fromHipJson(rawData);
 
-      addDataFromWrapper(newData);
+      if (hardImport) {
+        semesters.removeWhere((element) => element.level = rawData['level']);
+        semesters.addAll(newData.semesters);
+        semesters.sort((a, b) => a.label.compareTo(b.label));
+      } else {
+        addDataFromWrapper(newData);
+      }
     } catch (e) {
       error = e;
       loadingState = LoadingState.error;
@@ -242,16 +309,30 @@ class HipWrapper {
 
     for (final newSemester in wrapper.semesters) {
       try {
-        Semester refSemester;
-        refSemester = semesters.firstWhere((element) => element.label == newSemester.label);
+        Semester refSemester = semesters.firstWhere((element) => element.label == newSemester.label);
         final changed = refSemester.addDataFromSemester(newSemester);
         changedGrades.addAll(changed);
       } on StateError {
-        semesters.add(newSemester);
+        // do nothing
       }
     }
 
     this.changedGrades = changedGrades;
+
+    onLoadingStateChanged?.call(LoadingState.done);
+  }
+
+  /// Creates empty subject structures for all semesters with no structure.
+  ///
+  /// Throws [StateError] if there is no semester with an existing structure.
+  void updateSubjectsStructure() {
+    Semester refSemester = semesters[currentSemesterIndex].cloneStructure();
+
+    for (var semester in semesters) {
+      semester.addDataFromSemester(refSemester, keepFinalGrades: true);
+    }
+
+    onLoadingStateChanged?.call(LoadingState.done);
   }
 
   /// Add a [Grade] to the given [Subject].
@@ -259,6 +340,14 @@ class HipWrapper {
   /// Calls [onLoadingStateChanged] if given.
   void addGrade(Grade grade, Subject subject) {
     subject.customGrades.add(grade);
+    onLoadingStateChanged?.call(LoadingState.done);
+  }
+
+  /// Delete [Grade] from the given [Subject].
+  ///
+  /// Only deletes from [Subject.customGrades].
+  void deleteGrade(Grade grade, Subject subject) {
+    subject.removeGrade(grade);
     onLoadingStateChanged?.call(LoadingState.done);
   }
 }
