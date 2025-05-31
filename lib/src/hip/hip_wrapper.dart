@@ -350,4 +350,21 @@ class HipWrapper {
     subject.removeGrade(grade);
     onLoadingStateChanged?.call(LoadingState.done);
   }
+
+  /// Sets all grades seen for all [semesters] after a delays of 3 seconds.
+  Future<void> setAllGradesSeen() async {
+    await Future.delayed(const Duration(seconds: 3));
+    for (final semester in semesters) {
+      semester.setAllGradesSeenSync();
+    }
+    onLoadingStateChanged?.call(LoadingState.done);
+  }
+
+  /// Sets all grades seen for all [semesters] instantly.
+  void setAllGradesSeenSync() {
+    for (final semester in semesters) {
+      semester.setAllGradesSeenSync();
+    }
+    onLoadingStateChanged?.call(LoadingState.done);
+  }
 }
