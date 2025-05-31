@@ -92,11 +92,11 @@ class HipWrapper {
     List<Subject> subjectsSem1 = [];
     List<Subject> subjectsSem2 = [];
 
-    for (final jsonSubject in json['subjects']! as List<Map>) {
+    for (final jsonSubject in json['subjects']! as List) {
       List<Grade> gradesSem1 = [];
       List<Grade> gradesSem2 = [];
 
-      for (final jsonGrade in (jsonSubject['grades']! as List<Map>).indexed) {
+      for (final jsonGrade in (jsonSubject['grades']! as List).indexed) {
         Grade grade;
         if (AppConfig.isSek1) {
           grade = Grade.fromStringValue(
