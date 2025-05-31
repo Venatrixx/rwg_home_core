@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:rwg_home_core/src/a_level/a_level_wrapper.dart';
 import 'package:rwg_home_core/src/calendar/calendar_wrapper.dart';
 import 'package:rwg_home_core/src/hip/hip_wrapper.dart';
 import 'package:rwg_home_core/src/models/cloud_storage.dart';
@@ -11,25 +14,25 @@ abstract mixin class DataWrapper {
   /// Could be used with notifyListeners().
   ///
   /// See [onLoadingStateChanged] if you want to respond to changes of the current loading state.
-  void Function()? onDataChanged;
+  void onDataChanged();
 
   /// A function that gets called every time [loadingState] changes.
-  void Function(LoadingState, [Object?])? onLoadingStateChanged;
+  void onLoadingStateChanged(LoadingState newState, [Object? error]);
 
   /// Get called every time the [HipWrapper.loadingState] changes.
   ///
   /// `Object?` may be a reference to an error, if one happened.
-  void Function(LoadingState, [Object?])? onHipLoadingStateChanged;
+  void onHipLoadingStateChanged(LoadingState newState, [Object? error]);
 
   /// Get called every time the [ScheduleWrapper.loadingState] changes.
   ///
   /// `Object?` may be a reference to an error, if one happened.
-  void Function(LoadingState, [Object?])? onScheduleLoadingStateChanged;
+  void onScheduleLoadingStateChanged(LoadingState newState, [Object? error]);
 
   /// Get called every time the [CalendarWrapper.loadingState] changes.
   ///
   /// `Object?` may be a reference to an error, if one happened.
-  void Function(LoadingState, [Object?])? onCalendarLoadingStateChanged;
+  void onCalendarLoadingStateChanged(LoadingState newState, [Object? error]);
 
   /// Override this function with a custom implementation that returns the appropriate exam weight for the given level and number of exams.
   ///
@@ -51,7 +54,7 @@ abstract mixin class DataWrapper {
   set _loadingState(LoadingState value) {
     __loadingState = value;
     if (value == LoadingState.done) error = null;
-    onLoadingStateChanged?.call(value, error);
+    onLoadingStateChanged.call(value, error);
   }
 
   /// Latest error thrown by a loading, saving or fetching process.
@@ -77,6 +80,12 @@ abstract mixin class DataWrapper {
   /// See [CalendarWrapper] for more information.
   late CalendarWrapper calendar;
 
+  /// A-Level configuration and data.
+  late ALevelWrapper aLevel;
+
+  /// Path to the a_level_config.json file, where the data of this class is stored.
+  String get aLevelPath => "${AppConfig.documentsDir}/a_level_config.json";
+
   /// Returns a combined list of [HipWrapper.missingHourEvents] and [CalendarWrapper.allCalendarEvents].
   ///
   /// [allEvents] contains missing hours, holidays and bulletins.
@@ -85,12 +94,22 @@ abstract mixin class DataWrapper {
 
   /// Ensures that the data wrapper is initialized correctly.
   Future<void> ensureInitialized() async {
-    hip = HipWrapper.fromJson(hipPath);
+    if (File(hipPath).existsSync()) {
+      hip = HipWrapper.fromJson(hipPath);
+    } else {
+      hip = HipWrapper()..saveToFile(hipPath);
+    }
     hip.onLoadingStateChanged = onHipLoadingStateChanged;
     schedule = ScheduleWrapper();
     schedule.onLoadingStateChanged = onScheduleLoadingStateChanged;
     calendar = CalendarWrapper();
     calendar.onLoadingStateChanged = onCalendarLoadingStateChanged;
+    if (File(aLevelPath).existsSync()) {
+      aLevel = ALevelWrapper.fromJsonFile(aLevelPath);
+    } else {
+      aLevel = ALevelWrapper()..saveToFile(aLevelPath);
+    }
+    aLevel.onDataChanged = onDataChanged;
   }
 
   /// Loads the grades/hip data. Either from the local storage or, if [AppConfig.storeGradesInCloud] is set to `true`, fetches it from the cloud.
@@ -127,6 +146,32 @@ abstract mixin class DataWrapper {
       }
     }
 
+    if (AppConfig.storeWizardInCloud) {
+      try {
+        final onlineData = await CloudStorage.downloadWizardDataFromCloud();
+        aLevel = ALevelWrapper.fromJson(onlineData);
+      } catch (cloudError) {
+        try {
+          aLevel = ALevelWrapper.fromJsonFile(aLevelPath);
+          error = cloudError;
+          _loadingState = LoadingState.doneWithError;
+          return;
+        } catch (localError) {
+          error = localError;
+          _loadingState = LoadingState.error;
+          return;
+        }
+      }
+    } else {
+      try {
+        aLevel = ALevelWrapper.fromJsonFile(aLevelPath);
+      } catch (e) {
+        error = e;
+        _loadingState = LoadingState.error;
+        return;
+      }
+    }
+
     _loadingState = LoadingState.done;
     return;
   }
@@ -145,6 +190,20 @@ abstract mixin class DataWrapper {
       }
     } else {
       hip = HipWrapper.fromJsonFile(hipPath);
+    }
+
+    if (AppConfig.storeWizardInCloud) {
+      try {
+        final onlineData = await CloudStorage.downloadWizardDataFromCloud();
+        aLevel = ALevelWrapper.fromJson(onlineData);
+      } catch (cloudError) {
+        aLevel = ALevelWrapper.fromJsonFile(aLevelPath);
+        error = cloudError;
+        _loadingState = LoadingState.doneWithError;
+        return;
+      }
+    } else {
+      aLevel = ALevelWrapper.fromJsonFile(aLevelPath);
     }
   }
 
@@ -179,6 +238,31 @@ abstract mixin class DataWrapper {
       }
     }
 
+    if (AppConfig.storeWizardInCloud) {
+      try {
+        await CloudStorage.uploadWizardDataToCloud(aLevel.toJson());
+      } catch (cloudError) {
+        try {
+          aLevel.saveToFile(aLevelPath);
+          error = cloudError;
+          _loadingState = LoadingState.doneWithError;
+          return;
+        } catch (localError) {
+          error = localError;
+          _loadingState = LoadingState.error;
+          return;
+        }
+      }
+    } else {
+      try {
+        aLevel.saveToFile(aLevelPath);
+      } catch (e) {
+        error = e;
+        _loadingState = LoadingState.error;
+        return;
+      }
+    }
+
     _loadingState = LoadingState.done;
     return;
   }
@@ -196,6 +280,19 @@ abstract mixin class DataWrapper {
       }
     } else {
       hip.saveToFile(hipPath);
+    }
+
+    if (AppConfig.storeWizardInCloud) {
+      try {
+        await CloudStorage.uploadWizardDataToCloud(aLevel.toJson());
+      } catch (cloudError) {
+        aLevel.saveToFile(aLevelPath);
+        error = cloudError;
+        _loadingState = LoadingState.doneWithError;
+        return;
+      }
+    } else {
+      aLevel.saveToFile(aLevelPath);
     }
   }
 
@@ -292,7 +389,7 @@ abstract mixin class DataWrapper {
           _loadingState = LoadingState.error;
           return;
         }
-        onDataChanged?.call();
+        onDataChanged.call();
         _loadingState = LoadingState.doneWithError;
         return;
       }
@@ -306,7 +403,7 @@ abstract mixin class DataWrapper {
       return;
     }
 
-    onDataChanged?.call();
+    onDataChanged.call();
 
     _loadingState = LoadingState.done;
     return;

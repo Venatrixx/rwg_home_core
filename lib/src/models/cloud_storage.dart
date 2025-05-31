@@ -160,7 +160,7 @@ final class CloudStorage {
     if (AppConfig.storeWizardInCloud) await _uploadDataToCloud(wizard: data);
   }
 
-  static Future<dynamic> downloadWizardDataTFromCloud() async {
+  static Future<dynamic> downloadWizardDataFromCloud() async {
     return (await _fetchCloudData())['wizard_data'];
   }
 }

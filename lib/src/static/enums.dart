@@ -38,3 +38,14 @@ enum EventType {
   const EventType([this.text]);
   final String? text;
 }
+
+enum TaskStatus {
+  unknown(false),
+  error(false, false),
+  completeWithError(true, true),
+  complete(true, true);
+
+  const TaskStatus(this.allowContinue, [this.successful]);
+  final bool allowContinue;
+  final bool? successful;
+}

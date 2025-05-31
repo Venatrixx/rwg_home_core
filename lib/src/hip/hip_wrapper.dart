@@ -163,13 +163,7 @@ class HipWrapper {
   factory HipWrapper.fromJsonFile(String path) {
     final json = jsonDecode(File(path).readAsStringSync());
 
-    return HipWrapper(
-      semesters: [for (final elem in json['semesters'] ?? []) Semester.fromJson(elem)],
-      totalMissingDays: json['totalMissingDays'],
-      totalUnexcusedMissingDays: json['totalUnexcusedMissingDays'],
-      totalMissingHours: json['totalMissingHours'],
-      totalUnexcusedMissingHours: json['totalUnexcusedMissingHours'],
-    );
+    return HipWrapper.fromJson(json);
   }
 
   HipWrapper.fromJson(dynamic json)

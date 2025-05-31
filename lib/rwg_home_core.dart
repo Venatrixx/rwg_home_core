@@ -11,11 +11,13 @@ export 'src/schedule/schedule_wrapper.dart';
 export 'src/schedule/vp_wrapper.dart';
 export 'src/calendar/calendar_wrapper.dart';
 
+export 'src/a_level/a_level_wrapper.dart';
+export 'src/a_level/catalogs/validation_catalog.dart';
+
 export 'src/constants.dart';
 export 'src/extensions.dart';
 
-export 'src/functions/services.dart' show fetchServicesStatus;
-
+export 'src/functions/services.dart';
 export 'src/functions/util_functions.dart';
 
 export 'src/errors/holiday_error.dart';

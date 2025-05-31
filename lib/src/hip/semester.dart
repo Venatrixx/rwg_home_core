@@ -113,6 +113,9 @@ class Semester {
             .addGradesFromSubject(subject, keepFinalGrades: keepFinalGrades),
       );
     }
+
+    lastUpdate = DateTime.now();
+
     return changedGrades;
   }
 
@@ -123,6 +126,64 @@ class Semester {
     } else {
       subjects.clear();
     }
+  }
+
+  /// The average of all subjects of this semester.
+  ///
+  /// Function **does not** round values internally.
+  double getExactAvg(DataWrapper data) {
+    double sum = 0;
+    int index = 0;
+
+    for (final subject in subjects) {
+      if (data.aLevel.hiddenSubjects.contains(subject.abbr.toLowerCase())) continue;
+      double average = subject.getTotalAvg(data.calculateExamWeight);
+      if (average.isNaN) continue;
+      sum += average;
+      index++;
+    }
+
+    return sum / index;
+  }
+
+  /// Function rounds subjects average to the closest integer, or uses final semester grade if available, and uses this value to calculate the total average.
+  double getRoundedAvg(DataWrapper data) {
+    double sum = 0;
+    int index = 0;
+
+    for (final subject in subjects) {
+      if (data.aLevel.hiddenSubjects.contains(subject.abbr.toLowerCase())) continue;
+      double average = subject.getTotalAvg(data.calculateExamWeight);
+      if (average.isNaN) continue;
+      sum += average.roundToDouble();
+      index++;
+    }
+
+    return sum / index;
+  }
+
+  /// Average of all grades in this semester with equal weighing for all grades.
+  double getBalancedAvg(DataWrapper data) {
+    double sum = 0;
+    int index = 0;
+
+    for (final subject in subjects) {
+      if (data.aLevel.hiddenSubjects.contains(subject.abbr.toLowerCase())) continue;
+      for (final grade in subject.onlineGrades) {
+        if (!grade.isEmpty && !grade.ghost) {
+          sum += grade.gradeValue!;
+          index++;
+        }
+      }
+      for (final grade in subject.customGrades) {
+        if (!grade.isEmpty && !grade.ghost) {
+          sum += grade.gradeValue!;
+          index++;
+        }
+      }
+    }
+
+    return sum / index;
   }
 
   @override
