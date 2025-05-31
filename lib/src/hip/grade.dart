@@ -202,7 +202,8 @@ class Grade {
     pointsValue = json['points'];
     description = json['description'];
     userDescription = json['userDescription'];
-    if (json['uploadDate'] != null) uploadDate = DateTime.fromMillisecondsSinceEpoch(json['date']);
+    if (json['uploadDate'] != null) uploadDate = DateTime.fromMillisecondsSinceEpoch(json['uploadDate']);
+    if (json['dateOfWriting'] != null) dateOfWriting = DateTime.fromMillisecondsSinceEpoch(json['dateOfWriting']);
     ghost = json['ghost'];
     seen = json['seen'];
     isExam = json['isExam'];
@@ -229,6 +230,7 @@ class Grade {
       'description': description,
       'userDescription': userDescription,
       'uploadDate': uploadDate?.millisecondsSinceEpoch,
+      'dateOfWriting': dateOfWriting?.microsecondsSinceEpoch,
       'ghost': ghost,
       'seen': seen,
       'isExam': isExam,
