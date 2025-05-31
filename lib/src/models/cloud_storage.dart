@@ -34,7 +34,7 @@ final class CloudStorage {
 
     final date = DateTime.fromMillisecondsSinceEpoch(int.parse(dateString)).add(const Duration(days: 3 * 365));
 
-    return (false, "(200) Daten verfügbar bis ${DateFormat('dd.MM.yyyy').format(date)}.");
+    return (true, "(200) Daten verfügbar bis ${DateFormat('dd.MM.yyyy').format(date)}.");
   }
 
   /// Registers a new user in the cloud.
