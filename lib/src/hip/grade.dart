@@ -230,7 +230,7 @@ class Grade {
       'description': description,
       'userDescription': userDescription,
       'uploadDate': uploadDate?.millisecondsSinceEpoch,
-      'dateOfWriting': dateOfWriting?.microsecondsSinceEpoch,
+      'dateOfWriting': dateOfWriting?.millisecondsSinceEpoch,
       'ghost': ghost,
       'seen': seen,
       'isExam': isExam,
