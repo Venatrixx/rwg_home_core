@@ -28,7 +28,8 @@ class ALevelWrapper {
       oralExamSubjects = List<String>.from(json['oralExamSubjects'] ?? []),
       hiddenSubjects = List<String>.from(json['hiddenSubjects'] ?? []),
       subjects = [for (final elem in json['subjects']) AbstractSubject.fromJson(elem)],
-      unknownSubjects = [for (final elem in json['unknownSubjects']) AbstractSubject.fromJson(elem)];
+      unknownSubjects = [for (final elem in json['unknownSubjects']) AbstractSubject.fromJson(elem)],
+      chooseOptimal = json['chooseOptimal'] ?? false;
 
   Map toJson() => {
     'advancedSubjects': advancedSubjects,
@@ -37,6 +38,7 @@ class ALevelWrapper {
     'hiddenSubjects': hiddenSubjects,
     'subjects': [for (final subject in subjects) subject.toJson()],
     'unknownSubjects': [for (final subject in unknownSubjects) subject.toJson()],
+    'chooseOptimal': chooseOptimal,
   };
 
   void saveToFile(String path) {
