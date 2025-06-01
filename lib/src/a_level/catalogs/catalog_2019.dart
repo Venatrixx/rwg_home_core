@@ -60,7 +60,7 @@ List<ValidationTest> standardTests = [
     test: (config) {
       if (config.writtenExamSubject == null) {
         return ["Prüfungsfach 3 nicht belegt."];
-      } else if (!['ma', 'de', 'en', 'ge', ...config.mintSubjects, 'la'].contains(config.writtenExamSubject)) {
+      } else if (!['ma', 'de', 'en', 'ge', ...config.mintSubjectsAbbr, 'la'].contains(config.writtenExamSubject)) {
         return [
           "Prüfungsfach 3 muss entweder Mathe, Deutsch, Englisch, Latein, Geschichte oder ein anderes naturwissenschaftliches Fach sein.",
         ];
@@ -310,7 +310,7 @@ List<ValidationTest<TaskStatus>> examSubjectsTests = [
     test: (config) {
       if (config.writtenExamSubject == null) return TaskStatus.unknown;
       if (["ma", "de", "en", "ge", "la"].contains(config.writtenExamSubject) ||
-          config.mintSubjectsStrings.contains(config.writtenExamSubject)) {
+          config.mintSubjectsAbbr.contains(config.writtenExamSubject)) {
         return TaskStatus.complete;
       }
       return TaskStatus.error;
@@ -321,7 +321,7 @@ List<ValidationTest<TaskStatus>> examSubjectsTests = [
     description: "Fortgeführte Fremdsprache oder MINT-Fach (außer Ma) als Prüfungsfach",
     test: (config) {
       if (config.allExamSubjects.any(
-        (s) => ["en", "franz", "la", "span"].contains(s) || (config.mintSubjectsStrings..remove("ma")).contains(s),
+        (s) => ["en", "franz", "la", "span"].contains(s) || (config.mintSubjectsAbbr..remove("ma")).contains(s),
       )) {
         return TaskStatus.complete;
       }

@@ -119,9 +119,8 @@ class ALevelWrapper {
   /// All [AbstractSubject] elements from [subjects] where [AbstractSubject.kind] is set to `mint` (science and math).
   List<AbstractSubject> get mintSubjects => subjects.where((s) => s.kind == "mint").toList();
 
-  /// List of the actual names of the [mintSubjects].
-  List<String> get mintSubjectsStrings =>
-      List<String>.generate(mintSubjects.length, (index) => mintSubjects[index].abbr);
+  /// List of the abbreviations of the [mintSubjects].
+  List<String> get mintSubjectsAbbr => List<String>.generate(mintSubjects.length, (index) => mintSubjects[index].abbr);
 
   bool get isValid => errors.isEmpty;
   bool get isNotValid => !isValid;
