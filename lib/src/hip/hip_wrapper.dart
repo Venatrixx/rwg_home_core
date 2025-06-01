@@ -39,7 +39,9 @@ class HipWrapper {
     List<Event> response = [];
     for (final element in missingHourData!) {
       if (element.date == null) continue;
-      Event.missingDay(element.date!, time: element.lessons, comment: element.comment, triState: element.excused);
+      response.add(
+        Event.missingDay(element.date!, time: element.lessons, comment: element.comment, triState: element.excused),
+      );
     }
     return response;
   }
