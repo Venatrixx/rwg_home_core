@@ -202,9 +202,9 @@ class Subject {
       }
     }
 
-    onlineGrades = newOnlineGrades;
+    onlineGrades = List.from(newOnlineGrades);
 
-    customGrades = other.customGrades;
+    customGrades = List.from(other.customGrades);
 
     return changedGrades;
   }

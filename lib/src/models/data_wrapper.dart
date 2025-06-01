@@ -137,7 +137,7 @@ abstract mixin class DataWrapper {
     if (AppConfig.storeGradesInCloud) {
       try {
         final onlineData = await CloudStorage.downloadHipDataFromCloud();
-        hip = HipWrapper.fromJson(onlineData)..onLoadingStateChanged = onLoadingStateChanged;
+        hip = HipWrapper.fromJson(onlineData)..onLoadingStateChanged = onHipLoadingStateChanged;
       } catch (cloudError) {
         error = cloudError;
         _loadingState = LoadingState.error;
@@ -145,7 +145,7 @@ abstract mixin class DataWrapper {
       }
     } else {
       try {
-        hip = HipWrapper.fromJsonFile(hipPath)..onLoadingStateChanged = onLoadingStateChanged;
+        hip = HipWrapper.fromJsonFile(hipPath)..onLoadingStateChanged = onHipLoadingStateChanged;
       } catch (e) {
         error = e;
         _loadingState = LoadingState.error;
@@ -180,9 +180,9 @@ abstract mixin class DataWrapper {
   Future<void> _loadData() async {
     if (AppConfig.storeGradesInCloud) {
       final onlineData = await CloudStorage.downloadHipDataFromCloud();
-      hip = HipWrapper.fromJson(onlineData)..onLoadingStateChanged = onLoadingStateChanged;
+      hip = HipWrapper.fromJson(onlineData)..onLoadingStateChanged = onHipLoadingStateChanged;
     } else {
-      hip = HipWrapper.fromJsonFile(hipPath)..onLoadingStateChanged = onLoadingStateChanged;
+      hip = HipWrapper.fromJsonFile(hipPath)..onLoadingStateChanged = onHipLoadingStateChanged;
     }
 
     if (AppConfig.storeWizardInCloud) {

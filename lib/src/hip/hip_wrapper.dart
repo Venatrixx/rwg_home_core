@@ -131,7 +131,7 @@ class HipWrapper {
         Subject(
           name: jsonSubject['name'],
           abbr: jsonSubject['abbr'],
-          onlineGrades: gradesSem1,
+          onlineGrades: List.from(gradesSem1),
           finalSemesterGrade: int.tryParse(jsonSubject['finalGradeSem1']),
         ),
       );
@@ -140,7 +140,7 @@ class HipWrapper {
         Subject(
           name: jsonSubject['name'],
           abbr: jsonSubject['abbr'],
-          onlineGrades: gradesSem2,
+          onlineGrades: List.from(gradesSem2),
           finalSemesterGrade: int.tryParse(jsonSubject['finalGradeSem2']),
         ),
       );
