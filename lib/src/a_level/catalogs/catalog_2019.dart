@@ -396,12 +396,22 @@ void chooseOptimal(ALevelWrapper config) {
 
   // fill remaining
   var remaining = 44 - config.activeGradesCount;
-  List<AbstractFinalGrade> availableGrades =
-      [for (final sub in config.subjects) ...sub.finalGradesFilled.where((t) => !t.active)]
-        ..sort((a, b) => a.compareToWithAveraged(b))
-        ..sort((a, b) => b.compareTo(a));
+
+  List<(AbstractSubject, AbstractFinalGrade)> availableGrades = [];
+
+  for (final subject in config.subjects) {
+    for (final grade in subject.finalGradesFilled) {
+      if (grade.active) continue;
+      availableGrades.add((subject, grade));
+    }
+  }
+
+  availableGrades
+    ..sort((a, b) => a.$2.compareToWithAveraged(b.$2))
+    ..sort((a, b) => b.$2.compareTo(a.$2));
+
   for (int i = 0; i < remaining; i++) {
     if (i >= availableGrades.length) break;
-    availableGrades[i].active = true;
+    availableGrades[i].$1.finalGrades[availableGrades[i].$2.index].active = true;
   }
 }
