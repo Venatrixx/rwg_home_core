@@ -179,9 +179,9 @@ class Subject {
 
   /// Takes another [Subject] and adds additional data to `this`.
   ///
-  /// For new grades, [Grade.seen] is set to `true`.
+  /// For new grades, [Grade.seen] is set to `false`.
   ///
-  /// Returns a list of [SpecialGrade] with online grades, that have changed.
+  /// Returns a list of [SpecialGrade] with online grades that have changed.
   /// [customGrades] are overwritten.
   List<SpecialGrade> addGradesFromSubject(Subject other, {bool keepFinalGrades = false}) {
     if (!keepFinalGrades) finalSemesterGrade = other.finalSemesterGrade;
@@ -193,11 +193,19 @@ class Subject {
       if (onlineGrades.contains(grade) && !grade.similarTo(onlineGrades.firstWhere((element) => element == grade))) {
         changedGrades.add(SpecialGrade(primary: grade, parentSubject: this));
       }
+      // set the grade to seen, if it already exists
+      if (onlineGrades.contains(grade)) {
+        grade.seen = true;
+      }
     }
-
     onlineGrades = List.from(other.onlineGrades);
 
-    customGrades = List.from(other.customGrades);
+    for (final grade in other.customGrades) {
+      if (!customGrades.contains(grade)) {
+        customGrades.add(grade);
+      }
+    }
+    customGrades = List.from(customGrades);
 
     return changedGrades;
   }
