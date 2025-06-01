@@ -188,21 +188,14 @@ class Subject {
 
     List<SpecialGrade> changedGrades = [];
 
-    List<Grade> newOnlineGrades = [];
-
     for (final grade in other.onlineGrades) {
       // check whether the grade value has changed or not
       if (onlineGrades.contains(grade) && !grade.similarTo(onlineGrades.firstWhere((element) => element == grade))) {
-        newOnlineGrades.add(grade);
         changedGrades.add(SpecialGrade(primary: grade, parentSubject: this));
-      }
-      // add the grade if its not already present
-      else if (!onlineGrades.contains(grade)) {
-        newOnlineGrades.add(grade);
       }
     }
 
-    onlineGrades = List.from(newOnlineGrades);
+    onlineGrades = List.from(other.onlineGrades);
 
     customGrades = List.from(other.customGrades);
 

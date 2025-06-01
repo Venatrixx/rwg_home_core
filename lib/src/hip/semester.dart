@@ -97,7 +97,7 @@ class Semester {
   ///
   /// Returns a list of [SpecialGrade] with online grades, that have changed.
   List<SpecialGrade> addDataFromSemester(Semester other, {bool keepFinalGrades = false}) {
-    if (locked) throw LockedError();
+    if (locked) return [];
 
     List<SpecialGrade> changedGrades = [];
     for (final subject in other.subjects) {
