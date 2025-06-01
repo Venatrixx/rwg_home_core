@@ -137,7 +137,7 @@ abstract mixin class DataWrapper {
     if (AppConfig.storeGradesInCloud) {
       try {
         final onlineData = await CloudStorage.downloadHipDataFromCloud();
-        hip = HipWrapper.fromJson(onlineData);
+        hip = HipWrapper.fromJson(onlineData)..onLoadingStateChanged = onLoadingStateChanged;
       } catch (cloudError) {
         error = cloudError;
         _loadingState = LoadingState.error;
@@ -145,7 +145,7 @@ abstract mixin class DataWrapper {
       }
     } else {
       try {
-        hip = HipWrapper.fromJsonFile(hipPath);
+        hip = HipWrapper.fromJsonFile(hipPath)..onLoadingStateChanged = onLoadingStateChanged;
       } catch (e) {
         error = e;
         _loadingState = LoadingState.error;
@@ -156,7 +156,7 @@ abstract mixin class DataWrapper {
     if (AppConfig.storeWizardInCloud) {
       try {
         final onlineData = await CloudStorage.downloadWizardDataFromCloud();
-        aLevel = ALevelWrapper.fromJson(onlineData);
+        aLevel = ALevelWrapper.fromJson(onlineData)..onDataChanged = onDataChanged;
       } catch (cloudError) {
         error = cloudError;
         _loadingState = LoadingState.error;
@@ -164,7 +164,7 @@ abstract mixin class DataWrapper {
       }
     } else {
       try {
-        aLevel = ALevelWrapper.fromJsonFile(aLevelPath);
+        aLevel = ALevelWrapper.fromJsonFile(aLevelPath)..onDataChanged = onDataChanged;
       } catch (e) {
         error = e;
         _loadingState = LoadingState.error;
@@ -180,16 +180,16 @@ abstract mixin class DataWrapper {
   Future<void> _loadData() async {
     if (AppConfig.storeGradesInCloud) {
       final onlineData = await CloudStorage.downloadHipDataFromCloud();
-      hip = HipWrapper.fromJson(onlineData);
+      hip = HipWrapper.fromJson(onlineData)..onLoadingStateChanged = onLoadingStateChanged;
     } else {
-      hip = HipWrapper.fromJsonFile(hipPath);
+      hip = HipWrapper.fromJsonFile(hipPath)..onLoadingStateChanged = onLoadingStateChanged;
     }
 
     if (AppConfig.storeWizardInCloud) {
       final onlineData = await CloudStorage.downloadWizardDataFromCloud();
-      aLevel = ALevelWrapper.fromJson(onlineData);
+      aLevel = ALevelWrapper.fromJson(onlineData)..onDataChanged = onDataChanged;
     } else {
-      aLevel = ALevelWrapper.fromJsonFile(aLevelPath);
+      aLevel = ALevelWrapper.fromJsonFile(aLevelPath)..onDataChanged = onDataChanged;
     }
   }
 
@@ -258,10 +258,8 @@ abstract mixin class DataWrapper {
       try {
         await CloudStorage.uploadHipDataToCloud(hip.toJson());
       } catch (cloudError) {
-        hip.saveToFile(hipPath);
         error = cloudError;
         _loadingState = LoadingState.doneWithError;
-        return;
       }
     }
 
@@ -271,10 +269,8 @@ abstract mixin class DataWrapper {
       try {
         await CloudStorage.uploadWizardDataToCloud(aLevel.toJson());
       } catch (cloudError) {
-        aLevel.saveToFile(aLevelPath);
         error = cloudError;
         _loadingState = LoadingState.doneWithError;
-        return;
       }
     }
 
