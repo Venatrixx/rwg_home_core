@@ -7,7 +7,7 @@ ValidationCatalog catalog2019 = ValidationCatalog(
   date: DateTime(2025, 6, 1),
   standardTests: standardTests,
   examSubjectsTests: examSubjectsTests,
-  allowedWrittenExamSubjects: ['ma', 'de', 'en', 'ge', 'la', 'bio', 'ch', 'ph', 'info'],
+  allowedWrittenExamSubjects: ['ma', 'de', 'en', 'ge', 'la', 'bio', 'ch', 'ph', 'inf'],
   chooseOptimal: chooseOptimal,
 );
 
