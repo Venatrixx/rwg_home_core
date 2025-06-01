@@ -305,6 +305,8 @@ class HipWrapper {
     totalMissingHours = wrapper.totalMissingHours;
     totalUnexcusedMissingHours = wrapper.totalUnexcusedMissingHours;
 
+    missingHourData = wrapper.missingHourData;
+
     List<SpecialGrade> changedGrades = [];
 
     for (final newSemester in wrapper.semesters) {

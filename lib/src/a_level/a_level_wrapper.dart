@@ -86,7 +86,7 @@ class ALevelWrapper {
     );
   }
 
-  /// If [chooseOptimalSemesters] should be called, when [updateSubjects] is called.
+  /// If [latestCatalog.chooseOptimalSemesters] should be called, when [updateSubjects] is called.
   bool chooseOptimal = false;
 
   /// Getter for counting the amount of overall active grades.
@@ -235,7 +235,8 @@ class ALevelWrapper {
     final refSemester = semesters.firstWhere((element) => element.hasData || element.hasFinalGrades);
 
     unknownSubjects = [
-      for (final sub in refSemester.subjects) AbstractSubject.fromSemesters(sub.name, sub.abbr, semesters),
+      for (final sub in refSemester.subjects)
+        AbstractSubject.fromSemesters(sub.name, sub.abbr.toLowerCase(), semesters),
     ];
     subjects = [];
 
