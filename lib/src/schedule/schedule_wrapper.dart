@@ -82,6 +82,8 @@ class ScheduleWrapper {
 
     if (dateToFetch == null) vpDataToday = vpData;
 
+    loadingState = LoadingState.done;
+
     return vpData;
   }
 

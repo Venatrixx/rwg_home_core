@@ -281,6 +281,7 @@ class HipWrapper {
         semesters.addAll(newData.semesters);
         semesters.sort((a, b) => a.label.compareTo(b.label));
       } else {
+        if (semesters.isEmpty) await initializeSemesters();
         addDataFromWrapper(newData);
       }
     } catch (e) {
