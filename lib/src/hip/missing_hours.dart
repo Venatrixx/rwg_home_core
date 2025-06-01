@@ -23,6 +23,7 @@ class MissingHour {
     lessons = null;
     subject = null;
     comment = json['reason'] != "" ? json['reason'] : null;
+    term = json['semester'] != "" ? json['semester'] : null;
 
     try {
       date = DateFormat('dd.MM.yyyy').parse(json['date']);
@@ -52,6 +53,7 @@ class MissingHour {
     lessons = json['time'] != "" ? json['time'] : null;
     subject = json['subject'] != "" ? json['subject'] : null;
     comment = json['reason'] != "" ? json['reason'] : null;
+    term = json['semester'] != "" ? json['semester'] : null;
 
     try {
       date = DateFormat('dd.MM.yyyy').parse(json['date']);
