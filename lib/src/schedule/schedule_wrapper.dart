@@ -39,6 +39,7 @@ class ScheduleWrapper {
     error = null;
 
     if (vpDataToday != null && (dateToFetch == null || dateToFetch.isSameDay(vpDataToday!.date))) {
+      loadingState = LoadingState.done;
       return vpDataToday!;
     }
 
