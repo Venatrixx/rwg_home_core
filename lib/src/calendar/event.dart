@@ -15,9 +15,7 @@ class Event {
 
   Event(this.date, this.type, this.title, {this.time, this.comment, this.triState});
   Event.holiday(this.date, {this.time, this.comment, this.triState}) : type = EventType.holiday, title = "Feiertag";
-  Event.missingDay(this.date, {this.time, this.comment, this.triState})
-    : type = EventType.missingDay,
-      title = "Fehltag";
+  Event.missingDay(this.date, this.title, {this.time, this.comment, this.triState}) : type = EventType.missingDay;
 
   Event.eventFromJson(dynamic json) {
     title = json['title'];
