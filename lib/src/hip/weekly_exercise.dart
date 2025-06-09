@@ -1,6 +1,9 @@
 part of 'hip_wrapper.dart';
 
 class WeeklyExercise {
+  /// Key of this object.
+  String key;
+
   /// Date of writing this exercise.
   DateTime? date;
 
@@ -13,5 +16,10 @@ class WeeklyExercise {
   /// Amount of points the user achieved.
   double achieved;
 
-  WeeklyExercise({required this.achieved, this.max = 10, this.date, this.description});
+  WeeklyExercise({required this.key, required this.achieved, this.max = 10, this.date, this.description});
+
+  @override
+  bool operator ==(covariant WeeklyExercise other) {
+    return key == other.key;
+  }
 }
