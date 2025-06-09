@@ -195,6 +195,7 @@ class Grade {
     this.ghost,
     this.key,
     this.isExam,
+    this.weeklyExercises,
   );
 
   Grade.fromJson(dynamic json) {
@@ -207,6 +208,7 @@ class Grade {
     ghost = json['ghost'];
     seen = json['seen'];
     isExam = json['isExam'];
+    weeklyExercises = [for (final elem in json['weeklyExercises'] ?? []) WeeklyExercise.fromJson(elem)];
   }
 
   Grade clone() => Grade.detailed(
@@ -221,6 +223,7 @@ class Grade {
     ghost,
     key,
     isExam,
+    weeklyExercises,
   );
 
   Map<String, dynamic> toJson() {
@@ -234,6 +237,7 @@ class Grade {
       'ghost': ghost,
       'seen': seen,
       'isExam': isExam,
+      'weeklyExercises': [for (final exercise in weeklyExercises ?? <WeeklyExercise>[]) exercise.toJson()],
     };
   }
 
