@@ -1,3 +1,5 @@
+part of 'hip_wrapper.dart';
+
 class WeeklyExercise {
   /// Date of writing this exercise.
   DateTime? date;
