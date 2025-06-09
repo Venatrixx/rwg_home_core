@@ -286,5 +286,6 @@ class Grade {
     description = other.description ?? description;
     userDescription = other.userDescription;
     ghost = other.ghost;
+    weeklyExercises = other.weeklyExercises;
   }
 }
