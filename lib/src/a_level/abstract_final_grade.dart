@@ -16,6 +16,11 @@ class AbstractFinalGrade {
 
   AbstractFinalGrade({required this.index, required this.value, required this.active, this.averaged = false});
 
+  AbstractFinalGrade.fromValue(this.value)
+    : index = DateTime.now().millisecondsSinceEpoch,
+      active = true,
+      averaged = false;
+
   AbstractFinalGrade.empty({required this.index}) : value = null, active = false, averaged = false;
 
   AbstractFinalGrade.fromJson(dynamic json)

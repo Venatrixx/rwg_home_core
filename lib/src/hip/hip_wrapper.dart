@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:home_info_point_client/home_info_point_client.dart';
 import 'package:intl/intl.dart';
 import 'package:rwg_home_core/rwg_home_core.dart';
+import 'package:rwg_home_core/src/hip/abstract_year.dart';
 
 part 'missing_hours.dart';
 part 'semester.dart';
@@ -82,6 +83,8 @@ class HipWrapper {
   }
 
   List<SpecialGrade> get gradesWithAttention => [...?changedGrades, ...newOrSimilarGrades];
+
+  AbstractYear get currentYearData => AbstractYear.fromSemesters(AppConfig.level, semesters);
 
   HipWrapper({
     this.semesters = const [],
