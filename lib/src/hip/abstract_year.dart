@@ -1,5 +1,4 @@
-import 'package:rwg_home_core/rwg_home_core.dart';
-import 'package:rwg_home_core/src/hip/abstract_year_subject.dart';
+part of 'hip_wrapper.dart';
 
 /// Summarizes the subjects and their grades from a whole year, not just one semester.
 class AbstractYear {

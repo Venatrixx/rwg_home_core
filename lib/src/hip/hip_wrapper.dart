@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:home_info_point_client/home_info_point_client.dart';
 import 'package:intl/intl.dart';
 import 'package:rwg_home_core/rwg_home_core.dart';
-import 'package:rwg_home_core/src/hip/abstract_year.dart';
 
 part 'missing_hours.dart';
 part 'semester.dart';
@@ -12,6 +11,8 @@ part 'subject.dart';
 part 'grade.dart';
 part 'special_grade.dart';
 part 'weekly_exercise.dart';
+part 'abstract_year.dart';
+part 'abstract_year_subject.dart';
 
 /// Contains all important data found on Home.InfoPoint.
 class HipWrapper {

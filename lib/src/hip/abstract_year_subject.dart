@@ -1,4 +1,4 @@
-import 'package:rwg_home_core/rwg_home_core.dart';
+part of 'hip_wrapper.dart';
 
 /// Saves the data for one subject for one whole year.
 ///
