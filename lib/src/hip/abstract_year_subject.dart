@@ -60,6 +60,9 @@ class AbstractYearSubject {
     return (sum / count);
   }
 
+  /// If there is any grade with valid data.
+  bool get hasData => [...allExams, ...allTests].any((element) => element.value != null);
+
   /// Returns the total weighted average for this subject.
   ///
   /// Returns `null` if [allExams] and [allTests] are empty.
@@ -68,10 +71,14 @@ class AbstractYearSubject {
     if (allExams.isEmpty) return testsAverage;
     if (allTests.isEmpty) return examsAverage;
 
-    final examsWeight = getExamWeight(allExams.length);
+    final examsWeight = getExamWeight(allExams.where((element) => element.value != null).length);
     final testsWeight = 1 - examsWeight;
 
     return (examsAverage! * examsWeight) + (testsAverage! * testsWeight);
+  }
+
+  double getSpecificExamWeight(double Function(int) getExamWeight) {
+    return getExamWeight(allExams.where((element) => element.value != null).length);
   }
 
   AbstractYearSubject({
