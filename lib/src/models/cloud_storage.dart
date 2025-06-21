@@ -6,7 +6,7 @@ import 'package:home_info_point_client/home_info_point_client.dart' show HipConf
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:rwg_home_core/src/constants.dart';
-import 'package:rwg_home_core/src/errors/cloud_error.dart';
+import 'package:rwg_home_core/src/errors/cloud_exception.dart';
 import 'package:rwg_home_core/src/static/app_config.dart';
 
 final class CloudStorage {

@@ -20,6 +20,7 @@ export 'src/extensions.dart';
 export 'src/functions/services.dart';
 export 'src/functions/util_functions.dart';
 
-export 'src/errors/holiday_error.dart';
-export 'src/errors/locked_error.dart';
-export 'src/errors/cloud_error.dart';
+export 'src/errors/holiday_exception.dart';
+export 'src/errors/locked_exception.dart';
+export 'src/errors/cloud_exception.dart';
+export 'src/errors/hip_format_exception.dart';
