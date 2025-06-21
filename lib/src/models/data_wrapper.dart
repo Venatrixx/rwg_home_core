@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:rwg_home_core/src/a_level/a_level_wrapper.dart';
 import 'package:rwg_home_core/src/calendar/calendar_wrapper.dart';
+import 'package:rwg_home_core/src/errors/hip_format_exception.dart';
 import 'package:rwg_home_core/src/hip/hip_wrapper.dart';
 import 'package:rwg_home_core/src/models/cloud_storage.dart';
 import 'package:rwg_home_core/src/schedule/schedule_wrapper.dart';
@@ -333,6 +334,10 @@ abstract mixin class DataWrapper {
     try {
       hip.fetchData(rethrowErrors: true);
       states.add(LoadingState.done);
+    } on WrongLevelException {
+      error = WrongLevelException();
+      _loadingState = LoadingState.error;
+      return;
     } catch (e) {
       states.add(LoadingState.error);
     }
