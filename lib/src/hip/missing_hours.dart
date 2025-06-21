@@ -80,10 +80,24 @@ class MissingHour {
   }
 
   int compareTo(MissingHour other) {
-    if (excused != false && other.excused == false) return 1;
-    if (excused == false && other.excused != false) return -1;
-    if (excused == null && other.excused == true) return 1;
-    if (excused == true && other.excused == null) return -1;
-    return 0;
+    if (excused == true) {
+      return switch (other.excused) {
+        true => 0,
+        _ => 1,
+      };
+    }
+
+    if (excused == false) {
+      return switch (other.excused) {
+        false => 0,
+        true => -1,
+        _ => 0,
+      };
+    }
+
+    return switch (other.excused) {
+      null => 0,
+      _ => -1,
+    };
   }
 }
