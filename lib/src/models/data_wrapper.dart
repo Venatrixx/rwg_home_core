@@ -387,4 +387,17 @@ abstract mixin class DataWrapper {
     _loadingState = LoadingState.done;
     return;
   }
+
+  /// Initializes the hip data. May also be used to reset all hip data (existing data will be lost).
+  Future<void> initHipData() async {
+    await hip.initializeSemesters();
+
+    await saveData();
+
+    await fetchHipData();
+
+    hip.setAllGradesSeenSync();
+
+    await saveData();
+  }
 }
