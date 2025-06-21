@@ -284,6 +284,8 @@ class HipWrapper {
       AppConfig.setLevel(rawData['level']);
       AppConfig.setUserClass(rawData['class']);
 
+      if (checkSemesters() != TaskStatus.complete) throw WrongLevelException();
+
       final newData = HipWrapper.fromHipJson(rawData);
 
       if (hardImport) {
@@ -381,5 +383,28 @@ class HipWrapper {
       semester.setAllGradesSeenSync();
     }
     onLoadingStateChanged?.call(LoadingState.done);
+  }
+
+  /// Runs a set of tests on the [semesters] to determine, if they contain data in the expected format.
+  ///
+  /// Returns [TaskStatus.complete] if there are semesters with expected data.
+  ///
+  /// Returns [TaskStatus.completeWithError] if there are semesters with data but the wrong level(s).
+  ///
+  /// Returns [TaskStatus.error] if [semesters] contains unexpected or no data.
+  TaskStatus checkSemesters() {
+    if (semesters.isEmpty || ![2, 4].contains(semesters.length)) return TaskStatus.error;
+
+    if (AppConfig.isSek1 && !semesters.every((semester) => semester.level == AppConfig.level)) {
+      return TaskStatus.completeWithError;
+    }
+
+    if (AppConfig.isSek2 &&
+        (semesters.where((element) => element.level == 11).length != 2 ||
+            semesters.where((element) => element.level == 12).length != 2)) {
+      return TaskStatus.completeWithError;
+    }
+
+    return TaskStatus.complete;
   }
 }

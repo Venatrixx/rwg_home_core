@@ -92,7 +92,7 @@ class ScheduleWrapper {
   ///
   /// If [date] is `null`, [getNextDate] is used to determine the next date to fetch.
   ///
-  /// Will throw [HolidayError] if [date] is not `null` and [date] is a holiday.
+  /// Will throw [HolidayException] if [date] is not `null` and [date] is a holiday.
   ///
   /// **See also:**
   /// * [AppConfig.holidayStrings] which is used to determine which days are holidays.
@@ -104,7 +104,7 @@ class ScheduleWrapper {
     } else {
       date ??= getNextDate();
       if (AppConfig.isHoliday(date)) {
-        throw HolidayError(date);
+        throw HolidayException(date);
       }
 
       data = await fetchData(dateToFetch: date);
