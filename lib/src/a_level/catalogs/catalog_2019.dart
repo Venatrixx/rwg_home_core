@@ -2,7 +2,7 @@ part of 'validation_catalog.dart';
 
 ValidationCatalog catalog2019 = ValidationCatalog(
   catalogName: 'APVO-MV (2019)',
-  catalogLink: '-',
+  catalogLink: 'https://www.regierung-mv.de/serviceassistent/download?id=1610365',
   comment: "Besondere Lernleistungen werden nicht berücksichtigt.\nKein Anspruch auf vollständige Richtigkeit.",
   date: DateTime(2025, 6, 1),
   standardTests: standardTests,
