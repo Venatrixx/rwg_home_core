@@ -292,6 +292,12 @@ class ALevelWrapper {
     }
     if (chooseOptimal == true) latestCatalog.chooseOptimal?.call(this);
     if (sort == true) this.sort();
+
+    for (final subject in subjects.where((element) => allExamSubjects.contains(element.abbr))) {
+      for (final grade in subject.finalGrades) {
+        grade.active = true;
+      }
+    }
   }
 
   /// Sorts the [subjects] by their [AbstractSubject.activeGradesCount] property.
