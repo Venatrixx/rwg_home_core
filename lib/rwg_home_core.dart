@@ -12,7 +12,8 @@ export 'src/schedule/vp_wrapper.dart';
 export 'src/calendar/calendar_wrapper.dart';
 
 export 'src/a_level/a_level_wrapper.dart';
-export 'src/a_level/catalogs/validation_catalog.dart';
+export 'src/a_level/catalogs/validation_catalog.dart'
+    show ValidationCatalog, latestCatalog, availableValidationCatalogs;
 
 export 'src/constants.dart';
 export 'src/extensions.dart';
