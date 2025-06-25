@@ -223,7 +223,7 @@ class Grade {
     ghost,
     key,
     isExam,
-    weeklyExercises,
+    weeklyExercises != null ? List.from(weeklyExercises!) : null,
   );
 
   Map<String, dynamic> toJson() {

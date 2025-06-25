@@ -112,10 +112,7 @@ class Subject {
 
     for (final customGrade in customGrades) {
       if (onlineGrades.any(
-        (element) =>
-            customGrade.isExam == element.isExam &&
-            element.similarTo(customGrade) &&
-            customGrade.date.compareToAware(element.date) <= 0,
+        (element) => element.similarTo(customGrade) && customGrade.date.compareToAware(element.date) <= 0,
       )) {
         similarGrades.add(
           SpecialGrade(
@@ -123,10 +120,7 @@ class Subject {
             parentSubject: this,
             similarGrades: onlineGrades
                 .where(
-                  (element) =>
-                      customGrade.isExam == element.isExam &&
-                      element.similarTo(customGrade) &&
-                      customGrade.date.compareToAware(element.date) <= 0,
+                  (element) => element.similarTo(customGrade) && customGrade.date.compareToAware(element.date) <= 0,
                 )
                 .toList(),
           ),
