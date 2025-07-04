@@ -346,7 +346,7 @@ class HipWrapper {
     Semester refSemester = semesters[currentSemesterIndex].cloneStructure();
 
     for (var semester in semesters) {
-      semester.addDataFromSemester(refSemester, keepFinalGrades: true);
+      semester.updateSubjectsStructure(refSemester);
     }
 
     onLoadingStateChanged?.call(LoadingState.done);

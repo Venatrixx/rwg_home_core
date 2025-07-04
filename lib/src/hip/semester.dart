@@ -91,6 +91,19 @@ class Semester {
     }
   }
 
+  /// Adds subjects from [refSemester] that are not present inside this semester.
+  ///
+  /// Already existing subjects remain unchanged.
+  void updateSubjectsStructure(Semester refSemester) {
+    if (locked) return;
+
+    for (final subject in refSemester.subjects) {
+      if (!subjects.contains(subject)) {
+        subjects.add(subject.clone());
+      }
+    }
+  }
+
   /// Takes another [Semester] and adds additional data to `this`.
   ///
   /// For new grades, [Grade.seen] is set to `false`.
