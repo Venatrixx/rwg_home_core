@@ -166,7 +166,7 @@ class Semester {
 
     for (final subject in subjects) {
       if (data.aLevel.hiddenSubjects.contains(subject.abbr.toLowerCase())) continue;
-      double average = subject.getTotalAvg(data.calculateExamWeight);
+      double average = subject.finalSemesterGrade?.toDouble() ?? subject.getTotalAvg(data.calculateExamWeight);
       if (average.isNaN) continue;
       sum += average.roundToDouble();
       index++;
