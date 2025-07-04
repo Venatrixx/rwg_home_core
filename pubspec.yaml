@@ -6,7 +6,7 @@ repository: https://github.com/Venatrixx/rwg_home_core
 publish_to: none
 
 environment:
-  sdk: ^3.8.0
+  sdk: ^3.8.1
 
 # Add regular dependencies here.
 dependencies:
@@ -14,7 +14,7 @@ dependencies:
   home_info_point_client:
     git:
       url: https://github.com/Venatrixx/home_info_point_client
-      ref: v1.0.1
+      ref: v1.0.2
   intl: ^0.20.2
   path_provider: ^2.1.5
   xml: ^6.5.0
