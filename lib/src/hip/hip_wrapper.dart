@@ -42,9 +42,10 @@ class HipWrapper {
     for (final element in missingHourData!) {
       if (element.date == null) continue;
       response.add(
-        Event.missingDay(
+        Event(
           element.date!,
-          element.subject ?? "Fehltag",
+          element.isDay ? EventType.missingDay : EventType.parMissingDay,
+          element.subject ?? (element.isDay ? "Fehltag" : "Fehlstunde"),
           time: element.lessons,
           comment: element.comment,
           triState: element.excused,
