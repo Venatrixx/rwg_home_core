@@ -5,6 +5,7 @@ import 'package:rwg_home_core/src/calendar/calendar_wrapper.dart';
 import 'package:rwg_home_core/src/errors/hip_format_exception.dart';
 import 'package:rwg_home_core/src/hip/hip_wrapper.dart';
 import 'package:rwg_home_core/src/models/cloud_storage.dart';
+import 'package:rwg_home_core/src/models/schedule_day.dart';
 import 'package:rwg_home_core/src/schedule/schedule_wrapper.dart';
 import 'package:rwg_home_core/src/static/app_config.dart';
 import 'package:rwg_home_core/src/static/enums.dart';
@@ -71,6 +72,9 @@ abstract mixin class DataWrapper {
   /// Path to the hip_wrapper.json file, where the data of this class is stored.
   String get hipPath => "${AppConfig.documentsDir}/hip_wrapper.json";
 
+  /// Path to the schedule_wrapper.json file, where the data of this class is stored.
+  String get schedulePath => "${AppConfig.documentsDir}/schedule_wrapper.json";
+
   /// Fetched data from the schedule of lessons.
   ///
   /// See [ScheduleWrapper] for more information.
@@ -101,10 +105,17 @@ abstract mixin class DataWrapper {
       hip = HipWrapper()..saveToFile(hipPath);
     }
     hip.onLoadingStateChanged = onHipLoadingStateChanged;
-    schedule = ScheduleWrapper();
+
+    if (File(schedulePath).existsSync()) {
+      schedule = ScheduleWrapper.fromJsonFile(schedulePath);
+    } else {
+      schedule = ScheduleWrapper()..saveToFile(schedulePath);
+    }
     schedule.onLoadingStateChanged = onScheduleLoadingStateChanged;
+
     calendar = CalendarWrapper();
     calendar.onLoadingStateChanged = onCalendarLoadingStateChanged;
+
     if (File(aLevelPath).existsSync()) {
       aLevel = ALevelWrapper.fromJsonFile(aLevelPath);
     } else {
@@ -119,6 +130,9 @@ abstract mixin class DataWrapper {
   void deleteData() {
     try {
       File(hipPath).deleteSync();
+    } catch (_) {}
+    try {
+      File(schedulePath).deleteSync();
     } catch (_) {}
     try {
       File(aLevelPath).deleteSync();
@@ -173,6 +187,14 @@ abstract mixin class DataWrapper {
       }
     }
 
+    try {
+      schedule = ScheduleWrapper.fromJsonFile(schedulePath)..onLoadingStateChanged = onScheduleLoadingStateChanged;
+    } catch (e) {
+      error = e;
+      _loadingState = LoadingState.error;
+      return;
+    }
+
     _loadingState = LoadingState.done;
     return;
   }
@@ -192,6 +214,8 @@ abstract mixin class DataWrapper {
     } else {
       aLevel = ALevelWrapper.fromJsonFile(aLevelPath)..onDataChanged = onDataChanged;
     }
+
+    schedule = ScheduleWrapper.fromJsonFile(schedulePath)..onLoadingStateChanged = onScheduleLoadingStateChanged;
   }
 
   /// Saves the grades/hip data. Either to the local storage, or the cloud if [AppConfig.storeGradesInCloud] is set to `true`.
@@ -249,6 +273,14 @@ abstract mixin class DataWrapper {
       return;
     }
 
+    try {
+      schedule.saveToFile(schedulePath);
+    } catch (e) {
+      error = e;
+      _loadingState = LoadingState.error;
+      return;
+    }
+
     _loadingState = LoadingState.done;
     return;
   }
@@ -276,6 +308,8 @@ abstract mixin class DataWrapper {
     }
 
     aLevel.saveToFile(aLevelPath);
+
+    schedule.saveToFile(schedulePath);
   }
 
   /// Calls the [HipWrapper.fetchData] function and stores the data appropriately (locally and/or in the cloud).
@@ -405,4 +439,6 @@ abstract mixin class DataWrapper {
 
     await saveData();
   }
+
+  ScheduleDay getSchedule(DateTime date) => ScheduleDay.fromWrappers(date: date, scheduleData: schedule, hipData: hip);
 }

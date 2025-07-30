@@ -107,9 +107,11 @@ final class CloudStorage {
 
     Map<String, dynamic> fetchedData = {};
 
+    final config = await AppConfig.userHipConfig;
+
     for (var entry in responseData.entries) {
       if (entry.value is String) {
-        fetchedData[entry.key] = _decryptData(entry.value, (await AppConfig.userHipConfig));
+        fetchedData[entry.key] = _decryptData(entry.value, config);
       } else {
         fetchedData[entry.key] = null;
       }
@@ -119,15 +121,15 @@ final class CloudStorage {
   }
 
   /// Internal helper method to upload data.
-  static Future<void> _uploadDataToCloud({dynamic hip, dynamic settings, dynamic wizard}) async {
+  static Future<void> _uploadDataToCloud({dynamic hip, dynamic wizard, dynamic calendar}) async {
     final data = {};
     final config = await AppConfig.userHipConfig;
 
     if (hip != null) data['grades_data'] = _encryptData(hip, config);
 
-    if (settings != null) data['settings_data'] = _encryptData(settings, config);
-
     if (wizard != null) data['wizard_data'] = _encryptData(wizard, config);
+
+    if (calendar != null) data['calendar_data'] = _encryptData(calendar, config);
 
     if (data.isEmpty) return;
 
@@ -152,19 +154,19 @@ final class CloudStorage {
     return (await _fetchCloudData())['grades_data'];
   }
 
-  static Future<void> uploadSettingsDataToCloud(dynamic data) async {
-    if (AppConfig.storeSettingsInCloud) await _uploadDataToCloud(settings: data);
-  }
-
-  static Future<dynamic> downloadSettingsDataFromCloud() async {
-    return (await _fetchCloudData())['settings_data'];
-  }
-
   static Future<void> uploadWizardDataToCloud(dynamic data) async {
     if (AppConfig.storeWizardInCloud) await _uploadDataToCloud(wizard: data);
   }
 
   static Future<dynamic> downloadWizardDataFromCloud() async {
     return (await _fetchCloudData())['wizard_data'];
+  }
+
+  static Future<void> uploadCalendarDataToCloud(dynamic data) async {
+    if (AppConfig.storeCalendarInCloud) await _uploadDataToCloud(calendar: data);
+  }
+
+  static Future<dynamic> downloadCalendarDataFromCloud() async {
+    return (await _fetchCloudData())['calendar_data'];
   }
 }

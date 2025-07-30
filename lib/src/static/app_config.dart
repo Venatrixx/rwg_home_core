@@ -7,6 +7,7 @@ import 'package:home_info_point_client/home_info_point_client.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:rwg_home_core/rwg_home_core.dart';
+import 'package:rwg_home_core/src/schedule/vp_time.dart';
 
 /// Stores important values or settings that need to be accessed at different parts of the app.
 final class AppConfig {
@@ -126,23 +127,29 @@ final class AppConfig {
     ];
   }
 
+  /// Stores the start and end times as [VPTime] objects for each lesson of the schedule.
+  ///
+  /// **See also:**
+  /// * [updateScheduleHours] to change the [scheduleHours] and save the config afterwards.
+  static Map<int, VPTime> scheduleHours = {};
+
   /// If grades should be uploaded to the cloud.
   ///
   /// **See also:**
   /// * [updateCloudPreferences] to change this setting and save the config afterwards.
   static late bool storeGradesInCloud;
 
-  /// If settings should be uploaded to the cloud.
-  ///
-  /// **See also:**
-  /// * [updateCloudPreferences] to change this setting and save the config afterwards.
-  static late bool storeSettingsInCloud;
-
   /// If a level wizard settings should be stored in the cloud.
   ///
   /// **See also:**
   /// * [updateCloudPreferences] to change this setting and save the config afterwards.
   static late bool storeWizardInCloud;
+
+  /// If custom calendar events should be uploaded to the cloud.
+  ///
+  /// **See also:**
+  /// * [updateCloudPreferences] to change this setting and save the config afterwards.
+  static late bool storeCalendarInCloud;
 
   /// Call this method to init the class and to load the local config data.
   ///
@@ -202,11 +209,15 @@ final class AppConfig {
       lessonIds = List<String>.from(data['lessonIds'] ?? []);
       activeLessonIds = List<String>.from(data['activeLessonIds'] ?? []);
 
-      storeGradesInCloud = data['storeGradesInCloud'];
-      storeSettingsInCloud = data['storeSettingsInCloud'];
-      storeWizardInCloud = data['storeWizardInCloud'];
+      storeGradesInCloud = data['storeGradesInCloud'] ?? false;
+      storeWizardInCloud = data['storeWizardInCloud'] ?? false;
+      storeCalendarInCloud = data['storeCalendarInCloud'] ?? false;
 
       holidayStrings = List<String>.from(data['holidayStrings'] ?? []);
+
+      scheduleHours = {
+        for (final entry in ((data['scheduleData'] as Map?) ?? {}).entries) entry.key: VPTime.fromJson(entry.value),
+      };
 
       if (hasError) return LoadingState.doneWithError;
       return LoadingState.done;
@@ -226,9 +237,10 @@ final class AppConfig {
       'lessonIds': lessonIds,
       'activeLessonIds': activeLessonIds,
       'storeGradesInCloud': storeGradesInCloud,
-      'storeSettingsInCloud': storeSettingsInCloud,
       'storeWizardInCloud': storeWizardInCloud,
+      'storeCalendarInCloud': storeCalendarInCloud,
       'holidayStrings': holidayStrings,
+      'scheduleHours': {for (final entry in scheduleHours.entries) entry.key: entry.value.toJson()},
     };
 
     configFile.writeAsStringSync(jsonEncode(data));
@@ -251,10 +263,12 @@ final class AppConfig {
     activeLessonIds = [];
 
     storeGradesInCloud = false;
-    storeSettingsInCloud = false;
     storeWizardInCloud = false;
+    storeCalendarInCloud = false;
 
     holidayStrings = [];
+
+    scheduleHours = {};
 
     saveConfigFileSync();
   }
@@ -354,10 +368,45 @@ final class AppConfig {
   /// Updates the cloud preferences with the given values. If `null` is provided, the setting remains untouched.
   ///
   /// Saves the config afterwards.
-  static void updateCloudPreferences({bool? grades, bool? settings, bool? wizard}) {
+  static void updateCloudPreferences({bool? grades, bool? wizard, bool? calendar}) {
     if (grades != null) storeGradesInCloud = grades;
-    if (settings != null) storeSettingsInCloud = settings;
     if (wizard != null) storeWizardInCloud = wizard;
+    if (calendar != null) storeCalendarInCloud = calendar;
+    saveConfigFileSync();
+  }
+
+  /// Updates the schedule times.
+  ///
+  /// Saves the config afterwards.
+  static void updateScheduleHours(List<VPTime> times) {
+    for (final time in times) {
+      if (time.lesson <= 0) continue;
+
+      if (!scheduleHours.containsKey(time.lesson)) {
+        scheduleHours.addAll({time.lesson: time});
+        continue;
+      }
+
+      if (time.hasStartTime) {
+        try {
+          var refTime = scheduleHours.entries.firstWhere((element) => element.key == time.lesson).value;
+          refTime.startHour = time.startHour;
+          refTime.startMinute = time.startMinute;
+        } catch (_) {}
+      }
+
+      if (time.hasEndTime) {
+        try {
+          var refTime = scheduleHours.entries.firstWhere((element) => element.key == time.lesson).value;
+          refTime.endHour = time.endHour;
+          refTime.endMinute = time.endMinute;
+        } catch (_) {}
+      }
+    }
+
+    final sortedKeys = scheduleHours.keys.toList()..sort((a, b) => a.compareTo(b));
+    scheduleHours = {for (final key in sortedKeys) key: scheduleHours[key]!};
+
     saveConfigFileSync();
   }
 }

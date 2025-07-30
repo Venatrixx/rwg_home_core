@@ -44,6 +44,23 @@ class VPLesson {
     comment = xmlObject.getElement('If')?.text;
   }
 
+  VPLesson.fromJson(dynamic json)
+    : hour = int.parse(json['hour'].toString()),
+      subjectLabel = json['subjectLabel'].toString(),
+      teacher = json['teacher'].toString(),
+      room = json['room'].toString(),
+      id = int.parse(json['id'].toString()),
+      comment = json['comment'].toStringOrNull();
+
+  dynamic toJson() => {
+    'hour': hour,
+    'subjectLabel': subjectLabel,
+    'teacher': teacher,
+    'room': room,
+    'id': id,
+    'comment': comment,
+  };
+
   @override
   bool operator ==(covariant VPLesson other) {
     return hour == other.hour &&

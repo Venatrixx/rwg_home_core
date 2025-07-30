@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:home_info_point_client/home_info_point_client.dart';
 import 'package:intl/intl.dart';
 import 'package:rwg_home_core/rwg_home_core.dart';
+import 'package:rwg_home_core/src/hip/hip_lesson.dart';
 
 part 'missing_hours.dart';
 part 'semester.dart';
@@ -88,6 +89,9 @@ class HipWrapper {
 
   AbstractYear get currentYearData => AbstractYear.fromSemesters(AppConfig.level, semesters);
 
+  List<HipLesson> lastLessons = [];
+  List<HipLesson> forgottenHomework = [];
+
   HipWrapper({
     this.semesters = const [],
     this.totalMissingDays,
@@ -95,6 +99,8 @@ class HipWrapper {
     this.totalMissingHours,
     this.totalUnexcusedMissingHours,
     this.missingHourData,
+    this.lastLessons = const [],
+    this.forgottenHomework = const [],
   });
 
   /// Internal constructor used by the [HipWrapper.fetchData] method.
@@ -172,6 +178,8 @@ class HipWrapper {
         for (final day in json['missingDays'] ?? []) MissingHour.dayFromJson(day),
         for (final hour in json['missingHours'] ?? []) MissingHour.hourFromJson(hour),
       ],
+      lastLessons: [for (final entry in json['lastLessons'] ?? []) HipLesson.fromHipJson(entry)],
+      forgottenHomework: [for (final entry in json['forgottenHomework'] ?? []) HipLesson.fromHipJson(entry)],
     );
   }
 
@@ -187,7 +195,9 @@ class HipWrapper {
       totalUnexcusedMissingDays = json['totalUnexcusedMissingDays'],
       totalMissingHours = json['totalUnexcusedMissingHours'],
       totalUnexcusedMissingHours = json['totalUnexcusedMissingHours'],
-      semesters = [for (final semester in json['semesters']) Semester.fromJson(semester)];
+      semesters = [for (final semester in json['semesters'] ?? []) Semester.fromJson(semester)],
+      lastLessons = [for (final entry in json['lastLessons'] ?? []) HipLesson.fromJson(entry)],
+      forgottenHomework = [for (final entry in json['forgottenHomework'] ?? []) HipLesson.fromJson(entry)];
 
   Map<String, dynamic> toJson() {
     return {
@@ -196,6 +206,8 @@ class HipWrapper {
       'totalMissingHours': totalMissingHours,
       'totalUnexcusedMissingHours': totalUnexcusedMissingHours,
       'semesters': [for (final semester in semesters) semester.toJson()],
+      'lastLessons': [for (final lesson in lastLessons) lesson.toJson()],
+      'forgottenHomework': [for (final homework in forgottenHomework) homework.toJson()],
     };
   }
 
@@ -269,7 +281,7 @@ class HipWrapper {
   /// Call this function to fetch new data from Home.InfoPoint.
   ///
   /// It is **important** to call this function via [DataWrapper.fetchHipData],
-  /// as this will ensure that the data is stored properly.
+  /// as this will ensure that the data is saved properly.
   ///
   /// Calls [onLoadingStateChanged] if provided.
   Future<void> fetchData({bool hardImport = false, bool rethrowErrors = false}) async {
@@ -282,10 +294,13 @@ class HipWrapper {
 
       final rawData = await client.asJson();
 
-      AppConfig.setLevel(rawData['level']);
-      AppConfig.setUserClass(rawData['class']);
+      int newLevel = rawData['level'];
+      String newUserClass = rawData['class'];
 
-      if (checkSemesters() != TaskStatus.complete) throw WrongLevelException();
+      if (checkSemesters(newLevel) != TaskStatus.complete) throw WrongLevelException();
+
+      AppConfig.setLevel(newLevel);
+      AppConfig.setUserClass(newUserClass);
 
       final newData = HipWrapper.fromHipJson(rawData);
 
@@ -322,6 +337,9 @@ class HipWrapper {
     totalUnexcusedMissingHours = wrapper.totalUnexcusedMissingHours;
 
     missingHourData = wrapper.missingHourData;
+
+    lastLessons = wrapper.lastLessons;
+    forgottenHomework = wrapper.forgottenHomework;
 
     List<SpecialGrade> changedGrades = [];
 
@@ -393,14 +411,16 @@ class HipWrapper {
   /// Returns [TaskStatus.completeWithError] if there are semesters with data but the wrong level(s).
   ///
   /// Returns [TaskStatus.error] if [semesters] contains unexpected or no data.
-  TaskStatus checkSemesters() {
+  TaskStatus checkSemesters(int level) {
     if (semesters.isEmpty || ![2, 4].contains(semesters.length)) return TaskStatus.error;
 
-    if (AppConfig.isSek1 && !semesters.every((semester) => semester.level == AppConfig.level)) {
+    bool isSek1 = level < AppConfig.sek2Threshold;
+
+    if (isSek1 && !semesters.every((semester) => semester.level == level)) {
       return TaskStatus.completeWithError;
     }
 
-    if (AppConfig.isSek2 &&
+    if (!isSek1 &&
         (semesters.where((element) => element.level == 11).length != 2 ||
             semesters.where((element) => element.level == 12).length != 2)) {
       return TaskStatus.completeWithError;

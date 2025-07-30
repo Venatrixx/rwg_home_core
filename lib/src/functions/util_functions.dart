@@ -47,9 +47,9 @@ DateTime _addSkip(DateTime other, {bool remove = false}) {
 ///
 /// **See also:**
 /// * [AppConfig.holidayStrings] which is used to determine which days are school days and which are holidays.
-DateTime getNextDate({int? skipToNextDayHour, int? skipToNextDayMinute}) {
-  skipToNextDayHour ??= 15;
-  skipToNextDayMinute ??= 0;
+DateTime getNextDate([Duration? skipTime]) {
+  int skipToNextDayHour = skipTime?.hours ?? 15;
+  int skipToNextDayMinute = skipTime?.minutes ?? 0;
 
   final now = DateTime.now();
 
