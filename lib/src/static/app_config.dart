@@ -216,7 +216,8 @@ final class AppConfig {
       holidayStrings = List<String>.from(data['holidayStrings'] ?? []);
 
       scheduleHours = {
-        for (final entry in ((data['scheduleData'] as Map?) ?? {}).entries) entry.key: VPTime.fromJson(entry.value),
+        for (final entry in ((data['scheduleData'] as Map?) ?? {}).entries)
+          int.parse(entry.key.toString()): VPTime.fromJson(entry.value),
       };
 
       if (hasError) return LoadingState.doneWithError;
@@ -240,7 +241,7 @@ final class AppConfig {
       'storeWizardInCloud': storeWizardInCloud,
       'storeCalendarInCloud': storeCalendarInCloud,
       'holidayStrings': holidayStrings,
-      'scheduleHours': {for (final entry in scheduleHours.entries) entry.key: entry.value.toJson()},
+      'scheduleHours': {for (final entry in scheduleHours.entries) entry.key.toString(): entry.value.toJson()},
     };
 
     configFile.writeAsStringSync(jsonEncode(data));
