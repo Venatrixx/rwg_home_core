@@ -20,6 +20,7 @@ dependencies:
   encrypt: ^5.0.3
   crypto: ^3.0.6
   flutter_secure_storage: ^9.2.2
+  convert: ^3.1.2
 
 
 dev_dependencies:

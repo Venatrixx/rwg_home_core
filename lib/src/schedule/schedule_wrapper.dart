@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:convert/convert.dart';
 import 'package:http/http.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:intl/intl.dart';
 import 'package:rwg_home_core/rwg_home_core.dart';
 import 'package:xml/xml.dart';
 
@@ -84,7 +84,7 @@ class ScheduleWrapper {
   /// Removes data from [vpCache] that is older than 30 days.
   void garbageCollectCache() {
     vpCache.removeWhere((key, _) {
-      final difference = DateTime.now().difference(DateFormat('yyyyMMdd').parse(key));
+      final difference = DateTime.now().difference(FixedDateTimeFormatter('YYYYMMDD').decode(key));
       return difference.inDays > 35;
     });
   }
