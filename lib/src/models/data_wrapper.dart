@@ -366,7 +366,7 @@ abstract mixin class DataWrapper {
 
     // hip data
     try {
-      hip.fetchData(rethrowErrors: true);
+      await hip.fetchData(rethrowErrors: true);
       states.add(LoadingState.done);
     } on WrongLevelException {
       error = WrongLevelException();
@@ -378,7 +378,7 @@ abstract mixin class DataWrapper {
 
     // schedule data
     try {
-      schedule.fetchData(rethrowErrors: true);
+      await schedule.fetchData(rethrowErrors: true);
       states.add(LoadingState.done);
     } catch (e) {
       states.add(LoadingState.error);
@@ -386,7 +386,7 @@ abstract mixin class DataWrapper {
 
     // calendar data
     try {
-      calendar.fetchBulletins(rethrowErrors: true);
+      await calendar.fetchBulletins(rethrowErrors: true);
       states.add(LoadingState.done);
     } catch (e) {
       states.add(LoadingState.error);
