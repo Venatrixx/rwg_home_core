@@ -188,7 +188,7 @@ class ScheduleWrapper {
       AppConfig.updateScheduleHours(userVpClass.times);
     }
 
-    if (dateToFetch == null) vpCache[date.toVpFormat()] = vpData.filterClasses(AppConfig.userClass)..cached = true;
+    vpCache[date.toVpFormat()] = vpData.filterClasses(AppConfig.userClass)..cached = true;
 
     loadingState = LoadingState.done;
 
