@@ -289,7 +289,8 @@ class Grade {
       isExam == other.isExam &&
       hasWeeklyExercises == other.hasWeeklyExercises &&
       weeklyExercises?.length == other.weeklyExercises?.length &&
-      weeklyExercisesPercentage == other.weeklyExercisesPercentage;
+      (weeklyExercisesPercentage == other.weeklyExercisesPercentage ||
+          weeklyExercisesPercentage.isNaN && other.weeklyExercisesPercentage.isNaN);
 
   @override
   bool operator ==(covariant Grade other) {
