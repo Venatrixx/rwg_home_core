@@ -277,6 +277,20 @@ class Grade {
   bool similarTo(Grade other) =>
       isExam == other.isExam && (points == other.points || points == null || other.points == null);
 
+  /// Compares all attributes from `this` and `other`. Except [Grade.key].
+  bool equalTo(Grade other) =>
+      points == other.points &&
+      description == other.description &&
+      userDescription == other.userDescription &&
+      uploadDate == other.uploadDate &&
+      dateOfWriting == other.dateOfWriting &&
+      ghost == other.ghost &&
+      seen == other.seen &&
+      isExam == other.isExam &&
+      hasWeeklyExercises == other.hasWeeklyExercises &&
+      weeklyExercises?.length == other.weeklyExercises?.length &&
+      weeklyExercisesPercentage == other.weeklyExercisesPercentage;
+
   @override
   bool operator ==(covariant Grade other) {
     return key == other.key && isExam == other.isExam;
