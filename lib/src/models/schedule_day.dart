@@ -1,5 +1,8 @@
 import 'package:rwg_home_core/rwg_home_core.dart';
-import 'package:rwg_home_core/src/models/schedule_lesson.dart';
+import 'package:rwg_home_core/src/hip/hip_lesson.dart';
+import 'package:rwg_home_core/src/schedule/vp_time.dart';
+
+part 'schedule_lesson.dart';
 
 class ScheduleDay {
   late DateTime date;
