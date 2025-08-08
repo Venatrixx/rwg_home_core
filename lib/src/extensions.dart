@@ -58,3 +58,15 @@ class Range<T> {
   /// Checks if `from` and `to` are not `null`.
   bool get hasLimits => from != null && to != null;
 }
+
+extension RangeInclude on Range<int> {
+  /// Checks if:
+  /// ```dart
+  /// from! <= t && t <= to!
+  /// ```
+  /// Returns `null` if either [from] or [to] are null.
+  bool? includes(int t) {
+    if (!hasLimits) return null;
+    return from! <= t && t <= to!;
+  }
+}

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:rwg_home_core/src/a_level/a_level_wrapper.dart';
@@ -440,5 +441,16 @@ abstract mixin class DataWrapper {
     await saveData();
   }
 
-  ScheduleDay getSchedule(DateTime date) => ScheduleDay.fromWrappers(date: date, scheduleData: schedule, hipData: hip);
+  FutureOr<ScheduleDay> getScheduleDay(DateTime date, {bool fetch = false, bool forceFetch = false}) async {
+    if (fetch == false) {
+      return ScheduleDay.fromWrappers(date: date, scheduleData: schedule, hipData: hip);
+    } else {
+      try {
+        final vpData = await schedule.fetchData(dateToFetch: date, forceFetch: forceFetch, rethrowErrors: true);
+        return ScheduleDay.fromWrappers(date: date, scheduleData: schedule, hipData: hip, vpData: vpData);
+      } catch (e) {
+        return ScheduleDay(date: date, error: e);
+      }
+    }
+  }
 }
