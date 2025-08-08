@@ -64,7 +64,7 @@ class ScheduleDay {
 
     return ScheduleDay(
       date: date,
-      lessons: lessons,
+      lessons: lessons.reversed.toList(),
       vpTimestamp: vpData?.lastUpdate,
       error: error,
       hasVPData: vpLessons != null,
