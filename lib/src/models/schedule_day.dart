@@ -40,7 +40,7 @@ class ScheduleDay {
     final vpLessons = vpData?.classes
         .firstWhereOrNull((element) => element.name == AppConfig.userClass)
         ?.lessons
-        .where((element) => [...AppConfig.activeLessonIds, -1].contains(element.id.toString()));
+        .where((element) => [...AppConfig.activeLessonIds, '-1'].contains(element.id.toString()));
 
     List<ScheduleLesson> lessons = [];
 
