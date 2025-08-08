@@ -6,10 +6,12 @@ class ScheduleDay {
 
   late List<ScheduleLesson> lessons;
 
+  late DateTime? vpTimestamp;
+
   Object? error;
   bool get hasError => error != null;
 
-  ScheduleDay({required this.date, this.lessons = const [], this.error});
+  ScheduleDay({required this.date, this.lessons = const [], this.vpTimestamp, this.error});
 
   factory ScheduleDay.fromWrappers({
     required DateTime date,
@@ -45,6 +47,6 @@ class ScheduleDay {
       lessons.add(lesson);
     }
 
-    return ScheduleDay(date: date, lessons: lessons);
+    return ScheduleDay(date: date, lessons: lessons, vpTimestamp: vpData?.lastUpdate);
   }
 }
