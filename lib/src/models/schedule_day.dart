@@ -14,17 +14,29 @@ class ScheduleDay {
   Object? error;
   bool get hasError => error != null;
 
-  ScheduleDay({required this.date, this.lessons = const [], this.vpTimestamp, this.error});
+  late bool hasVPData;
+  late bool hasComment;
+  late bool hasHomework;
+
+  ScheduleDay({
+    required this.date,
+    this.lessons = const [],
+    this.vpTimestamp,
+    this.error,
+    this.hasVPData = false,
+    this.hasComment = false,
+    this.hasHomework = false,
+  });
 
   factory ScheduleDay.fromWrappers({
     required DateTime date,
     required ScheduleWrapper scheduleData,
     required HipWrapper hipData,
-    VPWrapper? vpData,
+    required VPWrapper? vpData,
+    Object? error,
   }) {
     final scheduleEntries = hipData.lastLessons.where((element) => element.date.isSameDay(date)).toList();
     final forgottenHomework = hipData.forgottenHomework.where((element) => element.date.isSameDay(date)).toList();
-    vpData ??= scheduleData.getCachedData(date);
     final vpLessons = vpData?.classes
         .firstWhereOrNull((element) => element.name == AppConfig.userClass)
         ?.lessons
@@ -50,6 +62,14 @@ class ScheduleDay {
       lessons.add(lesson);
     }
 
-    return ScheduleDay(date: date, lessons: lessons, vpTimestamp: vpData?.lastUpdate);
+    return ScheduleDay(
+      date: date,
+      lessons: lessons,
+      vpTimestamp: vpData?.lastUpdate,
+      error: error,
+      hasVPData: vpLessons != null,
+      hasComment: lessons.any((element) => element.teacherEntry.isNotEmpty),
+      hasHomework: lessons.any((element) => element.forgottenHomework.isNotEmpty),
+    );
   }
 }

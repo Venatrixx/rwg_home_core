@@ -442,14 +442,19 @@ abstract mixin class DataWrapper {
   }
 
   FutureOr<ScheduleDay> getScheduleDay(DateTime date, {bool fetch = false, bool forceFetch = false}) async {
-    if (fetch == false) {
-      return ScheduleDay.fromWrappers(date: date, scheduleData: schedule, hipData: hip);
+    if (fetch == false && forceFetch == false) {
+      return ScheduleDay.fromWrappers(
+        date: date,
+        scheduleData: schedule,
+        hipData: hip,
+        vpData: schedule.getCachedData(date),
+      );
     } else {
       try {
         final vpData = await schedule.fetchData(dateToFetch: date, forceFetch: forceFetch, rethrowErrors: true);
         return ScheduleDay.fromWrappers(date: date, scheduleData: schedule, hipData: hip, vpData: vpData);
       } catch (e) {
-        return ScheduleDay(date: date, error: e);
+        return ScheduleDay.fromWrappers(date: date, scheduleData: schedule, hipData: hip, vpData: null, error: e);
       }
     }
   }
