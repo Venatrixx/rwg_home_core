@@ -20,7 +20,16 @@ class ScheduleLesson {
     this.forgottenHomework = const [],
     this.vpLessons = const [],
     this.noData = false,
-  });
+  }) {
+    vpLessons.sort((a, b) {
+      bool aContains = AppConfig.activeLessonIds.contains(a.id.toString());
+      bool bContains = AppConfig.activeLessonIds.contains(b.id.toString());
+
+      if (aContains && !bContains) return -1;
+      if (!aContains && bContains) return 1;
+      return 0;
+    });
+  }
 
   bool get hasData => teacherEntry.isNotEmpty || forgottenHomework.isNotEmpty || vpLessons.isNotEmpty;
 }
