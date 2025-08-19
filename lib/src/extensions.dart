@@ -66,7 +66,13 @@ extension RangeInclude on Range<int> {
   /// ```
   /// Returns `null` if either [from] or [to] are null.
   bool? includes(int t) {
-    if (!hasLimits) return null;
-    return from! <= t && t <= to!;
+    if (hasLimits) {
+      return from! <= t && t <= to!;
+    } else if (from != null && to == null) {
+      return t == from;
+    } else if (from == null && to != null) {
+      return t == to;
+    }
+    return null;
   }
 }

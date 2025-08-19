@@ -17,6 +17,8 @@ class CalendarWrapper {
     onLoadingStateChanged?.call(value, error);
   }
 
+  CalendarWrapper({this.bulletins = const []});
+
   /// Stores a reference to an error if the latest fetch process returns an error.
   ///
   /// Resets to `null` when a fetch was successful.

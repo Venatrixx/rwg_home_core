@@ -13,6 +13,8 @@ class VPTime {
 
   bool get hasEndTime => endHour != null && endMinute != null;
 
+  VPTime({required this.lesson, this.startHour, this.startMinute, this.endHour, this.endMinute});
+
   VPTime.fromXML(XmlElement xmlObject) {
     lesson = int.tryParse(xmlObject.text) ?? -1;
 

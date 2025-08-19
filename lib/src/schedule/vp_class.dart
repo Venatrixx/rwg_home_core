@@ -8,7 +8,7 @@ class VPClass {
   late List<VPSubject> subjects;
   late List<VPLesson> lessons;
 
-  VPClass({required this.name, required this.subjects, required this.lessons});
+  VPClass({required this.name, this.times = const [], required this.subjects, required this.lessons});
 
   VPClass.fromXML(XmlElement xmlObject) {
     name = xmlObject.findAllElements('Kurz').first.text;

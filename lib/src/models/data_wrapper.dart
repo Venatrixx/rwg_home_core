@@ -6,6 +6,7 @@ import 'package:rwg_home_core/src/calendar/calendar_wrapper.dart';
 import 'package:rwg_home_core/src/errors/hip_format_exception.dart';
 import 'package:rwg_home_core/src/hip/hip_wrapper.dart';
 import 'package:rwg_home_core/src/models/cloud_storage.dart';
+import 'package:rwg_home_core/src/models/debug_config.dart';
 import 'package:rwg_home_core/src/models/schedule_day.dart';
 import 'package:rwg_home_core/src/schedule/schedule_wrapper.dart';
 import 'package:rwg_home_core/src/static/app_config.dart';
@@ -98,6 +99,9 @@ abstract mixin class DataWrapper {
   List<Event> get allEvents =>
       [...hip.missingHourEvents, ...calendar.allCalendarEvents]..sort((a, b) => a.date.compareTo(b.date));
 
+  bool useDebugConfig = false;
+  DebugConfig debugConfig = DebugConfig();
+
   /// Ensures that the data wrapper is initialized correctly.
   void ensureInitialized() {
     if (File(hipPath).existsSync()) {
@@ -142,6 +146,24 @@ abstract mixin class DataWrapper {
     ensureInitialized();
   }
 
+  void loadDebugData() {
+    error = null;
+
+    hip = debugConfig.hip;
+    schedule = debugConfig.schedule;
+    calendar = debugConfig.calendar;
+
+    AppConfig.userClass = debugConfig.userClass;
+    AppConfig.level = debugConfig.level;
+
+    AppConfig.lessonIds = debugConfig.lessonIds.map((i) => i.toString()).toList();
+    AppConfig.activeLessonIds = List.from(AppConfig.lessonIds);
+
+    AppConfig.saveConfigFileSync();
+
+    _loadingState = LoadingState.done;
+  }
+
   /// Loads the grades/hip data. Either from the local storage or, if [AppConfig.storeGradesInCloud] is set to `true`, fetches it from the cloud.
   ///
   /// If cloud storage fails, the method falls back to local storage and sets [loadingState] to [LoadingState.doneWithError].
@@ -149,6 +171,11 @@ abstract mixin class DataWrapper {
     error = null;
 
     _loadingState = LoadingState.loading;
+
+    if (useDebugConfig) {
+      loadDebugData();
+      return;
+    }
 
     if (AppConfig.storeGradesInCloud) {
       try {
@@ -202,6 +229,11 @@ abstract mixin class DataWrapper {
 
   /// Internal method for loading data. **Does not** catch errors.
   Future<void> _loadData() async {
+    if (useDebugConfig) {
+      loadDebugData();
+      return;
+    }
+
     if (AppConfig.storeGradesInCloud) {
       final onlineData = await CloudStorage.downloadHipDataFromCloud();
       hip = HipWrapper.fromJson(onlineData)..onLoadingStateChanged = onHipLoadingStateChanged;
@@ -224,6 +256,10 @@ abstract mixin class DataWrapper {
     error = null;
 
     _loadingState = LoadingState.loading;
+
+    if (useDebugConfig) {
+      return;
+    }
 
     if (AppConfig.storeGradesInCloud) {
       try {
@@ -288,6 +324,10 @@ abstract mixin class DataWrapper {
 
   /// Internal method for saving data. **Does not** catch errors.
   Future<void> _saveData() async {
+    if (useDebugConfig) {
+      return;
+    }
+
     if (AppConfig.storeGradesInCloud) {
       try {
         await CloudStorage.uploadHipDataToCloud(hip.toJson());
@@ -318,6 +358,11 @@ abstract mixin class DataWrapper {
     error = null;
 
     _loadingState = LoadingState.loading;
+
+    if (useDebugConfig) {
+      loadDebugData();
+      return;
+    }
 
     try {
       await _loadData();
@@ -354,6 +399,11 @@ abstract mixin class DataWrapper {
     error = null;
 
     _loadingState = LoadingState.loading;
+
+    if (useDebugConfig) {
+      loadDebugData();
+      return;
+    }
 
     List<LoadingState> states = [];
 

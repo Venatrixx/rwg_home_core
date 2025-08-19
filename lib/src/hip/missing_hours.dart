@@ -19,6 +19,8 @@ class MissingHour {
     return "${term != null ? "$term HJ" : ""}${subject != null ? " $subject" : ""}${lessons != null ? " $lessons" : ""}${comment != null ? "\n($comment)" : ""}";
   }
 
+  MissingHour({this.date, this.lessons, this.subject, this.comment, this.excused, this.term});
+
   MissingHour.dayFromJson(dynamic json) {
     lessons = null;
     subject = null;

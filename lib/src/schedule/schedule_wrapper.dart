@@ -19,7 +19,7 @@ class ScheduleWrapper {
     onLoadingStateChanged?.call(value, error);
   }
 
-  ScheduleWrapper();
+  ScheduleWrapper({this.vpCache = const {}});
 
   /// Reads the json file at the given path and constructs a [ScheduleWrapper] instance.
   factory ScheduleWrapper.fromJsonFile(String path) {

@@ -14,7 +14,17 @@ class VPLesson {
 
   bool get hasAnyChange => hasChangedRoom || hasChangedTeacher || hasChangedSubject;
 
-  VPLesson();
+  VPLesson({
+    required this.hour,
+    required this.subjectLabel,
+    required this.teacher,
+    required this.room,
+    required this.id,
+    this.comment,
+    this.hasChangedRoom = false,
+    this.hasChangedTeacher = false,
+    this.hasChangedSubject = false,
+  });
 
   VPLesson.fromXML(XmlElement xmlObject) {
     try {
