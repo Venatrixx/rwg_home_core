@@ -305,7 +305,7 @@ class HipWrapper {
       final newData = HipWrapper.fromHipJson(rawData);
 
       if (hardImport) {
-        semesters.removeWhere((element) => element.level = rawData['level']);
+        semesters.removeWhere((element) => element.level == rawData['level']);
         semesters.addAll(newData.semesters);
         semesters.sort((a, b) => a.label.compareTo(b.label));
       } else {
