@@ -85,7 +85,29 @@ class DebugConfig {
         label: sek1 ? "9.2" : "11.2",
         level: sek1 ? 9 : 11,
         subjects: [
-          Subject(name: 'Deutsch', abbr: 'De', onlineGrades: []),
+          Subject(
+            name: 'Deutsch',
+            abbr: 'De',
+            onlineGrades: [
+              Grade.empty(key: '1')
+                ..pointsValue = 14
+                ..seen = true
+                ..uploadDate = DateTime(2025, 7, 14),
+              Grade.empty(key: '2')
+                ..pointsValue = 10
+                ..seen = true
+                ..uploadDate = DateTime(2025, 7, 16),
+              Grade.empty(key: '3')
+                ..pointsValue = 12
+                ..seen = true
+                ..uploadDate = DateTime(2025, 7, 22),
+              Grade.empty(key: '4', isExam: true)
+                ..pointsValue = 6
+                ..description = "Klausur Klassik"
+                ..seen = true
+                ..uploadDate = DateTime(2025, 7, 24),
+            ],
+          ),
           Subject(name: 'Englisch', abbr: 'En', onlineGrades: []),
           Subject(name: 'Mathematik', abbr: 'Ma', onlineGrades: []),
           Subject(name: 'Geschichte und Politische Bildung', abbr: 'Ge', onlineGrades: []),
