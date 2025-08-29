@@ -28,20 +28,20 @@ class DebugConfig {
               Grade.empty(key: '1')
                 ..pointsValue = 7
                 ..seen = true
-                ..uploadDate = DateTime(2025, 8, 14),
+                ..uploadDate = DateTime(2025, 7, 14),
               Grade.empty(key: '2')
                 ..pointsValue = 8
                 ..seen = true
-                ..uploadDate = DateTime(2025, 8, 16),
+                ..uploadDate = DateTime(2025, 7, 16),
               Grade.empty(key: '3')
                 ..pointsValue = 6
                 ..seen = true
-                ..uploadDate = DateTime(2025, 8, 22),
+                ..uploadDate = DateTime(2025, 7, 22),
               Grade.empty(key: '4', isExam: true)
                 ..pointsValue = 6
                 ..description = "Klausur Klassik"
                 ..seen = true
-                ..uploadDate = DateTime(2025, 8, 24),
+                ..uploadDate = DateTime(2025, 7, 24),
             ],
             customGrades: [
               Grade.empty(key: '1234567890')
@@ -57,19 +57,19 @@ class DebugConfig {
                 ..pointsValue = 14
                 ..description = "Vocab test"
                 ..seen = true
-                ..uploadDate = DateTime(2025, 8, 15),
+                ..uploadDate = DateTime(2025, 7, 15),
               Grade.empty(key: '2')
                 ..pointsValue = 10
                 ..seen = true
-                ..uploadDate = DateTime(2025, 8, 17),
+                ..uploadDate = DateTime(2025, 7, 17),
               Grade.empty(key: '3')
                 ..pointsValue = 11
                 ..seen = true
-                ..uploadDate = DateTime(2025, 8, 23),
+                ..uploadDate = DateTime(2025, 7, 23),
               Grade.empty(key: '4', isExam: true)
                 ..pointsValue = 9
                 ..seen = true
-                ..uploadDate = DateTime(2025, 8, 25),
+                ..uploadDate = DateTime(2025, 7, 25),
             ],
           ),
           Subject(name: 'Mathematik', abbr: 'Ma', onlineGrades: []),
@@ -135,28 +135,28 @@ class DebugConfig {
     totalUnexcusedMissingDays: 1,
     totalUnexcusedMissingHours: 0,
     missingHourData: [
-      MissingHour(date: DateTime(2025, 8, 10), term: "2. HJ", lessons: "3 Std", subject: "Mathematik", excused: false),
-      MissingHour(date: DateTime(2025, 8, 2), term: "2. HJ", excused: true),
-      MissingHour(date: DateTime(2025, 8, 9), term: "2. HJ", lessons: "2 Std", subject: "Deutsch"),
+      MissingHour(date: DateTime(2025, 7, 10), term: "2. HJ", lessons: "3 Std", subject: "Mathematik", excused: false),
+      MissingHour(date: DateTime(2025, 7, 2), term: "2. HJ", excused: true),
+      MissingHour(date: DateTime(2025, 7, 9), term: "2. HJ", lessons: "2 Std", subject: "Deutsch"),
     ],
 
     lastLessons: [
-      HipLesson(date: DateTime(2025, 8, 25), lesson: Range(from: 5), subject: 'Englisch', topic: 'British English'),
-      HipLesson(date: DateTime(2025, 8, 25), lesson: Range(from: 3, to: 4), subject: 'Sport', topic: 'Volleyball'),
-      HipLesson(date: DateTime(2025, 8, 24), lesson: Range(from: 1, to: 2), subject: 'Mathematik', topic: 'Analysis'),
+      HipLesson(date: DateTime(2025, 7, 25), lesson: Range(from: 5), subject: 'Englisch', topic: 'British English'),
+      HipLesson(date: DateTime(2025, 7, 25), lesson: Range(from: 3, to: 4), subject: 'Sport', topic: 'Volleyball'),
+      HipLesson(date: DateTime(2025, 7, 24), lesson: Range(from: 1, to: 2), subject: 'Mathematik', topic: 'Analysis'),
       HipLesson(
-        date: DateTime(2025, 8, 21),
+        date: DateTime(2025, 7, 21),
         lesson: Range(from: 5, to: 6),
         subject: 'Mathematik',
         topic: 'Analysis',
         homework: "LB.S.50/3",
         type: 'Hausaufgabe',
       ),
-      HipLesson(date: DateTime(2025, 8, 23), lesson: Range(from: 6), subject: 'Deutsch', topic: 'Faust'),
+      HipLesson(date: DateTime(2025, 7, 23), lesson: Range(from: 6), subject: 'Deutsch', topic: 'Faust'),
     ],
     forgottenHomework: [
       HipLesson(
-        date: DateTime(2025, 8, 24),
+        date: DateTime(2025, 7, 24),
         lesson: Range(from: 1),
         subject: 'Mathematik',
         comment: 'Buchaufgabe vergessen',
@@ -167,8 +167,8 @@ class DebugConfig {
   ScheduleWrapper get schedule => ScheduleWrapper(
     vpCache: {
       '20250825': VPWrapper(
-        date: DateTime(2025, 8, 25),
-        lastUpdate: DateTime(2025, 8, 25, 11, 50),
+        date: DateTime(2025, 7, 25),
+        lastUpdate: DateTime(2025, 7, 25, 11, 50),
         classes: [
           VPClass(
             name: userClass,
@@ -203,8 +203,8 @@ class DebugConfig {
         ],
       ),
       '20250824': VPWrapper(
-        date: DateTime(2025, 8, 25),
-        lastUpdate: DateTime(2025, 8, 25, 11, 50),
+        date: DateTime(2025, 7, 25),
+        lastUpdate: DateTime(2025, 7, 25, 11, 50),
         classes: [
           VPClass(
             name: userClass,
@@ -254,9 +254,9 @@ class DebugConfig {
 
   CalendarWrapper get calendar => CalendarWrapper(
     bulletins: [
-      Event(DateTime(2025, 8, 25), EventType.event, "Letzter Schultag"),
-      Event(DateTime(2025, 8, 24), EventType.exam, "Deutsch Klausur"),
-      Event(DateTime(2025, 8, 15), EventType.test, "Vokabeltest", time: '4. Std', comment: "Unit A"),
+      Event(DateTime(2025, 7, 25), EventType.event, "Letzter Schultag"),
+      Event(DateTime(2025, 7, 24), EventType.exam, "Deutsch Klausur"),
+      Event(DateTime(2025, 7, 15), EventType.test, "Vokabeltest", time: '4. Std', comment: "Unit A"),
     ],
   )..loadingState = LoadingState.done;
 }

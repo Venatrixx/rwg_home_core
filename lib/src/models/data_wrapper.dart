@@ -170,7 +170,7 @@ abstract mixin class DataWrapper {
     AppConfig.userClass = debugConfig.userClass;
     AppConfig.level = debugConfig.level;
 
-    AppConfig.lessonIds = debugConfig.lessonIds.map((i) => i.toString()).toList();
+    AppConfig.lessonIds = debugConfig.lessonIds;
     AppConfig.activeLessonIds = List.from(AppConfig.lessonIds);
 
     AppConfig.saveConfigFileSync();
@@ -188,6 +188,7 @@ abstract mixin class DataWrapper {
 
     if (useDebugConfig) {
       loadDebugData();
+      _loadingState = LoadingState.done;
       return;
     }
 
@@ -375,6 +376,7 @@ abstract mixin class DataWrapper {
 
     if (useDebugConfig) {
       loadDebugData();
+      _loadingState = LoadingState.done;
       return;
     }
 
@@ -416,6 +418,7 @@ abstract mixin class DataWrapper {
 
     if (useDebugConfig) {
       loadDebugData();
+      _loadingState = LoadingState.done;
       return;
     }
 
