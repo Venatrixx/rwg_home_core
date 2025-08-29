@@ -99,8 +99,22 @@ abstract mixin class DataWrapper {
   List<Event> get allEvents =>
       [...hip.missingHourEvents, ...calendar.allCalendarEvents]..sort((a, b) => a.date.compareTo(b.date));
 
-  bool useDebugConfig = false;
-  DebugConfig debugConfig = DebugConfig();
+  bool _useDebugConfig = false;
+  bool _useSek1DebugConfig = true;
+
+  bool get useDebugConfig => _useDebugConfig;
+  set useDebugConfig(bool value) {
+    _useDebugConfig = value;
+    onDataChanged();
+  }
+
+  bool get useSek1DebugConfig => _useSek1DebugConfig;
+  set useSek1DebugConfig(bool value) {
+    _useSek1DebugConfig = value;
+    onDataChanged();
+  }
+
+  DebugConfig get debugConfig => DebugConfig(sek1: useSek1DebugConfig);
 
   /// Ensures that the data wrapper is initialized correctly.
   void ensureInitialized() {
