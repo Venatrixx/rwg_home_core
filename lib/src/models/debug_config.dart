@@ -8,12 +8,12 @@ class DebugConfig {
   String userClass;
   int level;
 
-  List<int> lessonIds;
+  List<String> lessonIds;
 
   DebugConfig({this.sek1 = false})
     : userClass = sek1 ? "9A" : "11D",
       level = sek1 ? 9 : 11,
-      lessonIds = List.generate(9, (i) => i + 1);
+      lessonIds = List.generate(9, (i) => (i + 1).toString());
 
   HipWrapper get hip => HipWrapper(
     semesters: [
@@ -162,7 +162,7 @@ class DebugConfig {
         comment: 'Buchaufgabe vergessen',
       ),
     ],
-  );
+  )..loadingState = LoadingState.done;
 
   ScheduleWrapper get schedule => ScheduleWrapper(
     vpCache: {
@@ -250,7 +250,7 @@ class DebugConfig {
         ],
       ),
     },
-  );
+  )..loadingState = LoadingState.done;
 
   CalendarWrapper get calendar => CalendarWrapper(
     bulletins: [
@@ -258,5 +258,5 @@ class DebugConfig {
       Event(DateTime(2025, 8, 24), EventType.exam, "Deutsch Klausur"),
       Event(DateTime(2025, 8, 15), EventType.test, "Vokabeltest", time: '4. Std', comment: "Unit A"),
     ],
-  );
+  )..loadingState = LoadingState.done;
 }
