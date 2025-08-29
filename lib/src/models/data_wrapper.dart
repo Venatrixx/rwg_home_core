@@ -509,12 +509,19 @@ abstract mixin class DataWrapper {
   }
 
   FutureOr<ScheduleDay> getScheduleDay(DateTime date, {bool fetch = false, bool forceFetch = false}) async {
-    if (fetch == false && forceFetch == false && !useDebugConfig) {
+    if (useDebugConfig) {
       return ScheduleDay.fromWrappers(
         date: date,
         scheduleData: debugConfig.schedule,
         hipData: debugConfig.hip,
         vpData: debugConfig.schedule.getCachedData(date),
+      );
+    } else if (fetch == false && forceFetch == false) {
+      return ScheduleDay.fromWrappers(
+        date: date,
+        scheduleData: schedule,
+        hipData: hip,
+        vpData: schedule.getCachedData(date),
       );
     } else {
       try {
