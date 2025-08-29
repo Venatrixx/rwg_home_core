@@ -113,10 +113,16 @@ class AbstractYearSubject {
       List<AbstractFinalGrade> exams = [
         for (final grade in subject.onlineGrades.where((element) => element.isExam))
           AbstractFinalGrade.fromValue(grade.gradeValue),
+
+        for (final grade in subject.customGrades.where((element) => element.isExam))
+          AbstractFinalGrade.fromValue(grade.gradeValue),
       ];
 
       List<AbstractFinalGrade> tests = [
         for (final grade in subject.onlineGrades.where((element) => !element.isExam))
+          AbstractFinalGrade.fromValue(grade.gradeValue),
+
+        for (final grade in subject.customGrades.where((element) => !element.isExam))
           AbstractFinalGrade.fromValue(grade.gradeValue),
       ];
 
