@@ -65,7 +65,9 @@ class HipWrapper {
   /// Returns the index of the last element of [semesters] where [Semester.hasData] is `true`.
   int get currentSemesterIndex {
     int index = semesters
-        .where((element) => element.level == AppConfig.level)
+        .where(
+          (element) => AppConfig.isSek1 ? element.level == AppConfig.level : element.level >= AppConfig.sek2Threshold,
+        )
         .toList()
         .lastIndexWhere((semester) => semester.hasData);
     if (index < 0) return 0;
