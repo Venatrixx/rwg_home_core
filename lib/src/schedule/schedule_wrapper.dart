@@ -192,7 +192,7 @@ class ScheduleWrapper {
 
     loadingState = LoadingState.done;
 
-    return vpData;
+    return VPWrapper.fromXML(utf8.decode(res.bodyBytes));
   }
 
   /// Returns a list of [VPLesson] elements that happen on the given [date] and have changes.
