@@ -249,16 +249,16 @@ abstract mixin class DataWrapper {
       return;
     }
 
-    if (AppConfig.storeGradesInCloud) {
-      final onlineData = await CloudStorage.downloadHipDataFromCloud();
-      hip = HipWrapper.fromJson(onlineData)..onLoadingStateChanged = onHipLoadingStateChanged;
+    final onlineData = await CloudStorage.fetchCloudData();
+
+    if (AppConfig.storeGradesInCloud && onlineData['grades_data'] != null) {
+      hip = HipWrapper.fromJson(onlineData['grades_data'])..onLoadingStateChanged = onHipLoadingStateChanged;
     } else {
       hip = HipWrapper.fromJsonFile(hipPath)..onLoadingStateChanged = onHipLoadingStateChanged;
     }
 
-    if (AppConfig.storeWizardInCloud) {
-      final onlineData = await CloudStorage.downloadWizardDataFromCloud();
-      aLevel = ALevelWrapper.fromJson(onlineData)..onDataChanged = onDataChanged;
+    if (AppConfig.storeWizardInCloud && onlineData['wizard_data'] != null) {
+      aLevel = ALevelWrapper.fromJson(onlineData['wizard_data'])..onDataChanged = onDataChanged;
     } else {
       aLevel = ALevelWrapper.fromJsonFile(aLevelPath)..onDataChanged = onDataChanged;
     }
