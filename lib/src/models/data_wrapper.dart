@@ -192,10 +192,11 @@ abstract mixin class DataWrapper {
       return;
     }
 
-    if (AppConfig.storeGradesInCloud) {
+    final onlineData = await CloudStorage.fetchCloudData();
+
+    if (AppConfig.storeGradesInCloud && onlineData['grades_data'] != null) {
       try {
-        final onlineData = await CloudStorage.downloadHipDataFromCloud();
-        hip = HipWrapper.fromJson(onlineData)..onLoadingStateChanged = onHipLoadingStateChanged;
+        hip = HipWrapper.fromJson(onlineData['grades_data'])..onLoadingStateChanged = onHipLoadingStateChanged;
       } catch (cloudError) {
         error = cloudError;
         _loadingState = LoadingState.error;
@@ -211,10 +212,9 @@ abstract mixin class DataWrapper {
       }
     }
 
-    if (AppConfig.storeWizardInCloud) {
+    if (AppConfig.storeWizardInCloud && onlineData['wizard_data'] != null) {
       try {
-        final onlineData = await CloudStorage.downloadWizardDataFromCloud();
-        aLevel = ALevelWrapper.fromJson(onlineData)..onDataChanged = onDataChanged;
+        aLevel = ALevelWrapper.fromJson(onlineData['wizard_data'])..onDataChanged = onDataChanged;
       } catch (cloudError) {
         error = cloudError;
         _loadingState = LoadingState.error;

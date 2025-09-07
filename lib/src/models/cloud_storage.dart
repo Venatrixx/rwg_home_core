@@ -98,7 +98,7 @@ final class CloudStorage {
   }
 
   /// Internal helper method to fetch data.
-  static Future<Map> _fetchCloudData() async {
+  static Future<Map<String, dynamic>> fetchCloudData() async {
     final res = await Client()
         .get(Uri.https('rwg.nice-2know.de', '/api/cloud/data/${AppConfig.userId!}'))
         .timeout(shortTimeoutDuration);
@@ -107,17 +107,13 @@ final class CloudStorage {
 
     final responseData = Map<String, dynamic>.from(jsonDecode(res.body));
 
-    Map<String, dynamic> fetchedData = {};
-
     final config = await AppConfig.userHipConfig;
 
-    for (var entry in responseData.entries) {
-      if (entry.value is String) {
-        fetchedData[entry.key] = _decryptData(entry.value, config);
-      } else {
-        fetchedData[entry.key] = null;
-      }
-    }
+    Map<String, dynamic> fetchedData = {
+      if (responseData['grades_data'] is String) 'grades_data': _decryptData(responseData['grades_data'], config),
+      if (responseData['wizard_data'] is String) 'wizard_data': _decryptData(responseData['wizard_data'], config),
+      if (responseData['calendar_data'] is String) 'calendar_data': _decryptData(responseData['calendar_data'], config),
+    };
 
     return fetchedData;
   }
@@ -153,7 +149,7 @@ final class CloudStorage {
   }
 
   static Future<dynamic> downloadHipDataFromCloud() async {
-    return (await _fetchCloudData())['grades_data'];
+    return (await fetchCloudData())['grades_data'];
   }
 
   static Future<void> uploadWizardDataToCloud(dynamic data) async {
@@ -161,7 +157,7 @@ final class CloudStorage {
   }
 
   static Future<dynamic> downloadWizardDataFromCloud() async {
-    return (await _fetchCloudData())['wizard_data'];
+    return (await fetchCloudData())['wizard_data'];
   }
 
   static Future<void> uploadCalendarDataToCloud(dynamic data) async {
@@ -169,6 +165,6 @@ final class CloudStorage {
   }
 
   static Future<dynamic> downloadCalendarDataFromCloud() async {
-    return (await _fetchCloudData())['calendar_data'];
+    return (await fetchCloudData())['calendar_data'];
   }
 }
