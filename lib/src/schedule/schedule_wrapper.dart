@@ -137,7 +137,9 @@ class ScheduleWrapper {
 
     garbageCollectCache();
 
-    if (vpDataToday != null && (dateToFetch == null || dateToFetch.isSameDay(getNextDate(lastLessonEndingTime())))) {
+    if (vpDataToday != null &&
+        !forceFetch &&
+        (dateToFetch == null || dateToFetch.isSameDay(getNextDate(lastLessonEndingTime())))) {
       loadingState = LoadingState.done;
       return vpDataToday!;
     }
@@ -220,7 +222,7 @@ class ScheduleWrapper {
     return data.classes
         .firstWhere((cl) => cl.name == AppConfig.userClass)
         .lessons
-        .where((lesson) => AppConfig.lessonIds.contains(lesson.id.toString()) && lesson.hasAnyChange)
+        .where((lesson) => ["-1", ...AppConfig.lessonIds].contains(lesson.id.toString()) && lesson.hasAnyChange)
         .toList();
   }
 }
