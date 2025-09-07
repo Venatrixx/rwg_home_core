@@ -249,7 +249,9 @@ abstract mixin class DataWrapper {
       return;
     }
 
-    final onlineData = await CloudStorage.fetchCloudData();
+    final onlineData = (AppConfig.storeGradesInCloud || AppConfig.storeWizardInCloud)
+        ? await CloudStorage.fetchCloudData()
+        : {};
 
     if (AppConfig.storeGradesInCloud && onlineData['grades_data'] != null) {
       hip = HipWrapper.fromJson(onlineData['grades_data'])..onLoadingStateChanged = onHipLoadingStateChanged;
