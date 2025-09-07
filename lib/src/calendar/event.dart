@@ -36,7 +36,7 @@ class Event {
       comment = json['comment'] as String?,
       location = json['location'] as String?,
       date = DateTime.parse(json['date']),
-      from = DateTime.tryParse(json['from']),
-      to = DateTime.tryParse(json['to']),
+      from = DateTime.tryParse(json['from'] ?? ''),
+      to = DateTime.tryParse(json['to'] ?? ''),
       curseIds = List<int>.from(json['curseIds'] ?? []);
 }
