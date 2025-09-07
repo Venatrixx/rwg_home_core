@@ -62,7 +62,12 @@ class CalendarWrapper {
 
       final json = List.from(jsonDecode(res.body));
 
-      events = [for (final elem in json) Event.eventFromJson(elem)];
+      events = [
+        for (final elem in json)
+          if (elem['curse_ids'] is List &&
+              (elem['curse_ids'] as List).any((element) => AppConfig.activeLessonIds.contains(element)))
+            Event.eventFromJson(elem),
+      ];
 
       loadingState = LoadingState.done;
       return;
