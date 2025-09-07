@@ -275,10 +275,10 @@ class DebugConfig {
   )..loadingState = LoadingState.done;
 
   CalendarWrapper get calendar => CalendarWrapper(
-    bulletins: [
-      Event(DateTime(2025, 7, 25), EventType.event, "Letzter Schultag"),
-      Event(DateTime(2025, 7, 24), EventType.exam, "Deutsch Klausur"),
-      Event(DateTime(2025, 7, 15), EventType.test, "Vokabeltest", time: '4. Std', comment: "Unit A"),
+    events: [
+      Event(EventType.event, "Letzter Schultag", DateTime(2025, 7, 25)),
+      Event(EventType.exam, "Deutsch Klausur", DateTime(2025, 7, 24)),
+      Event(EventType.test, "Vokabeltest", DateTime(2025, 7, 15), location: '4. Std', comment: "Unit A"),
     ],
   )..loadingState = LoadingState.done;
 }

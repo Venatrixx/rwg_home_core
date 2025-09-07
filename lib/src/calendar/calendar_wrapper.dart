@@ -17,21 +17,21 @@ class CalendarWrapper {
     onLoadingStateChanged?.call(value, error);
   }
 
-  CalendarWrapper({this.bulletins = const []});
+  CalendarWrapper({this.events = const []});
 
   /// Stores a reference to an error if the latest fetch process returns an error.
   ///
   /// Resets to `null` when a fetch was successful.
   Object? error;
 
-  /// List of global events (bulletins).
-  List<Event> bulletins = [];
+  /// List of global events.
+  List<Event> events = [];
 
-  /// Returns a list of [Event] elements with all [AppConfig.holidayEvents] and [bulletins].
+  /// Returns a list of [Event] elements with all [AppConfig.holidayEvents] and [events].
   ///
   /// Sorts the elements by [Event.date].
   List<Event> get allCalendarEvents =>
-      [...AppConfig.holidayEvents, ...bulletins]..sort((a, b) => a.date.compareTo(b.date));
+      [...AppConfig.holidayEvents, ...events]..sort((a, b) => a.date.compareTo(b.date));
 
   /// Returns a list of [Event] elements based on [allCalendarEvents] with all events,
   /// that happen in the upcoming amount of [days].
@@ -50,19 +50,19 @@ class CalendarWrapper {
   /// Calls [getNextXDays] with `days = 1` and `currentDate = DateTime.now()` internally.
   List<Event> get eventsNext7Days => getNextXDays(7);
 
-  /// Fetches all bulletins and stores them inside [bulletins] property.
-  Future<void> fetchBulletins({bool rethrowErrors = false}) async {
+  /// Fetches all bulletins and stores them inside [events] property.
+  Future<void> fetchEvents({bool rethrowErrors = false}) async {
     error = null;
 
     loadingState = LoadingState.loading;
 
     try {
-      final res = await Client().get(Uri.https('www.nice-2know.de', '/rwg-home/api/bulletin'));
+      final res = await Client().get(Uri.https('rwg.nice-2know.de', '/api/events'));
       if (res.statusCode >= 400) throw HttpException("Daten konnten nicht abgerufen werden.");
 
       final json = List.from(jsonDecode(res.body));
 
-      bulletins = [for (final elem in json) Event.eventFromJson(elem)];
+      events = [for (final elem in json) Event.eventFromJson(elem)];
 
       loadingState = LoadingState.done;
       return;
@@ -74,11 +74,14 @@ class CalendarWrapper {
   }
 
   /// Submits a bulletin to the database.
-  Future<void> addBulletin({
+  Future<void> addEvent({
     required String title,
-    required String description,
     required DateTime date,
-    String? time,
+    String? comment,
+    String? location,
+    DateTime? from,
+    DateTime? to,
+    List<int>? curseIds,
   }) async {
     error = null;
 
@@ -86,14 +89,17 @@ class CalendarWrapper {
 
     var data = {
       'title': title.trim(),
-      'description': description.trim(),
-      'date': date.millisecondsSinceEpoch.toString(),
+      'date': date.toIso8601String(),
+      'comment': comment?.trim(),
+      'location': location?.trim(),
+      'from': from?.toIso8601String(),
+      'to': to?.toIso8601String(),
+      'curseIds': curseIds,
     };
-    if (time != null && time.trim() != "") data['time'] = time.trim();
 
     try {
       final res = await Client().post(
-        Uri.https('www.nice-2know.de', '/rwg-home/api/bulletin'),
+        Uri.https('rwg.nice-2know.de', '/api/events'),
         headers: {HttpHeaders.contentTypeHeader: 'application/json'},
         body: jsonEncode(data),
       );

@@ -454,7 +454,7 @@ abstract mixin class DataWrapper {
 
     // calendar data
     try {
-      await calendar.fetchBulletins(rethrowErrors: true);
+      await calendar.fetchEvents(rethrowErrors: true);
       states.add(LoadingState.done);
     } catch (e) {
       states.add(LoadingState.error);

@@ -19,22 +19,24 @@ final class CloudStorage {
   ///
   /// Returns a tuple with a ``bool`` value that indicates if data is available and a user friendly formatted string.
   ///
-  /// Eg for a formatted string:
-  /// * "(404) Keine Daten für diesen Nutzer verfügbar.", when there's no data
-  /// * "(200) Daten verfügbar bis...", when there is data
+  /// Possible responses:
+  /// * (204) when there's no data
+  /// * (200) when there is data
   static Future<(bool, String?)> getCloudStatus() async {
     _checkUserIdAvailable();
     final res = await Client()
-        .get(Uri.https('nice-2know.de', 'rwg-home/cloud/status'), headers: {'id': AppConfig.userId!})
+        .get(Uri.https('rwg.nice-2know.de', '/api/cloud/users/${AppConfig.userId!}'))
         .timeout(shortTimeoutDuration);
 
-    if (res.statusCode != 200) return (false, "(${res.statusCode}) ${res.body}");
-
-    final dateString = jsonDecode(res.body)['first_used'];
-
-    final date = DateTime.fromMillisecondsSinceEpoch(int.parse(dateString)).add(const Duration(days: 3 * 365));
-
-    return (true, "(200) Daten verfügbar bis ${DateFormat('dd.MM.yyyy').format(date)}.");
+    switch (res.statusCode) {
+      case 200:
+        final date = DateTime.parse(jsonDecode(res.body)['first_used']).add(Duration(days: 3 * 365));
+        return (true, "(200) Daten verfügbar bis ${DateFormat('dd.MM.yyyy').format(date)}.");
+      case 204:
+        return (false, "(204) Keine Daten für diesen Nutzer vorhanden.");
+      default:
+        return (false, "Fehler. Der Status konnte nicht bestimmt werden.");
+    }
   }
 
   /// Registers a new user in the cloud.
@@ -48,7 +50,7 @@ final class CloudStorage {
     if (isRegistered) return;
 
     final res = await Client()
-        .post(Uri.https('nice-2know.de', '/rwg-home/cloud/status'), headers: {'id': AppConfig.userId!})
+        .post(Uri.https('rwg.nice-2know.de', '/api/cloud/users/${AppConfig.userId!}'))
         .timeout(shortTimeoutDuration);
 
     if (res.statusCode != 200) throw CloudException.fromHttp(res);
@@ -61,7 +63,7 @@ final class CloudStorage {
     _checkUserIdAvailable();
 
     final res = await Client()
-        .delete(Uri.https('nice-2know.de', '/rwg-home/cloud/data'), headers: {'id': AppConfig.userId!})
+        .delete(Uri.https('rwg.nice-2know.de', '/api/cloud/users/${AppConfig.userId!}'))
         .timeout(shortTimeoutDuration);
 
     if (res.statusCode != 200) throw CloudException.fromHttp(res);
@@ -98,7 +100,7 @@ final class CloudStorage {
   /// Internal helper method to fetch data.
   static Future<Map> _fetchCloudData() async {
     final res = await Client()
-        .get(Uri.https('nice-2know.de', '/rwg-home/cloud/data'), headers: {'id': AppConfig.userId!})
+        .get(Uri.https('rwg.nice-2know.de', '/api/cloud/data/${AppConfig.userId!}'))
         .timeout(shortTimeoutDuration);
 
     if (res.statusCode != 200) throw CloudException.fromHttp(res);
@@ -135,8 +137,8 @@ final class CloudStorage {
 
     final res = await Client()
         .post(
-          Uri.https('nice-2know.de', '/rwg-home/cloud/data'),
-          headers: {'id': AppConfig.userId!, 'content-type': 'application/json'},
+          Uri.https('rwg.nice-2know.de', '/api/cloud/data/${AppConfig.userId!}'),
+          headers: {'content-type': 'application/json'},
           body: jsonEncode(data),
         )
         .timeout(shortTimeoutDuration);
