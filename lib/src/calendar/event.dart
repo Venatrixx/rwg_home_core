@@ -40,4 +40,11 @@ class Event {
       to = DateTime.tryParse(json['to'] ?? ''),
       curseIds = List<int>.from(json['curseIds'] ?? []),
       type = EventType.event;
+
+  bool isOn(DateTime date) {
+    if (from != null && to != null) {
+      return (date.isAfter(from!) || date.isSameDay(from!)) && (date.isBefore(to!) || date.isSameDay(to!));
+    }
+    return this.date.isSameDay(date);
+  }
 }
