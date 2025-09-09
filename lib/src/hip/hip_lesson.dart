@@ -24,24 +24,11 @@ class HipLesson {
     Range<int>? lesson = Range();
     if (json['lesson'] is String) {
       try {
-        String lessonString = json['lesson'];
-        String firstLessonString = lessonString.substring(
-          lessonString.indexOf(RegExp(r'[0-9]'), lessonString.indexOf(RegExp(r'[^0-9]'))),
-        );
-        int? firstLesson = int.tryParse(firstLessonString);
+        int? firstLesson = int.tryParse(json['lesson']);
 
         if (firstLesson is! int) throw 1;
 
         lesson.from = firstLesson;
-
-        try {
-          lessonString = lessonString.substring(lessonString.indexOf(firstLessonString) + firstLessonString.length);
-          String secondLessonString = lessonString.substring(
-            lessonString.indexOf(RegExp(r'[0-9]'), lessonString.indexOf(RegExp(r'[^0-9]'))),
-          );
-          int? secondLesson = int.tryParse(secondLessonString);
-          if (secondLesson is int) lesson.to = secondLesson;
-        } catch (_) {}
       } catch (_) {
         lesson = null;
       }
@@ -52,16 +39,16 @@ class HipLesson {
     return HipLesson(
       date: date,
       lesson: lesson,
-      subject: json['subject'].toStringOrNull(),
-      topic: json['topic'].toStringOrNull(),
-      homework: json['homework'].toStringOrNull(),
-      type: json['type'].toStringOrNull(),
-      comment: json['comment'].toStringOrNull(),
+      subject: (json['subject'] as String?).toStringOrNull(),
+      topic: (json['topic'] as String?).toStringOrNull(),
+      homework: (json['homework'] as String?).toStringOrNull(),
+      type: (json['type'] as String?).toStringOrNull(),
+      comment: (json['comment'] as String?).toStringOrNull(),
     );
   }
 
   HipLesson.fromJson(dynamic json)
-    : date = DateTime.fromMillisecondsSinceEpoch(json['date']),
+    : date = DateTime.parse(json['date']),
       lesson = Range<int>(from: int.tryParse(json['lessonFrom']), to: int.tryParse(json['lessonTo'])),
       subject = json['subject'],
       topic = json['topic'],
@@ -70,7 +57,7 @@ class HipLesson {
       comment = json['comment'];
 
   Map toJson() => {
-    'date': date.millisecondsSinceEpoch,
+    'date': date.toIso8601String(),
     'lessonFrom': lesson?.from,
     'lessonTo': lesson?.to,
     'subject': subject,
