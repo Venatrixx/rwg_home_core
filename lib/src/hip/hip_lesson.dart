@@ -49,7 +49,7 @@ class HipLesson {
 
   HipLesson.fromJson(dynamic json)
     : date = DateTime.parse(json['date']),
-      lesson = Range<int>(from: int.tryParse(json['lessonFrom']), to: int.tryParse(json['lessonTo'])),
+      lesson = Range<int>(from: json['lessonFrom'], to: json['lessonTo']),
       subject = json['subject'],
       topic = json['topic'],
       homework = json['homework'],
