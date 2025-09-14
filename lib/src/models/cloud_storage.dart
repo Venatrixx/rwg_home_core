@@ -5,9 +5,7 @@ import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:home_info_point_client/home_info_point_client.dart' show HipConfig;
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
-import 'package:rwg_home_core/src/constants.dart';
-import 'package:rwg_home_core/src/errors/cloud_exception.dart';
-import 'package:rwg_home_core/src/static/app_config.dart';
+import 'package:rwg_home_core/rwg_home_core.dart';
 
 final class CloudStorage {
   static void _checkUserIdAvailable() {
@@ -25,7 +23,7 @@ final class CloudStorage {
   static Future<(bool, String?)> getCloudStatus() async {
     _checkUserIdAvailable();
     final res = await Client()
-        .get(Uri.https('rwg.nice-2know.de', '/api/cloud/users/${AppConfig.userId!}'))
+        .get(Uri.https('rwg.nice-2know.de', '/api/cloud/users/${AppConfig.userId!}'), headers: ApiConfig.defaultHeaders)
         .timeout(shortTimeoutDuration);
 
     switch (res.statusCode) {
@@ -50,7 +48,10 @@ final class CloudStorage {
     if (isRegistered) return;
 
     final res = await Client()
-        .post(Uri.https('rwg.nice-2know.de', '/api/cloud/users/${AppConfig.userId!}'))
+        .post(
+          Uri.https('rwg.nice-2know.de', '/api/cloud/users/${AppConfig.userId!}'),
+          headers: ApiConfig.defaultHeaders,
+        )
         .timeout(shortTimeoutDuration);
 
     if (res.statusCode != 200) throw CloudException.fromHttp(res);
@@ -63,7 +64,10 @@ final class CloudStorage {
     _checkUserIdAvailable();
 
     final res = await Client()
-        .delete(Uri.https('rwg.nice-2know.de', '/api/cloud/users/${AppConfig.userId!}'))
+        .delete(
+          Uri.https('rwg.nice-2know.de', '/api/cloud/users/${AppConfig.userId!}'),
+          headers: ApiConfig.defaultHeaders,
+        )
         .timeout(shortTimeoutDuration);
 
     if (res.statusCode != 200) throw CloudException.fromHttp(res);
@@ -100,7 +104,7 @@ final class CloudStorage {
   /// Internal helper method to fetch data.
   static Future<Map<String, dynamic>> fetchCloudData() async {
     final res = await Client()
-        .get(Uri.https('rwg.nice-2know.de', '/api/cloud/data/${AppConfig.userId!}'))
+        .get(Uri.https('rwg.nice-2know.de', '/api/cloud/data/${AppConfig.userId!}'), headers: ApiConfig.defaultHeaders)
         .timeout(shortTimeoutDuration);
 
     if (res.statusCode != 200) throw CloudException.fromHttp(res);
@@ -134,7 +138,7 @@ final class CloudStorage {
     final res = await Client()
         .post(
           Uri.https('rwg.nice-2know.de', '/api/cloud/data/${AppConfig.userId!}'),
-          headers: {'content-type': 'application/json'},
+          headers: {'content-type': 'application/json', ...ApiConfig.defaultHeaders},
           body: jsonEncode(data),
         )
         .timeout(shortTimeoutDuration);

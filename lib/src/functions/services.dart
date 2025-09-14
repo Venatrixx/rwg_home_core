@@ -1,10 +1,10 @@
 import 'package:http/http.dart';
-import 'package:rwg_home_core/src/static/enums.dart';
+import 'package:rwg_home_core/rwg_home_core.dart';
 
 /// get services status
 Future<LoadingState> fetchServicesStatus() async {
   try {
-    final res = await Client().get(Uri.https('rwg.nice-2know.de', '/api'));
+    final res = await Client().get(Uri.https('rwg.nice-2know.de', '/api'), headers: ApiConfig.defaultHeaders);
 
     switch (res.statusCode) {
       case 200:

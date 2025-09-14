@@ -57,7 +57,7 @@ class CalendarWrapper {
     loadingState = LoadingState.loading;
 
     try {
-      final res = await Client().get(Uri.https('rwg.nice-2know.de', '/api/events'));
+      final res = await Client().get(Uri.https('rwg.nice-2know.de', '/api/events'), headers: ApiConfig.defaultHeaders);
       if (res.statusCode >= 400) throw HttpException("Daten konnten nicht abgerufen werden.");
 
       final json = List.from(jsonDecode(res.body));
@@ -106,7 +106,7 @@ class CalendarWrapper {
     try {
       final res = await Client().post(
         Uri.https('rwg.nice-2know.de', '/api/events'),
-        headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+        headers: {HttpHeaders.contentTypeHeader: 'application/json', ...ApiConfig.defaultHeaders},
         body: jsonEncode(data),
       );
       if (res.statusCode >= 400) throw HttpException("Ereignis konnte nicht hochgeladen werden.\nFehler: ${res.body}");

@@ -5,7 +5,9 @@ import 'package:http/http.dart';
 import 'package:rwg_home_core/rwg_home_core.dart';
 
 Future<List> fetchAbstractSubjects() async {
-  final res = await Client().get(Uri.https('rwg.nice-2know.de', '/api/subjects')).timeout(shortTimeoutDuration);
+  final res = await Client()
+      .get(Uri.https('rwg.nice-2know.de', '/api/subjects'), headers: ApiConfig.defaultHeaders)
+      .timeout(shortTimeoutDuration);
 
   if (res.statusCode != 200) throw HttpException('Unerwarteter Fehler: (${res.statusCode}) ${res.body}');
 
@@ -18,7 +20,7 @@ Future<void> submitAbstractSubject(AbstractSubject subject) async {
   await Client()
       .post(
         Uri.https('rwg.nice-2know.de', '/api/subjects'),
-        headers: {'content-type': 'application/json'},
+        headers: {'content-type': 'application/json', ...ApiConfig.defaultHeaders},
         body: jsonEncode(data),
       )
       .timeout(shortTimeoutDuration);

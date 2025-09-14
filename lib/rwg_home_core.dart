@@ -5,6 +5,7 @@ export 'src/models/cloud_storage.dart';
 export 'src/models/schedule_day.dart';
 
 export 'src/static/app_config.dart';
+export 'src/static/api_config.dart';
 export 'src/static/enums.dart';
 
 export 'src/hip/hip_wrapper.dart';

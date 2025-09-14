@@ -5,7 +5,7 @@ repository: https://github.com/Venatrixx/rwg_home_core
 publish_to: none
 
 environment:
-  sdk: ^3.8.1
+  sdk: ^3.9.0
 
 # Add regular dependencies here.
 dependencies:
@@ -21,7 +21,6 @@ dependencies:
   crypto: ^3.0.6
   flutter_secure_storage: ^9.2.2
   convert: ^3.1.2
-
 
 dev_dependencies:
   lints: ^6.0.0
