@@ -58,6 +58,11 @@ class HipWrapper {
 
   bool get hasUnexcused => (totalUnexcusedMissingDays ?? 0) > 0 || (totalUnexcusedMissingHours ?? 0) > 0;
 
+  List<Event> get testEvents => [
+    for (final lesson in lastLessons.where((element) => element.type == HipLessonType.test))
+      Event(EventType.test, lesson.subject ?? '?', lesson.date, comment: lesson.comment),
+  ];
+
   List<Semester> semesters = [];
 
   bool get hasUnseenGrades => semesters.any((element) => element.subjects.any((subject) => subject.hasUnseenGrades));

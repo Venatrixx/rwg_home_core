@@ -172,7 +172,7 @@ class DebugConfig {
         subject: 'Mathematik',
         topic: 'Analysis',
         homework: "LB.S.50/3",
-        type: 'Hausaufgabe',
+        typeString: 'Hausaufgabe',
       ),
       HipLesson(date: DateTime(2025, 7, 23), lesson: Range(from: 6), subject: 'Deutsch', topic: 'Faust'),
     ],

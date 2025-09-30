@@ -97,7 +97,8 @@ abstract mixin class DataWrapper {
   ///
   /// [allEvents] contains missing hours, holidays and bulletins.
   List<Event> get allEvents =>
-      [...hip.missingHourEvents, ...calendar.allCalendarEvents]..sort((a, b) => a.date.compareTo(b.date));
+      [...hip.missingHourEvents, ...hip.testEvents, ...calendar.allCalendarEvents]
+        ..sort((a, b) => a.date.compareTo(b.date));
 
   bool _useDebugConfig = false;
   bool _useSek1DebugConfig = true;

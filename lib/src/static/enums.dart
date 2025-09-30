@@ -49,3 +49,12 @@ enum TaskStatus {
   final bool allowContinue;
   final bool? successful;
 }
+
+enum HipLessonType {
+  homework('Hausaufgabe'),
+  test('Test/Prüfung'),
+  unknown('Unbekannt');
+
+  const HipLessonType(this.label);
+  final String label;
+}
