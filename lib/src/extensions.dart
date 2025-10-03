@@ -45,7 +45,9 @@ extension DynamicExtension on dynamic {
   /// Only returns the trimmed string if it's not equal to an empty string or "null". Returns `null` otherwise.
   String? toStringOrNull() {
     String trimmedString = toString().trim();
-    return !["", "null"].contains(trimmedString.toLowerCase()) ? trimmedString : null;
+    return !["", "null"].contains(trimmedString.toLowerCase())
+        ? trimmedString
+        : null;
   }
 }
 
