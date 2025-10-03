@@ -48,6 +48,10 @@ class HipLesson {
 
     HipLessonType mapTypeToEventType(String? type) {
       if (type == null) return HipLessonType.unknown;
+      if (type.contains('Unterricht')) {
+        return HipLessonType.lesson;
+      }
+
       if (type.contains('Hausaufgabe')) {
         return HipLessonType.homework;
       }
@@ -76,7 +80,11 @@ class HipLesson {
       topic = json['topic'],
       homework = json['homework'],
       typeString = json['typeString'],
-      type = HipLessonType.values.firstWhereOrNull((element) => element.label == json['type']) ?? HipLessonType.unknown,
+      type =
+          HipLessonType.values.firstWhereOrNull(
+            (element) => element.label == json['type'],
+          ) ??
+          HipLessonType.unknown,
       comment = json['comment'];
 
   Map toJson() => {

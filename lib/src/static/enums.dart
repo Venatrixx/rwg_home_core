@@ -51,6 +51,7 @@ enum TaskStatus {
 }
 
 enum HipLessonType {
+  lesson("Unterricht"),
   homework('Hausaufgabe'),
   test('Test/Prüfung'),
   unknown('Unbekannt');
