@@ -45,7 +45,7 @@ class AbstractSubject {
       finalGrades.where((element) => element.active).length;
 
   List<AbstractFinalGrade> get finalGradesDesc =>
-      finalGrades..sort((a, b) => b.compareTo(a));
+      List.from(finalGrades)..sort((a, b) => b.compareTo(a));
 
   List<AbstractFinalGrade> get finalGradesFilled => List.generate(4, (index) {
     var grade = finalGrades[index];
