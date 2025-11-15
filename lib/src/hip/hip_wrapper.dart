@@ -56,16 +56,27 @@ class HipWrapper {
     return response;
   }
 
-  bool get hasUnexcused => (totalUnexcusedMissingDays ?? 0) > 0 || (totalUnexcusedMissingHours ?? 0) > 0;
+  bool get hasUnexcused =>
+      (totalUnexcusedMissingDays ?? 0) > 0 ||
+      (totalUnexcusedMissingHours ?? 0) > 0;
 
   List<Event> get testEvents => [
-    for (final lesson in lastLessons.where((element) => element.type == HipLessonType.test))
-      Event(EventType.test, lesson.subject ?? '?', lesson.date, comment: lesson.comment),
+    for (final lesson in lastLessons.where(
+      (element) => element.type == HipLessonType.test,
+    ))
+      Event(
+        EventType.test,
+        lesson.subject ?? '?',
+        lesson.date,
+        comment: lesson.comment,
+      ),
   ];
 
   List<Semester> semesters = [];
 
-  bool get hasUnseenGrades => semesters.any((element) => element.subjects.any((subject) => subject.hasUnseenGrades));
+  bool get hasUnseenGrades => semesters.any(
+    (element) => element.subjects.any((subject) => subject.hasUnseenGrades),
+  );
 
   /// Returns the index of the last element of [semesters] where [Semester.hasData] is `true`.
   int get currentSemesterIndex {
@@ -81,15 +92,22 @@ class HipWrapper {
     List<SpecialGrade> grades = [];
     for (final semester in semesters) {
       for (final subject in semester.subjects) {
-        grades.addAll(subject.newOrSimilarGrades..forEach((element) => element.parentSemester = semester));
+        grades.addAll(
+          subject.newOrSimilarGrades
+            ..forEach((element) => element.parentSemester = semester),
+        );
       }
     }
     return grades;
   }
 
-  List<SpecialGrade> get gradesWithAttention => [...?changedGrades, ...newOrSimilarGrades];
+  List<SpecialGrade> get gradesWithAttention => [
+    ...?changedGrades,
+    ...newOrSimilarGrades,
+  ];
 
-  AbstractYear get currentYearData => AbstractYear.fromSemesters(AppConfig.level, semesters);
+  AbstractYear get currentYearData =>
+      AbstractYear.fromSemesters(AppConfig.level, semesters);
 
   List<HipLesson> lastLessons = [];
   List<HipLesson> forgottenHomework = [];
@@ -144,7 +162,9 @@ class HipWrapper {
           gradesSem2.add(grade);
           continue;
         } else {
-          throw FormatException('Cannot read semester "${jsonGrade.$2['semester']}".');
+          throw FormatException(
+            'Cannot read semester "${jsonGrade.$2['semester']}".',
+          );
         }
       }
 
@@ -167,8 +187,16 @@ class HipWrapper {
       );
     }
 
-    Semester sem1 = Semester(label: "${json['level']!}.1", level: json['level'], subjects: List.from(subjectsSem1));
-    Semester sem2 = Semester(label: "${json['level']!}.2", level: json['level'], subjects: List.from(subjectsSem2));
+    Semester sem1 = Semester(
+      label: "${json['level']!}.1",
+      level: json['level'],
+      subjects: List.from(subjectsSem1),
+    );
+    Semester sem2 = Semester(
+      label: "${json['level']!}.2",
+      level: json['level'],
+      subjects: List.from(subjectsSem2),
+    );
 
     return HipWrapper(
       semesters: [sem1, sem2],
@@ -177,11 +205,19 @@ class HipWrapper {
       totalMissingHours: json['totalMissingHours'],
       totalUnexcusedMissingHours: json['totalUnexcusedMissingHours'],
       missingHourData: [
-        for (final day in json['missingDays'] ?? []) MissingHour.dayFromJson(day),
-        for (final hour in json['missingHours'] ?? []) MissingHour.hourFromJson(hour),
+        for (final day in json['missingDays'] ?? [])
+          MissingHour.dayFromJson(day),
+        for (final hour in json['missingHours'] ?? [])
+          MissingHour.hourFromJson(hour),
       ],
-      lastLessons: [for (final entry in json['lastLessons'] ?? []) HipLesson.fromHipJson(entry)],
-      forgottenHomework: [for (final entry in json['forgottenHomework'] ?? []) HipLesson.fromHipJson(entry)],
+      lastLessons: [
+        for (final entry in json['lastLessons'] ?? [])
+          HipLesson.fromHipJson(entry),
+      ],
+      forgottenHomework: [
+        for (final entry in json['forgottenHomework'] ?? [])
+          HipLesson.fromHipJson(entry),
+      ],
     );
   }
 
@@ -195,11 +231,20 @@ class HipWrapper {
   HipWrapper.fromJson(dynamic json)
     : totalMissingDays = json['totalMissingDays'],
       totalUnexcusedMissingDays = json['totalUnexcusedMissingDays'],
-      totalMissingHours = json['totalUnexcusedMissingHours'],
+      totalMissingHours = json['totalMissingHours'],
       totalUnexcusedMissingHours = json['totalUnexcusedMissingHours'],
-      semesters = [for (final semester in json['semesters'] ?? []) Semester.fromJson(semester)],
-      lastLessons = [for (final entry in json['lastLessons'] ?? []) HipLesson.fromJson(entry)],
-      forgottenHomework = [for (final entry in json['forgottenHomework'] ?? []) HipLesson.fromJson(entry)];
+      semesters = [
+        for (final semester in json['semesters'] ?? [])
+          Semester.fromJson(semester),
+      ],
+      lastLessons = [
+        for (final entry in json['lastLessons'] ?? [])
+          HipLesson.fromJson(entry),
+      ],
+      forgottenHomework = [
+        for (final entry in json['forgottenHomework'] ?? [])
+          HipLesson.fromJson(entry),
+      ];
 
   Map<String, dynamic> toJson() {
     return {
@@ -209,7 +254,9 @@ class HipWrapper {
       'totalUnexcusedMissingHours': totalUnexcusedMissingHours,
       'semesters': [for (final semester in semesters) semester.toJson()],
       'lastLessons': [for (final lesson in lastLessons) lesson.toJson()],
-      'forgottenHomework': [for (final homework in forgottenHomework) homework.toJson()],
+      'forgottenHomework': [
+        for (final homework in forgottenHomework) homework.toJson(),
+      ],
     };
   }
 
@@ -261,12 +308,22 @@ class HipWrapper {
 
     final newData = HipWrapper.fromHipJson(rawData);
 
-    final subjects = [...?newData.semesters.firstOrNull?.cloneStructure().subjects];
+    final subjects = [
+      ...?newData.semesters.firstOrNull?.cloneStructure().subjects,
+    ];
 
     if (AppConfig.isSek1) {
       semesters = [
-        Semester(label: "${AppConfig.level}.1", level: AppConfig.level, subjects: subjects),
-        Semester(label: "${AppConfig.level}.2", level: AppConfig.level, subjects: subjects),
+        Semester(
+          label: "${AppConfig.level}.1",
+          level: AppConfig.level,
+          subjects: subjects,
+        ),
+        Semester(
+          label: "${AppConfig.level}.2",
+          level: AppConfig.level,
+          subjects: subjects,
+        ),
       ];
     } else {
       semesters = [
@@ -286,7 +343,10 @@ class HipWrapper {
   /// as this will ensure that the data is saved properly.
   ///
   /// Calls [onLoadingStateChanged] if provided.
-  Future<void> fetchData({bool hardImport = false, bool rethrowErrors = false}) async {
+  Future<void> fetchData({
+    bool hardImport = false,
+    bool rethrowErrors = false,
+  }) async {
     loadingState = LoadingState.loading;
 
     try {
@@ -299,7 +359,8 @@ class HipWrapper {
       int newLevel = rawData['level'];
       String newUserClass = rawData['class'];
 
-      if (checkSemesters(newLevel) != TaskStatus.complete) throw WrongLevelException();
+      if (checkSemesters(newLevel) != TaskStatus.complete)
+        throw WrongLevelException();
 
       AppConfig.setLevel(newLevel);
       AppConfig.setUserClass(newUserClass);
@@ -347,7 +408,9 @@ class HipWrapper {
 
     for (final newSemester in wrapper.semesters) {
       try {
-        Semester refSemester = semesters.firstWhere((element) => element.label == newSemester.label);
+        Semester refSemester = semesters.firstWhere(
+          (element) => element.label == newSemester.label,
+        );
         final changed = refSemester.addDataFromSemester(newSemester);
         changedGrades.addAll(changed);
       } on StateError {
@@ -414,7 +477,8 @@ class HipWrapper {
   ///
   /// Returns [TaskStatus.error] if [semesters] contains unexpected or no data.
   TaskStatus checkSemesters(int level) {
-    if (semesters.isEmpty || ![2, 4].contains(semesters.length)) return TaskStatus.error;
+    if (semesters.isEmpty || ![2, 4].contains(semesters.length))
+      return TaskStatus.error;
 
     bool isSek1 = level < AppConfig.sek2Threshold;
 
