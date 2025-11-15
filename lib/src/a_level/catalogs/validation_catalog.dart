@@ -3,6 +3,7 @@ import 'package:rwg_home_core/rwg_home_core.dart';
 part 'validation_test.dart';
 
 part 'catalog_2019.dart';
+part 'catalog_2026.dart';
 
 /// Used to store a set of [ValidationTest] items for checking, if an [ALevelWrapper] has valid data.
 class ValidationCatalog {
@@ -15,8 +16,14 @@ class ValidationCatalog {
   /// When this instance was last updated.
   DateTime date;
 
+  /// Description to help the user decide, if this is the correct catalog for them.
+  String whenToChoose;
+
   /// Additional information.
   String? comment;
+
+  /// Factor for exams used to calculate the average of a semester.
+  double examWeight;
 
   /// List of [ValidationTest] elements that need to be met by all subjects of the [ALevelWrapper].
   List<ValidationTest> standardTests;
@@ -34,6 +41,8 @@ class ValidationCatalog {
     required this.catalogName,
     required this.catalogLink,
     required this.date,
+    required this.whenToChoose,
+    required this.examWeight,
     required this.standardTests,
     required this.examSubjectsTests,
     required this.allowedWrittenExamSubjects,
@@ -43,10 +52,14 @@ class ValidationCatalog {
 }
 
 /// All available [ValidationCatalog] objects.
-List<ValidationCatalog> availableValidationCatalogs = [catalog2019];
+List<ValidationCatalog> availableValidationCatalogs = [
+  catalog2019,
+  catalog2016,
+];
 
 /// The latests catalog that is also used by the core engine.
-ValidationCatalog get latestCatalog => availableValidationCatalogs.reduce((a, b) {
-  if (a.date.isBefore(b.date)) return b;
-  return a;
-});
+ValidationCatalog get latestCatalog =>
+    availableValidationCatalogs.reduce((a, b) {
+      if (a.date.isBefore(b.date)) return b;
+      return a;
+    });

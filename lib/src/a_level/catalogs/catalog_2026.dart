@@ -1,17 +1,17 @@
 part of 'validation_catalog.dart';
 
-ValidationCatalog catalog2019 = ValidationCatalog(
-  catalogName: 'APVO-MV (2019)',
+ValidationCatalog catalog2016 = ValidationCatalog(
+  catalogName: 'APVO-MV (2026)',
   catalogLink:
       'https://www.regierung-mv.de/serviceassistent/download?id=1610365',
   comment:
       "Besondere Lernleistungen werden nicht berücksichtigt.\nKein Anspruch auf vollständige Richtigkeit.",
-  date: DateTime(2025, 6, 1),
+  examWeight: .4,
+  date: DateTime(2025, 9, 14),
   whenToChoose:
-      "Beginn der 11. Klasse vor 2026. (Abiturjahrgang 2027 und früher.)",
-  examWeight: .5,
-  standardTests: standardTests2019,
-  examSubjectsTests: examSubjectsTests2019,
+      "Beginn der 11. Klasse ab 2026. (Abiturjahrgang 2028 und später.)",
+  standardTests: standardTests2026,
+  examSubjectsTests: examSubjectsTests2026,
   allowedWrittenExamSubjects: [
     'ma',
     'de',
@@ -23,10 +23,10 @@ ValidationCatalog catalog2019 = ValidationCatalog(
     'ph',
     'inf',
   ],
-  chooseOptimal: chooseOptimal2019,
+  chooseOptimal: chooseOptimal2026,
 );
 
-List<ValidationTest> standardTests2019 = [
+List<ValidationTest> standardTests2026 = [
   ValidationTest(
     description: "Verifiziere alle Fächer.",
     test: (config) {
@@ -174,7 +174,7 @@ List<ValidationTest> standardTests2019 = [
       }
       return null;
     },
-    reference: "Anlage 5 (5a)",
+    reference: "Anlage 6a",
   ),
   ValidationTest(
     description: "Bringe Mathe vollständig ein.",
@@ -185,18 +185,29 @@ List<ValidationTest> standardTests2019 = [
       }
       return null;
     },
-    reference: "Anlage 5 (5a)",
+    reference: "Anlage 6a",
   ),
   ValidationTest(
-    description: "Bringe Geschichte vollständig ein.",
+    description: "Bringe min. 2 Semester Geschichte ein.",
     test: (config) {
-      if (config.subjects.firstWhere((s) => s.abbr == 'ge').activeGradesCount !=
-          4) {
-        return ["Geschichte nicht vollständig eingebracht."];
+      if (config.subjects.firstWhere((s) => s.abbr == 'ge').activeGradesCount <
+          2) {
+        return ["Geschichte nicht min. 2 Semester eingebracht."];
       }
       return null;
     },
-    reference: "Anlage 5 (5a)",
+    reference: "Anlage 6a",
+  ),
+  ValidationTest(
+    description: "Bringe min. 2 Semester Sozialkunde ein.",
+    test: (config) {
+      if (config.subjects.firstWhere((s) => s.abbr == 'sk').activeGradesCount <
+          2) {
+        return ["Sozialkunde nicht min. 2 Semester eingebracht."];
+      }
+      return null;
+    },
+    reference: "Anlage 6a",
   ),
   ValidationTest(
     description:
@@ -216,7 +227,7 @@ List<ValidationTest> standardTests2019 = [
       }
       return null;
     },
-    reference: "Anlage 5 (5a)",
+    reference: "Anlage 6a",
   ),
   ValidationTest(
     description: "Bringe min. eine Fremdsprache vollständig ein.",
@@ -233,7 +244,7 @@ List<ValidationTest> standardTests2019 = [
       }
       return null;
     },
-    reference: "Anlage 5 (5a)",
+    reference: "Anlage 6a",
   ),
   ValidationTest(
     description: "Bringe min. 2 Semester von Musik oder Kunst ein.",
@@ -251,10 +262,10 @@ List<ValidationTest> standardTests2019 = [
       }
       return null;
     },
-    reference: "Anlage 5 (5a)",
+    reference: "Anlage 6a",
   ),
   ValidationTest(
-    description: "Bringe min. 2 Semester von Philosophie oder Religion ein.",
+    description: "Bringe min. 2 Semester Philosophie oder Religion ein.",
     test: (config) {
       if (!['phil', 'ere'].any(
         (e) =>
@@ -271,7 +282,7 @@ List<ValidationTest> standardTests2019 = [
       }
       return null;
     },
-    reference: "Anlage 5 (5a)",
+    reference: "Anlage 6a",
   ),
   ValidationTest(
     description: "Bringe alle Prüfungsfächer vollständig ein.",
@@ -285,7 +296,7 @@ List<ValidationTest> standardTests2019 = [
       }
       return null;
     },
-    reference: "Anlage 5 (5a)",
+    reference: "§43 Absatz 3",
   ),
   ValidationTest(
     description: "Bringe 44 Halbjahresleistungen ein. (LKs zählen doppelt.)",
@@ -311,8 +322,9 @@ List<ValidationTest> standardTests2019 = [
       final activeGrades = <int>[];
       for (final subject in config.subjects) {
         for (final grade in subject.finalGrades) {
-          if (grade.active && grade.value != null)
+          if (grade.active && grade.value != null) {
             activeGrades.add(grade.value!);
+          }
         }
       }
       final gradesBelow5 = activeGrades.where((element) => element < 5).length;
@@ -325,7 +337,7 @@ List<ValidationTest> standardTests2019 = [
   ),
 ];
 
-List<ValidationTest<TaskStatus>> examSubjectsTests2019 = [
+List<ValidationTest<TaskStatus>> examSubjectsTests2026 = [
   ValidationTest(
     description: "Deutsch als Prüfungsfach",
     test: (config) {
@@ -410,7 +422,7 @@ List<ValidationTest<TaskStatus>> examSubjectsTests2019 = [
   ),
 ];
 
-void chooseOptimal2019(ALevelWrapper config) {
+void chooseOptimal2026(ALevelWrapper config) {
   for (var subject in config.subjects) {
     for (var grade in subject.finalGrades) {
       grade.active = false;
@@ -419,11 +431,17 @@ void chooseOptimal2019(ALevelWrapper config) {
 
   for (final sub in config.subjects) {
     // must-include
-    if (["ma", "de", "ge"].contains(sub.abbr) ||
+    if (["ma", "de"].contains(sub.abbr) ||
         config.allExamSubjects.contains(sub.abbr)) {
       for (var grade in sub.finalGrades) {
         grade.active = true;
       }
+    }
+
+    if (['ge', 'sk'].contains(sub.abbr)) {
+      var finalGrades = sub.finalGradesDesc;
+      sub.finalGrades[finalGrades[0].index].active = true;
+      sub.finalGrades[finalGrades[1].index].active = true;
     }
   }
 
