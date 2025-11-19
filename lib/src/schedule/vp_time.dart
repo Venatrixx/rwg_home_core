@@ -13,7 +13,13 @@ class VPTime {
 
   bool get hasEndTime => endHour != null && endMinute != null;
 
-  VPTime({required this.lesson, this.startHour, this.startMinute, this.endHour, this.endMinute});
+  VPTime({
+    required this.lesson,
+    this.startHour,
+    this.startMinute,
+    this.endHour,
+    this.endMinute,
+  });
 
   VPTime.fromXML(XmlElement xmlObject) {
     lesson = int.tryParse(xmlObject.text) ?? -1;
@@ -47,4 +53,10 @@ class VPTime {
     'endHour': endHour,
     'endMinute': endMinute,
   };
+
+  String prettyStart() =>
+      "${startHour != null && startHour! < 10 ? '0' : ''}$startHour:${startMinute != null && startMinute! < 10 ? '0' : ''}$startMinute";
+
+  String prettyEnd() =>
+      "${endHour != null && endHour! < 10 ? '0' : ''}$endHour:${endMinute != null && endMinute! < 10 ? '0' : ''}$endMinute";
 }
