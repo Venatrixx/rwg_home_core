@@ -1,6 +1,4 @@
 import 'package:rwg_home_core/rwg_home_core.dart';
-import 'package:rwg_home_core/src/hip/hip_lesson.dart';
-import 'package:rwg_home_core/src/schedule/vp_time.dart';
 
 class DebugConfig {
   bool sek1;
@@ -73,7 +71,11 @@ class DebugConfig {
             ],
           ),
           Subject(name: 'Mathematik', abbr: 'Ma', onlineGrades: []),
-          Subject(name: 'Geschichte und Politische Bildung', abbr: 'Ge', onlineGrades: []),
+          Subject(
+            name: 'Geschichte und Politische Bildung',
+            abbr: 'Ge',
+            onlineGrades: [],
+          ),
           Subject(name: 'Physik', abbr: 'Ph', onlineGrades: []),
           Subject(name: 'Chemie', abbr: 'Ch', onlineGrades: []),
           Subject(name: 'Musik', abbr: 'Mu', onlineGrades: []),
@@ -110,7 +112,11 @@ class DebugConfig {
           ),
           Subject(name: 'Englisch', abbr: 'En', onlineGrades: []),
           Subject(name: 'Mathematik', abbr: 'Ma', onlineGrades: []),
-          Subject(name: 'Geschichte und Politische Bildung', abbr: 'Ge', onlineGrades: []),
+          Subject(
+            name: 'Geschichte und Politische Bildung',
+            abbr: 'Ge',
+            onlineGrades: [],
+          ),
           Subject(name: 'Physik', abbr: 'Ph', onlineGrades: []),
           Subject(name: 'Chemie', abbr: 'Ch', onlineGrades: []),
           Subject(name: 'Musik', abbr: 'Mu', onlineGrades: []),
@@ -126,7 +132,11 @@ class DebugConfig {
             Subject(name: 'Deutsch', abbr: 'De', onlineGrades: []),
             Subject(name: 'Englisch', abbr: 'En', onlineGrades: []),
             Subject(name: 'Mathematik', abbr: 'Ma', onlineGrades: []),
-            Subject(name: 'Geschichte und Politische Bildung', abbr: 'Ge', onlineGrades: []),
+            Subject(
+              name: 'Geschichte und Politische Bildung',
+              abbr: 'Ge',
+              onlineGrades: [],
+            ),
             Subject(name: 'Physik', abbr: 'Ph', onlineGrades: []),
             Subject(name: 'Chemie', abbr: 'Ch', onlineGrades: []),
             Subject(name: 'Musik', abbr: 'Mu', onlineGrades: []),
@@ -142,7 +152,11 @@ class DebugConfig {
             Subject(name: 'Deutsch', abbr: 'De', onlineGrades: []),
             Subject(name: 'Englisch', abbr: 'En', onlineGrades: []),
             Subject(name: 'Mathematik', abbr: 'Ma', onlineGrades: []),
-            Subject(name: 'Geschichte und Politische Bildung', abbr: 'Ge', onlineGrades: []),
+            Subject(
+              name: 'Geschichte und Politische Bildung',
+              abbr: 'Ge',
+              onlineGrades: [],
+            ),
             Subject(name: 'Physik', abbr: 'Ph', onlineGrades: []),
             Subject(name: 'Chemie', abbr: 'Ch', onlineGrades: []),
             Subject(name: 'Musik', abbr: 'Mu', onlineGrades: []),
@@ -157,15 +171,41 @@ class DebugConfig {
     totalUnexcusedMissingDays: 1,
     totalUnexcusedMissingHours: 0,
     missingHourData: [
-      MissingHour(date: DateTime(2025, 7, 10), term: "2. HJ", lessons: "3 Std", subject: "Mathematik", excused: false),
+      MissingHour(
+        date: DateTime(2025, 7, 10),
+        term: "2. HJ",
+        lessons: "3 Std",
+        subject: "Mathematik",
+        excused: false,
+      ),
       MissingHour(date: DateTime(2025, 7, 2), term: "2. HJ", excused: true),
-      MissingHour(date: DateTime(2025, 7, 9), term: "2. HJ", lessons: "2 Std", subject: "Deutsch"),
+      MissingHour(
+        date: DateTime(2025, 7, 9),
+        term: "2. HJ",
+        lessons: "2 Std",
+        subject: "Deutsch",
+      ),
     ],
 
     lastLessons: [
-      HipLesson(date: DateTime(2025, 7, 25), lesson: Range(from: 5), subject: 'Englisch', topic: 'British English'),
-      HipLesson(date: DateTime(2025, 7, 25), lesson: Range(from: 3, to: 4), subject: 'Sport', topic: 'Volleyball'),
-      HipLesson(date: DateTime(2025, 7, 24), lesson: Range(from: 1, to: 2), subject: 'Mathematik', topic: 'Analysis'),
+      HipLesson(
+        date: DateTime(2025, 7, 25),
+        lesson: Range(from: 5),
+        subject: 'Englisch',
+        topic: 'British English',
+      ),
+      HipLesson(
+        date: DateTime(2025, 7, 25),
+        lesson: Range(from: 3, to: 4),
+        subject: 'Sport',
+        topic: 'Volleyball',
+      ),
+      HipLesson(
+        date: DateTime(2025, 7, 24),
+        lesson: Range(from: 1, to: 2),
+        subject: 'Mathematik',
+        topic: 'Analysis',
+      ),
       HipLesson(
         date: DateTime(2025, 7, 21),
         lesson: Range(from: 5, to: 6),
@@ -174,7 +214,12 @@ class DebugConfig {
         homework: "LB.S.50/3",
         typeString: 'Hausaufgabe',
       ),
-      HipLesson(date: DateTime(2025, 7, 23), lesson: Range(from: 6), subject: 'Deutsch', topic: 'Faust'),
+      HipLesson(
+        date: DateTime(2025, 7, 23),
+        lesson: Range(from: 6),
+        subject: 'Deutsch',
+        topic: 'Faust',
+      ),
     ],
     forgottenHomework: [
       HipLesson(
@@ -195,15 +240,69 @@ class DebugConfig {
           VPClass(
             name: userClass,
             times: [
-              VPTime(lesson: 1, startHour: 8, startMinute: 0, endHour: 8, endMinute: 45),
-              VPTime(lesson: 2, startHour: 8, startMinute: 45, endHour: 9, endMinute: 30),
-              VPTime(lesson: 3, startHour: 9, startMinute: 50, endHour: 10, endMinute: 35),
-              VPTime(lesson: 4, startHour: 10, startMinute: 35, endHour: 11, endMinute: 20),
-              VPTime(lesson: 5, startHour: 12, startMinute: 0, endHour: 12, endMinute: 45),
-              VPTime(lesson: 6, startHour: 12, startMinute: 50, endHour: 13, endMinute: 35),
-              VPTime(lesson: 7, startHour: 13, startMinute: 40, endHour: 14, endMinute: 25),
-              VPTime(lesson: 8, startHour: 14, startMinute: 30, endHour: 15, endMinute: 15),
-              VPTime(lesson: 9, startHour: 15, startMinute: 15, endHour: 16, endMinute: 0),
+              VPTime(
+                lesson: 1,
+                startHour: 8,
+                startMinute: 0,
+                endHour: 8,
+                endMinute: 45,
+              ),
+              VPTime(
+                lesson: 2,
+                startHour: 8,
+                startMinute: 45,
+                endHour: 9,
+                endMinute: 30,
+              ),
+              VPTime(
+                lesson: 3,
+                startHour: 9,
+                startMinute: 50,
+                endHour: 10,
+                endMinute: 35,
+              ),
+              VPTime(
+                lesson: 4,
+                startHour: 10,
+                startMinute: 35,
+                endHour: 11,
+                endMinute: 20,
+              ),
+              VPTime(
+                lesson: 5,
+                startHour: 12,
+                startMinute: 0,
+                endHour: 12,
+                endMinute: 45,
+              ),
+              VPTime(
+                lesson: 6,
+                startHour: 12,
+                startMinute: 50,
+                endHour: 13,
+                endMinute: 35,
+              ),
+              VPTime(
+                lesson: 7,
+                startHour: 13,
+                startMinute: 40,
+                endHour: 14,
+                endMinute: 25,
+              ),
+              VPTime(
+                lesson: 8,
+                startHour: 14,
+                startMinute: 30,
+                endHour: 15,
+                endMinute: 15,
+              ),
+              VPTime(
+                lesson: 9,
+                startHour: 15,
+                startMinute: 15,
+                endHour: 16,
+                endMinute: 0,
+              ),
             ],
             subjects: [
               VPSubject(label: 'de', teacher: 'Me.D', id: 1),
@@ -217,9 +316,28 @@ class DebugConfig {
               VPSubject(label: 'sp', teacher: 'So.G', id: 9),
             ],
             lessons: [
-              VPLesson(hour: 3, subjectLabel: 'sp', teacher: 'So.G', room: 'J1', id: 9),
-              VPLesson(hour: 4, subjectLabel: 'sp', teacher: 'So.G', room: 'J1', id: 9),
-              VPLesson(hour: 6, subjectLabel: 'en', teacher: 'Dr.A', room: 'A201', id: 3, hasChangedTeacher: true),
+              VPLesson(
+                hour: 3,
+                subjectLabel: 'sp',
+                teacher: 'So.G',
+                room: 'J1',
+                id: 9,
+              ),
+              VPLesson(
+                hour: 4,
+                subjectLabel: 'sp',
+                teacher: 'So.G',
+                room: 'J1',
+                id: 9,
+              ),
+              VPLesson(
+                hour: 6,
+                subjectLabel: 'en',
+                teacher: 'Dr.A',
+                room: 'A201',
+                id: 3,
+                hasChangedTeacher: true,
+              ),
             ],
           ),
         ],
@@ -231,15 +349,69 @@ class DebugConfig {
           VPClass(
             name: userClass,
             times: [
-              VPTime(lesson: 1, startHour: 8, startMinute: 0, endHour: 8, endMinute: 45),
-              VPTime(lesson: 2, startHour: 8, startMinute: 45, endHour: 9, endMinute: 30),
-              VPTime(lesson: 3, startHour: 9, startMinute: 50, endHour: 10, endMinute: 35),
-              VPTime(lesson: 4, startHour: 10, startMinute: 35, endHour: 11, endMinute: 20),
-              VPTime(lesson: 5, startHour: 12, startMinute: 0, endHour: 12, endMinute: 45),
-              VPTime(lesson: 6, startHour: 12, startMinute: 50, endHour: 13, endMinute: 35),
-              VPTime(lesson: 7, startHour: 13, startMinute: 40, endHour: 14, endMinute: 25),
-              VPTime(lesson: 8, startHour: 14, startMinute: 30, endHour: 15, endMinute: 15),
-              VPTime(lesson: 9, startHour: 15, startMinute: 15, endHour: 16, endMinute: 0),
+              VPTime(
+                lesson: 1,
+                startHour: 8,
+                startMinute: 0,
+                endHour: 8,
+                endMinute: 45,
+              ),
+              VPTime(
+                lesson: 2,
+                startHour: 8,
+                startMinute: 45,
+                endHour: 9,
+                endMinute: 30,
+              ),
+              VPTime(
+                lesson: 3,
+                startHour: 9,
+                startMinute: 50,
+                endHour: 10,
+                endMinute: 35,
+              ),
+              VPTime(
+                lesson: 4,
+                startHour: 10,
+                startMinute: 35,
+                endHour: 11,
+                endMinute: 20,
+              ),
+              VPTime(
+                lesson: 5,
+                startHour: 12,
+                startMinute: 0,
+                endHour: 12,
+                endMinute: 45,
+              ),
+              VPTime(
+                lesson: 6,
+                startHour: 12,
+                startMinute: 50,
+                endHour: 13,
+                endMinute: 35,
+              ),
+              VPTime(
+                lesson: 7,
+                startHour: 13,
+                startMinute: 40,
+                endHour: 14,
+                endMinute: 25,
+              ),
+              VPTime(
+                lesson: 8,
+                startHour: 14,
+                startMinute: 30,
+                endHour: 15,
+                endMinute: 15,
+              ),
+              VPTime(
+                lesson: 9,
+                startHour: 15,
+                startMinute: 15,
+                endHour: 16,
+                endMinute: 0,
+              ),
             ],
             subjects: [
               VPSubject(label: 'de', teacher: 'Me.D', id: 1),
@@ -253,9 +425,28 @@ class DebugConfig {
               VPSubject(label: 'sp', teacher: 'So.G', id: 9),
             ],
             lessons: [
-              VPLesson(hour: 1, subjectLabel: 'ma', teacher: 'Se.I', room: 'B305', id: 2),
-              VPLesson(hour: 2, subjectLabel: 'ma', teacher: 'Se.I', room: 'B305', id: 2),
-              VPLesson(hour: 3, subjectLabel: 'ge', teacher: 'Me.D', room: 'A108', id: 4, hasChangedRoom: true),
+              VPLesson(
+                hour: 1,
+                subjectLabel: 'ma',
+                teacher: 'Se.I',
+                room: 'B305',
+                id: 2,
+              ),
+              VPLesson(
+                hour: 2,
+                subjectLabel: 'ma',
+                teacher: 'Se.I',
+                room: 'B305',
+                id: 2,
+              ),
+              VPLesson(
+                hour: 3,
+                subjectLabel: 'ge',
+                teacher: 'Me.D',
+                room: 'A108',
+                id: 4,
+                hasChangedRoom: true,
+              ),
               VPLesson(
                 hour: 5,
                 subjectLabel: 'mu',
@@ -278,7 +469,13 @@ class DebugConfig {
     events: [
       Event(EventType.event, "Letzter Schultag", DateTime(2025, 7, 25)),
       Event(EventType.exam, "Deutsch Klausur", DateTime(2025, 7, 24)),
-      Event(EventType.test, "Vokabeltest", DateTime(2025, 7, 15), location: '4. Std', comment: "Unit A"),
+      Event(
+        EventType.test,
+        "Vokabeltest",
+        DateTime(2025, 7, 15),
+        location: '4. Std',
+        comment: "Unit A",
+      ),
     ],
   )..loadingState = LoadingState.done;
 }

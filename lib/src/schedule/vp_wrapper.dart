@@ -1,11 +1,11 @@
 import 'package:intl/intl.dart';
 import 'package:rwg_home_core/rwg_home_core.dart';
-import 'package:rwg_home_core/src/schedule/vp_time.dart';
 import 'package:xml/xml.dart';
 
 part 'vp_subject.dart';
 part 'vp_class.dart';
 part 'vp_lesson.dart';
+part 'vp_time.dart';
 
 class VPWrapper {
   late DateTime date;
@@ -15,7 +15,12 @@ class VPWrapper {
 
   late bool cached;
 
-  VPWrapper({required this.date, required this.lastUpdate, required this.classes, this.cached = false});
+  VPWrapper({
+    required this.date,
+    required this.lastUpdate,
+    required this.classes,
+    this.cached = false,
+  });
 
   VPWrapper.fromXML(String xmlString, {this.cached = false}) {
     final xml = XmlDocument.parse(xmlString);
@@ -24,18 +29,34 @@ class VPWrapper {
     dateString = dateString.substring(dateString.indexOf(' ') + 1);
 
     date = DateFormat('dd. MMMM yyyy', 'de_DE').parse(dateString);
-    lastUpdate = DateFormat('dd.MM.yyyy, HH:mm', 'de_DE').parse(xml.findAllElements('zeitstempel').first.text);
+    lastUpdate = DateFormat(
+      'dd.MM.yyyy, HH:mm',
+      'de_DE',
+    ).parse(xml.findAllElements('zeitstempel').first.text);
 
-    classes = [for (final classInstance in xml.findAllElements('Kl')) VPClass.fromXML(classInstance)];
+    classes = [
+      for (final classInstance in xml.findAllElements('Kl'))
+        VPClass.fromXML(classInstance),
+    ];
   }
 
   VPWrapper.fromJson(dynamic json)
-    : date = DateTime.fromMillisecondsSinceEpoch(int.parse(json['date'].toString())),
-      lastUpdate = DateTime.fromMillisecondsSinceEpoch(int.parse(json['lastUpdate'].toString())),
-      classes = [for (final entry in json['classes'] ?? []) VPClass.fromJson(entry)],
+    : date = DateTime.fromMillisecondsSinceEpoch(
+        int.parse(json['date'].toString()),
+      ),
+      lastUpdate = DateTime.fromMillisecondsSinceEpoch(
+        int.parse(json['lastUpdate'].toString()),
+      ),
+      classes = [
+        for (final entry in json['classes'] ?? []) VPClass.fromJson(entry),
+      ],
       cached = json['cached'] ?? false;
 
-  VPWrapper.empty() : date = DateTime.now(), lastUpdate = DateTime.now(), classes = [], cached = false;
+  VPWrapper.empty()
+    : date = DateTime.now(),
+      lastUpdate = DateTime.now(),
+      classes = [],
+      cached = false;
 
   dynamic toJson() => {
     'date': date.millisecondsSinceEpoch,
@@ -47,7 +68,9 @@ class VPWrapper {
   VPWrapper filterClasses(String classNameFilter) => VPWrapper(
     date: date,
     lastUpdate: lastUpdate,
-    classes: classes.where((element) => element.name == classNameFilter).toList(),
+    classes: classes
+        .where((element) => element.name == classNameFilter)
+        .toList(),
     cached: cached,
   );
 
@@ -55,5 +78,6 @@ class VPWrapper {
   // methods
   //
 
-  VPClass? getClassByName(String className) => classes.firstWhereOrNull((element) => element.name == className);
+  VPClass? getClassByName(String className) =>
+      classes.firstWhereOrNull((element) => element.name == className);
 }

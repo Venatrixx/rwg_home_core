@@ -1,5 +1,4 @@
-import 'package:intl/intl.dart';
-import 'package:rwg_home_core/rwg_home_core.dart';
+part of 'hip_wrapper.dart';
 
 class HipLesson {
   DateTime date;

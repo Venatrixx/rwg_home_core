@@ -1,4 +1,4 @@
-import 'package:xml/xml.dart';
+part of 'vp_wrapper.dart';
 
 class VPTime {
   late int lesson;

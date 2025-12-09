@@ -1,6 +1,4 @@
 import 'package:rwg_home_core/rwg_home_core.dart';
-import 'package:rwg_home_core/src/hip/hip_lesson.dart';
-import 'package:rwg_home_core/src/schedule/vp_time.dart';
 
 part 'schedule_lesson.dart';
 
@@ -35,12 +33,21 @@ class ScheduleDay {
     required VPWrapper? vpData,
     Object? error,
   }) {
-    final scheduleEntries = hipData.lastLessons.where((element) => element.date.isSameDay(date)).toList();
-    final forgottenHomework = hipData.forgottenHomework.where((element) => element.date.isSameDay(date)).toList();
+    final scheduleEntries = hipData.lastLessons
+        .where((element) => element.date.isSameDay(date))
+        .toList();
+    final forgottenHomework = hipData.forgottenHomework
+        .where((element) => element.date.isSameDay(date))
+        .toList();
     final vpLessons = vpData?.classes
         .firstWhereOrNull((element) => element.name == AppConfig.userClass)
         ?.lessons
-        .where((element) => [...AppConfig.activeLessonIds, '-1'].contains(element.id.toString()));
+        .where(
+          (element) => [
+            ...AppConfig.activeLessonIds,
+            '-1',
+          ].contains(element.id.toString()),
+        );
 
     List<ScheduleLesson> lessons = [];
 
@@ -50,9 +57,14 @@ class ScheduleDay {
       final lesson = ScheduleLesson(
         lesson: i,
         time: AppConfig.scheduleHours[i],
-        teacherEntry: scheduleEntries.where((element) => element.lesson?.includes(i) ?? false).toList(),
-        forgottenHomework: forgottenHomework.where((element) => element.lesson?.includes(i) ?? false).toList(),
-        vpLessons: vpLessons?.where((element) => element.hour == i).toList() ?? [],
+        teacherEntry: scheduleEntries
+            .where((element) => element.lesson?.includes(i) ?? false)
+            .toList(),
+        forgottenHomework: forgottenHomework
+            .where((element) => element.lesson?.includes(i) ?? false)
+            .toList(),
+        vpLessons:
+            vpLessons?.where((element) => element.hour == i).toList() ?? [],
       );
 
       if (noData && lesson.hasData) noData = false;
@@ -69,7 +81,9 @@ class ScheduleDay {
       error: error,
       hasVPData: vpLessons != null,
       hasComment: lessons.any((element) => element.teacherEntry.isNotEmpty),
-      hasHomework: lessons.any((element) => element.forgottenHomework.isNotEmpty),
+      hasHomework: lessons.any(
+        (element) => element.forgottenHomework.isNotEmpty,
+      ),
     );
   }
 }

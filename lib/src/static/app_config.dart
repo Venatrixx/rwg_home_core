@@ -7,7 +7,6 @@ import 'package:home_info_point_client/home_info_point_client.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:rwg_home_core/rwg_home_core.dart';
-import 'package:rwg_home_core/src/schedule/vp_time.dart';
 
 /// Stores important values or settings that need to be accessed at different parts of the app.
 final class AppConfig {
@@ -21,10 +20,15 @@ final class AppConfig {
   /// Get the path to the app_config.json file.
   static String get configPath => "$documentsDir/app_config.json";
 
-  static AndroidOptions get _aOptions => AndroidOptions(encryptedSharedPreferences: true);
-  static IOSOptions get _iOptions => IOSOptions(accessibility: KeychainAccessibility.first_unlock);
+  static AndroidOptions get _aOptions =>
+      AndroidOptions(encryptedSharedPreferences: true);
+  static IOSOptions get _iOptions =>
+      IOSOptions(accessibility: KeychainAccessibility.first_unlock);
 
-  static final FlutterSecureStorage _secureStorage = FlutterSecureStorage(aOptions: _aOptions, iOptions: _iOptions);
+  static final FlutterSecureStorage _secureStorage = FlutterSecureStorage(
+    aOptions: _aOptions,
+    iOptions: _iOptions,
+  );
 
   /// If Home.InfoPoint credentials are available.
   ///
@@ -36,7 +40,8 @@ final class AppConfig {
   static bool hasCredentials = false;
 
   /// Returns the current username saved for Home.InfoPoint or `null` if there is no username.
-  static Future<String?> get hipUsername => _secureStorage.read(key: 'username');
+  static Future<String?> get hipUsername =>
+      _secureStorage.read(key: 'username');
 
   /// Returns a [HipConfig] instance with the current credentials.
   ///
@@ -163,8 +168,14 @@ final class AppConfig {
       return LoadingState.error;
     }
     hasCredentials =
-        ![null, ""].contains((await _secureStorage.read(key: 'username'))?.trim()) &&
-        ![null, ""].contains((await _secureStorage.read(key: 'password'))?.trim());
+        ![
+          null,
+          "",
+        ].contains((await _secureStorage.read(key: 'username'))?.trim()) &&
+        ![
+          null,
+          "",
+        ].contains((await _secureStorage.read(key: 'password'))?.trim());
     final status = loadConfigFileSync();
     await generateUserId();
     return status;
@@ -241,7 +252,10 @@ final class AppConfig {
       'storeWizardInCloud': storeWizardInCloud,
       'storeCalendarInCloud': storeCalendarInCloud,
       'holidayStrings': holidayStrings,
-      'scheduleHours': {for (final entry in scheduleHours.entries) entry.key.toString(): entry.value.toJson()},
+      'scheduleHours': {
+        for (final entry in scheduleHours.entries)
+          entry.key.toString(): entry.value.toJson(),
+      },
     };
 
     configFile.writeAsStringSync(jsonEncode(data));
@@ -277,7 +291,10 @@ final class AppConfig {
   /// Updates the credentials for Home.InfoPoint.
   ///
   /// If [username] or [password] is `null`, the stored value remains untouched.
-  static Future<void> setCredentials({String? username, String? password}) async {
+  static Future<void> setCredentials({
+    String? username,
+    String? password,
+  }) async {
     if (username != null) {
       if (username.trim() != "") {
         await _secureStorage.write(key: 'username', value: username);
@@ -357,11 +374,19 @@ final class AppConfig {
   static void updateActiveLessonIds(VPWrapper vpData) {
     // get valid ids for stored userClass
     var classIds = [
-      for (final subject in vpData.classes.firstWhere((element) => element.name == userClass).subjects)
+      for (final subject
+          in vpData.classes
+              .firstWhere((element) => element.name == userClass)
+              .subjects)
         subject.id.toString(),
     ];
 
-    activeLessonIds = [for (final id in lessonIds.where((id) => classIds.contains(id.toString()))) id];
+    activeLessonIds = [
+      for (final id in lessonIds.where(
+        (id) => classIds.contains(id.toString()),
+      ))
+        id,
+    ];
 
     saveConfigFileSync();
   }
@@ -369,7 +394,11 @@ final class AppConfig {
   /// Updates the cloud preferences with the given values. If `null` is provided, the setting remains untouched.
   ///
   /// Saves the config afterwards.
-  static void updateCloudPreferences({bool? grades, bool? wizard, bool? calendar}) {
+  static void updateCloudPreferences({
+    bool? grades,
+    bool? wizard,
+    bool? calendar,
+  }) {
     if (grades != null) storeGradesInCloud = grades;
     if (wizard != null) storeWizardInCloud = wizard;
     if (calendar != null) storeCalendarInCloud = calendar;
@@ -390,7 +419,9 @@ final class AppConfig {
 
       if (time.hasStartTime) {
         try {
-          var refTime = scheduleHours.entries.firstWhere((element) => element.key == time.lesson).value;
+          var refTime = scheduleHours.entries
+              .firstWhere((element) => element.key == time.lesson)
+              .value;
           refTime.startHour = time.startHour;
           refTime.startMinute = time.startMinute;
         } catch (_) {}
@@ -398,14 +429,17 @@ final class AppConfig {
 
       if (time.hasEndTime) {
         try {
-          var refTime = scheduleHours.entries.firstWhere((element) => element.key == time.lesson).value;
+          var refTime = scheduleHours.entries
+              .firstWhere((element) => element.key == time.lesson)
+              .value;
           refTime.endHour = time.endHour;
           refTime.endMinute = time.endMinute;
         } catch (_) {}
       }
     }
 
-    final sortedKeys = scheduleHours.keys.toList()..sort((a, b) => a.compareTo(b));
+    final sortedKeys = scheduleHours.keys.toList()
+      ..sort((a, b) => a.compareTo(b));
     scheduleHours = {for (final key in sortedKeys) key: scheduleHours[key]!};
 
     saveConfigFileSync();
