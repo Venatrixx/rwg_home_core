@@ -46,12 +46,11 @@ class CalendarWrapper {
   /// List of user defined events.
   List<Event> customEvents = [];
 
-  /// Returns a list of [Event] elements with all [AppConfig.holidayEvents], [events] and [customEvents].
+  /// Returns a list of [Event] elements with all [events] and [customEvents].
   ///
   /// Sorts the elements by [Event.date].
   List<Event> get allCalendarEvents =>
-      [...AppConfig.holidayEvents, ...events, ...customEvents]
-        ..sort((a, b) => a.date.compareTo(b.date));
+      [...events, ...customEvents]..sort((a, b) => a.date.compareTo(b.date));
 
   /// Returns a list of [Event] elements based on [allCalendarEvents] with all events,
   /// that happen in the upcoming amount of [days].

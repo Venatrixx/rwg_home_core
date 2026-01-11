@@ -44,7 +44,11 @@ class Event {
       from = DateTime.tryParse(json['from'] ?? ''),
       to = DateTime.tryParse(json['to'] ?? ''),
       curseIds = List<int>.from(json['curseIds'] ?? []),
-      type = EventType.event;
+      type =
+          EventType.values.firstWhereOrNull(
+            (element) => element.text == json['type'],
+          ) ??
+          EventType.custom;
 
   Map<String, dynamic> toJson() => {
     'title': title,

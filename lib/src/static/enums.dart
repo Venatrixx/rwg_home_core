@@ -21,19 +21,25 @@ enum LoadingState {
 }
 
 enum EventType {
-  custom(),
+  custom("Sonstige"),
 
-  holiday("Feiertag"),
+  holiday("Ferien"),
 
   missingDay("Fehltag"),
 
-  parMissingDay("Fehltag"),
+  parMissingDay("Fehlstunde"),
 
   test("Test"),
 
   exam("Klausur"),
 
-  event("Veranstaltung");
+  event("Veranstaltung"),
+
+  excursion("Exkursion"),
+
+  trip("Klassenfahrt"),
+
+  hikingDay("Wandertag");
 
   const EventType([this.text]);
   final String? text;
