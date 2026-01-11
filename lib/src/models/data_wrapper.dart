@@ -77,6 +77,9 @@ abstract mixin class DataWrapper {
   /// Path to the schedule_wrapper.json file, where the data of this class is stored.
   String get schedulePath => "${AppConfig.documentsDir}/schedule_wrapper.json";
 
+  /// Path to the calendar_wrapper.json file, where the data of this class is stored.
+  String get calendarPath => "${AppConfig.documentsDir}/calendar_wrapper.json";
+
   /// Fetched data from the schedule of lessons.
   ///
   /// See [ScheduleWrapper] for more information.
@@ -96,9 +99,11 @@ abstract mixin class DataWrapper {
   /// Returns a combined list of [HipWrapper.missingHourEvents] and [CalendarWrapper.allCalendarEvents].
   ///
   /// [allEvents] contains missing hours, holidays and bulletins.
-  List<Event> get allEvents =>
-      [...hip.missingHourEvents, ...hip.testEvents, ...calendar.allCalendarEvents]
-        ..sort((a, b) => a.date.compareTo(b.date));
+  List<Event> get allEvents => [
+    ...hip.missingHourEvents,
+    ...hip.testEvents,
+    ...calendar.allCalendarEvents,
+  ]..sort((a, b) => a.date.compareTo(b.date));
 
   bool _useDebugConfig = false;
   bool _useSek1DebugConfig = true;
@@ -133,7 +138,11 @@ abstract mixin class DataWrapper {
     }
     schedule.onLoadingStateChanged = onScheduleLoadingStateChanged;
 
-    calendar = CalendarWrapper();
+    if (File(calendarPath).existsSync()) {
+      calendar = CalendarWrapper.fromJsonFile(calendarPath);
+    } else {
+      calendar = CalendarWrapper()..saveToFile(calendarPath);
+    }
     calendar.onLoadingStateChanged = onCalendarLoadingStateChanged;
 
     if (File(aLevelPath).existsSync()) {
@@ -153,6 +162,9 @@ abstract mixin class DataWrapper {
     } catch (_) {}
     try {
       File(schedulePath).deleteSync();
+    } catch (_) {}
+    try {
+      File(calendarPath).deleteSync();
     } catch (_) {}
     try {
       File(aLevelPath).deleteSync();
@@ -193,11 +205,17 @@ abstract mixin class DataWrapper {
       return;
     }
 
-    final onlineData = await CloudStorage.fetchCloudData();
+    final onlineData =
+        (AppConfig.storeGradesInCloud ||
+            AppConfig.storeWizardInCloud ||
+            AppConfig.storeCalendarInCloud)
+        ? await CloudStorage.fetchCloudData()
+        : {};
 
     if (AppConfig.storeGradesInCloud && onlineData['grades_data'] != null) {
       try {
-        hip = HipWrapper.fromJson(onlineData['grades_data'])..onLoadingStateChanged = onHipLoadingStateChanged;
+        hip = HipWrapper.fromJson(onlineData['grades_data'])
+          ..onLoadingStateChanged = onHipLoadingStateChanged;
       } catch (cloudError) {
         error = cloudError;
         _loadingState = LoadingState.error;
@@ -205,7 +223,8 @@ abstract mixin class DataWrapper {
       }
     } else {
       try {
-        hip = HipWrapper.fromJsonFile(hipPath)..onLoadingStateChanged = onHipLoadingStateChanged;
+        hip = HipWrapper.fromJsonFile(hipPath)
+          ..onLoadingStateChanged = onHipLoadingStateChanged;
       } catch (e) {
         error = e;
         _loadingState = LoadingState.error;
@@ -215,7 +234,8 @@ abstract mixin class DataWrapper {
 
     if (AppConfig.storeWizardInCloud && onlineData['wizard_data'] != null) {
       try {
-        aLevel = ALevelWrapper.fromJson(onlineData['wizard_data'])..onDataChanged = onDataChanged;
+        aLevel = ALevelWrapper.fromJson(onlineData['wizard_data'])
+          ..onDataChanged = onDataChanged;
       } catch (cloudError) {
         error = cloudError;
         _loadingState = LoadingState.error;
@@ -223,7 +243,28 @@ abstract mixin class DataWrapper {
       }
     } else {
       try {
-        aLevel = ALevelWrapper.fromJsonFile(aLevelPath)..onDataChanged = onDataChanged;
+        aLevel = ALevelWrapper.fromJsonFile(aLevelPath)
+          ..onDataChanged = onDataChanged;
+      } catch (e) {
+        error = e;
+        _loadingState = LoadingState.error;
+        return;
+      }
+    }
+
+    if (AppConfig.storeCalendarInCloud && onlineData['calendar_data'] != null) {
+      try {
+        calendar = CalendarWrapper.fromJson(onlineData['calendar_data'])
+          ..onLoadingStateChanged = onCalendarLoadingStateChanged;
+      } catch (cloudError) {
+        error = cloudError;
+        _loadingState = LoadingState.error;
+        return;
+      }
+    } else {
+      try {
+        calendar = CalendarWrapper.fromJsonFile(aLevelPath)
+          ..onLoadingStateChanged = onCalendarLoadingStateChanged;
       } catch (e) {
         error = e;
         _loadingState = LoadingState.error;
@@ -232,7 +273,8 @@ abstract mixin class DataWrapper {
     }
 
     try {
-      schedule = ScheduleWrapper.fromJsonFile(schedulePath)..onLoadingStateChanged = onScheduleLoadingStateChanged;
+      schedule = ScheduleWrapper.fromJsonFile(schedulePath)
+        ..onLoadingStateChanged = onScheduleLoadingStateChanged;
     } catch (e) {
       error = e;
       _loadingState = LoadingState.error;
@@ -250,23 +292,39 @@ abstract mixin class DataWrapper {
       return;
     }
 
-    final onlineData = (AppConfig.storeGradesInCloud || AppConfig.storeWizardInCloud)
+    final onlineData =
+        (AppConfig.storeGradesInCloud ||
+            AppConfig.storeWizardInCloud ||
+            AppConfig.storeCalendarInCloud)
         ? await CloudStorage.fetchCloudData()
         : {};
 
     if (AppConfig.storeGradesInCloud && onlineData['grades_data'] != null) {
-      hip = HipWrapper.fromJson(onlineData['grades_data'])..onLoadingStateChanged = onHipLoadingStateChanged;
+      hip = HipWrapper.fromJson(onlineData['grades_data'])
+        ..onLoadingStateChanged = onHipLoadingStateChanged;
     } else {
-      hip = HipWrapper.fromJsonFile(hipPath)..onLoadingStateChanged = onHipLoadingStateChanged;
+      hip = HipWrapper.fromJsonFile(hipPath)
+        ..onLoadingStateChanged = onHipLoadingStateChanged;
     }
 
     if (AppConfig.storeWizardInCloud && onlineData['wizard_data'] != null) {
-      aLevel = ALevelWrapper.fromJson(onlineData['wizard_data'])..onDataChanged = onDataChanged;
+      aLevel = ALevelWrapper.fromJson(onlineData['wizard_data'])
+        ..onDataChanged = onDataChanged;
     } else {
-      aLevel = ALevelWrapper.fromJsonFile(aLevelPath)..onDataChanged = onDataChanged;
+      aLevel = ALevelWrapper.fromJsonFile(aLevelPath)
+        ..onDataChanged = onDataChanged;
     }
 
-    schedule = ScheduleWrapper.fromJsonFile(schedulePath)..onLoadingStateChanged = onScheduleLoadingStateChanged;
+    if (AppConfig.storeCalendarInCloud && onlineData['calendar_data'] != null) {
+      calendar = CalendarWrapper.fromJson(onlineData['calendar_data'])
+        ..onLoadingStateChanged = onCalendarLoadingStateChanged;
+    } else {
+      calendar = CalendarWrapper.fromJsonFile(aLevelPath)
+        ..onLoadingStateChanged = onCalendarLoadingStateChanged;
+    }
+
+    schedule = ScheduleWrapper.fromJsonFile(schedulePath)
+      ..onLoadingStateChanged = onScheduleLoadingStateChanged;
   }
 
   /// Saves the grades/hip data. Either to the local storage, or the cloud if [AppConfig.storeGradesInCloud] is set to `true`.
@@ -328,6 +386,30 @@ abstract mixin class DataWrapper {
       return;
     }
 
+    if (AppConfig.storeCalendarInCloud) {
+      try {
+        await CloudStorage.uploadCalendarDataToCloud(calendar.toJson());
+      } catch (cloudError) {
+        try {
+          calendar.saveToFile(calendarPath);
+          error = cloudError;
+          _loadingState = LoadingState.doneWithError;
+          return;
+        } catch (localError) {
+          error = localError;
+          _loadingState = LoadingState.error;
+          return;
+        }
+      }
+    }
+    try {
+      calendar.saveToFile(calendarPath);
+    } catch (e) {
+      error = e;
+      _loadingState = LoadingState.error;
+      return;
+    }
+
     try {
       schedule.saveToFile(schedulePath);
     } catch (e) {
@@ -354,7 +436,6 @@ abstract mixin class DataWrapper {
         _loadingState = LoadingState.doneWithError;
       }
     }
-
     hip.saveToFile(hipPath);
 
     if (AppConfig.storeWizardInCloud) {
@@ -365,8 +446,17 @@ abstract mixin class DataWrapper {
         _loadingState = LoadingState.doneWithError;
       }
     }
-
     aLevel.saveToFile(aLevelPath);
+
+    if (AppConfig.storeCalendarInCloud) {
+      try {
+        await CloudStorage.uploadCalendarDataToCloud(calendar.toJson());
+      } catch (cloudError) {
+        error = cloudError;
+        _loadingState = LoadingState.doneWithError;
+      }
+    }
+    calendar.saveToFile(calendarPath);
 
     schedule.saveToFile(schedulePath);
   }
@@ -482,14 +572,14 @@ abstract mixin class DataWrapper {
         _loadingState = LoadingState.doneWithError;
         return;
       }
-    }
-
-    try {
-      await _saveData();
-    } catch (e) {
-      error = e;
-      _loadingState = LoadingState.error;
-      return;
+    } else {
+      try {
+        await _saveData();
+      } catch (e) {
+        error = e;
+        _loadingState = LoadingState.error;
+        return;
+      }
     }
 
     onDataChanged.call();
@@ -511,7 +601,11 @@ abstract mixin class DataWrapper {
     await saveData();
   }
 
-  FutureOr<ScheduleDay> getScheduleDay(DateTime date, {bool fetch = false, bool forceFetch = false}) async {
+  FutureOr<ScheduleDay> getScheduleDay(
+    DateTime date, {
+    bool fetch = false,
+    bool forceFetch = false,
+  }) async {
     if (useDebugConfig) {
       return ScheduleDay.fromWrappers(
         date: date,
@@ -528,10 +622,25 @@ abstract mixin class DataWrapper {
       );
     } else {
       try {
-        final vpData = await schedule.fetchData(dateToFetch: date, forceFetch: forceFetch, rethrowErrors: true);
-        return ScheduleDay.fromWrappers(date: date, scheduleData: schedule, hipData: hip, vpData: vpData);
+        final vpData = await schedule.fetchData(
+          dateToFetch: date,
+          forceFetch: forceFetch,
+          rethrowErrors: true,
+        );
+        return ScheduleDay.fromWrappers(
+          date: date,
+          scheduleData: schedule,
+          hipData: hip,
+          vpData: vpData,
+        );
       } catch (e) {
-        return ScheduleDay.fromWrappers(date: date, scheduleData: schedule, hipData: hip, vpData: null, error: e);
+        return ScheduleDay.fromWrappers(
+          date: date,
+          scheduleData: schedule,
+          hipData: hip,
+          vpData: null,
+          error: e,
+        );
       }
     }
   }

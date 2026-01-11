@@ -17,7 +17,23 @@ class CalendarWrapper {
     onLoadingStateChanged?.call(value, error);
   }
 
-  CalendarWrapper({this.events = const []});
+  CalendarWrapper({this.events = const [], this.customEvents = const []});
+
+  factory CalendarWrapper.fromJsonFile(String path) {
+    final json = jsonDecode(File(path).readAsStringSync());
+    return CalendarWrapper.fromJson(json);
+  }
+
+  CalendarWrapper.fromJson(dynamic json)
+    : customEvents = List<Event>.from(json['custom_events'] ?? []);
+
+  Map toJson() => {
+    'custom_events': customEvents.map((element) => element.toJson()).toList(),
+  };
+
+  void saveToFile(String path) {
+    File(path).writeAsStringSync(jsonEncode(toJson()));
+  }
 
   /// Stores a reference to an error if the latest fetch process returns an error.
   ///
@@ -27,11 +43,15 @@ class CalendarWrapper {
   /// List of global events.
   List<Event> events = [];
 
-  /// Returns a list of [Event] elements with all [AppConfig.holidayEvents] and [events].
+  /// List of user defined events.
+  List<Event> customEvents = [];
+
+  /// Returns a list of [Event] elements with all [AppConfig.holidayEvents], [events] and [customEvents].
   ///
   /// Sorts the elements by [Event.date].
   List<Event> get allCalendarEvents =>
-      [...AppConfig.holidayEvents, ...events]..sort((a, b) => a.date.compareTo(b.date));
+      [...AppConfig.holidayEvents, ...events, ...customEvents]
+        ..sort((a, b) => a.date.compareTo(b.date));
 
   /// Returns a list of [Event] elements based on [allCalendarEvents] with all events,
   /// that happen in the upcoming amount of [days].
@@ -40,7 +60,8 @@ class CalendarWrapper {
         .where(
           (element) =>
               dayDifference(element.date, currentDate ?? DateTime.now()) >= 0 &&
-              dayDifference(element.date, currentDate ?? DateTime.now()) <= days,
+              dayDifference(element.date, currentDate ?? DateTime.now()) <=
+                  days,
         )
         .toList();
   }
@@ -57,8 +78,13 @@ class CalendarWrapper {
     loadingState = LoadingState.loading;
 
     try {
-      final res = await Client().get(Uri.https('rwg.nice-2know.de', '/api/events'), headers: ApiConfig.defaultHeaders);
-      if (res.statusCode >= 400) throw HttpException("Daten konnten nicht abgerufen werden.");
+      final res = await Client().get(
+        Uri.https('rwg.nice-2know.de', '/api/events'),
+        headers: ApiConfig.defaultHeaders,
+      );
+      if (res.statusCode >= 400) {
+        throw HttpException("Daten konnten nicht abgerufen werden.");
+      }
 
       final json = List.from(jsonDecode(res.body));
 
@@ -66,7 +92,10 @@ class CalendarWrapper {
         for (final elem in json)
           if (elem['curse_ids'] is List &&
               ((elem['curse_ids'] as List).isEmpty ||
-                  (elem['curse_ids'] as List).any((element) => AppConfig.activeLessonIds.contains(element.toString()))))
+                  (elem['curse_ids'] as List).any(
+                    (element) =>
+                        AppConfig.activeLessonIds.contains(element.toString()),
+                  )))
             Event.eventFromJson(elem),
       ];
 
@@ -106,10 +135,16 @@ class CalendarWrapper {
     try {
       final res = await Client().post(
         Uri.https('rwg.nice-2know.de', '/api/events'),
-        headers: {HttpHeaders.contentTypeHeader: 'application/json', ...ApiConfig.defaultHeaders},
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          ...ApiConfig.defaultHeaders,
+        },
         body: jsonEncode(data),
       );
-      if (res.statusCode >= 400) throw HttpException("Ereignis konnte nicht hochgeladen werden.\nFehler: ${res.body}");
+      if (res.statusCode >= 400)
+        throw HttpException(
+          "Ereignis konnte nicht hochgeladen werden.\nFehler: ${res.body}",
+        );
 
       loadingState = LoadingState.done;
       return;

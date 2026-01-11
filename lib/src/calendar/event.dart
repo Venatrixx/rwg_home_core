@@ -27,9 +27,14 @@ class Event {
     : type = EventType.holiday,
       title = "Ferientag",
       curseIds = [];
-  Event.missingDay(this.date, this.title, {this.location, this.comment, this.triState})
-    : type = EventType.missingDay,
-      curseIds = [];
+  Event.missingDay(
+    this.date,
+    this.title, {
+    this.location,
+    this.comment,
+    this.triState,
+  }) : type = EventType.missingDay,
+       curseIds = [];
 
   Event.eventFromJson(dynamic json)
     : title = json['title'] as String,
@@ -41,9 +46,21 @@ class Event {
       curseIds = List<int>.from(json['curseIds'] ?? []),
       type = EventType.event;
 
+  Map<String, dynamic> toJson() => {
+    'title': title,
+    'comment': comment,
+    'location': location,
+    'date': date.toIso8601String(),
+    'from': from?.toIso8601String(),
+    'to': to?.toIso8601String(),
+    'curse_ids': curseIds,
+    'type': type.text,
+  };
+
   bool isOn(DateTime date) {
     if (from != null && to != null) {
-      return (date.isAfter(from!) || date.isSameDay(from!)) && (date.isBefore(to!) || date.isSameDay(to!));
+      return (date.isAfter(from!) || date.isSameDay(from!)) &&
+          (date.isBefore(to!) || date.isSameDay(to!));
     }
     return this.date.isSameDay(date);
   }
