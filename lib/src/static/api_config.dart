@@ -2,7 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart';
-import 'package:path_provider/path_provider.dart' show getApplicationDocumentsDirectory;
+import 'package:path_provider/path_provider.dart'
+    show getApplicationDocumentsDirectory;
 import 'package:rwg_home_core/rwg_home_core.dart';
 
 final class ApiConfig {
@@ -10,7 +11,8 @@ final class ApiConfig {
 
   static String? firebaseAppCheckToken;
   static Map<String, String> get defaultHeaders => {
-    if (firebaseAppCheckToken is String) 'X-Firebase-AppCheck': firebaseAppCheckToken!,
+    if (firebaseAppCheckToken is String)
+      'X-Firebase-AppCheck': firebaseAppCheckToken!,
   };
 
   /// Path to the application directory.
@@ -30,7 +32,9 @@ final class ApiConfig {
   /// Call this method to init the class and to load the local config data.
   ///
   /// Sets the [documentsDir] property and calls [loadConfigFileSync].
-  static Future<LoadingState> initConfig({required String appCheckToken}) async {
+  static Future<LoadingState> initConfig({
+    required String appCheckToken,
+  }) async {
     try {
       documentsDir = (await getApplicationDocumentsDirectory()).path;
     } catch (_) {
@@ -107,9 +111,12 @@ final class ApiConfig {
   static Future<LoadingState> fetchData() async {
     _apiState = LoadingState.loading;
     try {
-      final res = await Client().get(Uri.https('rwg.nice-2know.de', '/api'), headers: defaultHeaders);
+      final res = await Client().get(
+        Uri.https('rwg.nice-2know.de', '/api'),
+        headers: defaultHeaders,
+      );
 
-      if (res.statusCode != 503) {
+      if (res.statusCode == 503) {
         _apiState = LoadingState.doneWithError;
         return LoadingState.doneWithError;
       }
