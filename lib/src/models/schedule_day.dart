@@ -15,6 +15,7 @@ class ScheduleDay {
   late bool hasVPData;
   late bool hasComment;
   late bool hasHomework;
+  late bool hasMissingHour;
 
   ScheduleDay({
     required this.date,
@@ -24,6 +25,7 @@ class ScheduleDay {
     this.hasVPData = false,
     this.hasComment = false,
     this.hasHomework = false,
+    this.hasMissingHour = false,
   });
 
   factory ScheduleDay.fromWrappers({
@@ -48,6 +50,9 @@ class ScheduleDay {
             '-1',
           ].contains(element.id.toString()),
         );
+    final missingHours = hipData.missingHourData?.where(
+      (element) => element.date?.isSameDay(date) ?? false,
+    );
 
     List<ScheduleLesson> lessons = [];
 
@@ -65,6 +70,13 @@ class ScheduleDay {
             .toList(),
         vpLessons:
             vpLessons?.where((element) => element.hour == i).toList() ?? [],
+        missingData:
+            missingHours
+                ?.where(
+                  (element) => element.lessons?.contains(i.toString()) ?? false,
+                )
+                .toList() ??
+            [],
       );
 
       if (noData && lesson.hasData) noData = false;
@@ -84,6 +96,7 @@ class ScheduleDay {
       hasHomework: lessons.any(
         (element) => element.forgottenHomework.isNotEmpty,
       ),
+      hasMissingHour: lessons.any((element) => element.missingData.isNotEmpty),
     );
   }
 }

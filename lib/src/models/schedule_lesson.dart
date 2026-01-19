@@ -11,6 +11,8 @@ class ScheduleLesson {
 
   List<VPLesson> vpLessons;
 
+  List<MissingHour> missingData;
+
   bool noData;
 
   ScheduleLesson({
@@ -20,6 +22,7 @@ class ScheduleLesson {
     this.forgottenHomework = const [],
     this.vpLessons = const [],
     this.noData = false,
+    this.missingData = const [],
   }) {
     vpLessons.sort((a, b) {
       bool aContains = AppConfig.activeLessonIds.contains(a.id.toString());
@@ -31,5 +34,9 @@ class ScheduleLesson {
     });
   }
 
-  bool get hasData => teacherEntry.isNotEmpty || forgottenHomework.isNotEmpty || vpLessons.isNotEmpty;
+  bool get hasData =>
+      teacherEntry.isNotEmpty ||
+      forgottenHomework.isNotEmpty ||
+      vpLessons.isNotEmpty ||
+      missingData.isNotEmpty;
 }
