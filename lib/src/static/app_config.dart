@@ -15,7 +15,7 @@ final class AppConfig {
   AppConfig._();
 
   /// Path to the application directory.
-  static late final String documentsDir;
+  static late String documentsDir;
 
   /// Get the path to the app_config.json file.
   static String get configPath => "$documentsDir/app_config.json";
