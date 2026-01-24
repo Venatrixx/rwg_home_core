@@ -34,18 +34,23 @@ class Subject {
   ///
   /// Sorted by their date.
   List<Grade> get exams =>
-      [...onlineGrades, ...customGrades].where((e) => e.isExam).toList()..sort((a, b) => a.date.compareToAware(b.date));
+      [...onlineGrades, ...customGrades].where((e) => e.isExam).toList()
+        ..sort((a, b) => a.date.compareToAware(b.date));
 
   /// List of all grade, online and custom.
   ///
   /// Sorted by their date.
-  List<Grade> get allGrades => [...onlineGrades, ...customGrades]..sort((a, b) => a.date.compareToAware(b.date));
+  List<Grade> get allGrades =>
+      [...onlineGrades, ...customGrades]
+        ..sort((a, b) => a.date.compareToAware(b.date));
 
   /// Whether this subject has any grades stored.
   bool get hasData => onlineGrades.isNotEmpty || customGrades.isNotEmpty;
 
   /// Whether this subject has any grades, where [Grade.unSeen] is `true`.
-  bool get hasUnseenGrades => tests.any((element) => element.unSeen) || exams.any((element) => element.unSeen);
+  bool get hasUnseenGrades =>
+      tests.any((element) => element.unSeen) ||
+      exams.any((element) => element.unSeen);
 
   /// A [Subject] stores a list of [Grade] elements and additional meta data for a subject.
   ///
@@ -58,7 +63,13 @@ class Subject {
     this.finalSemesterGrade,
   });
 
-  Subject.detailed(this.name, this.abbr, this.onlineGrades, this.customGrades, this.finalSemesterGrade);
+  Subject.detailed(
+    this.name,
+    this.abbr,
+    this.onlineGrades,
+    this.customGrades,
+    this.finalSemesterGrade,
+  );
 
   /// Creates a [Subject] instance from a json map.
   ///
@@ -74,8 +85,12 @@ class Subject {
     name = json['name'];
     abbr = json['abbr'];
     finalSemesterGrade = json['finalSemesterGrade'];
-    onlineGrades = [for (final elem in json['onlineGrades'] ?? []) Grade.fromJson(elem)];
-    customGrades = [for (final elem in json['customGrades'] ?? []) Grade.fromJson(elem)];
+    onlineGrades = [
+      for (final elem in json['onlineGrades'] ?? []) Grade.fromJson(elem),
+    ];
+    customGrades = [
+      for (final elem in json['customGrades'] ?? []) Grade.fromJson(elem),
+    ];
   }
 
   /// Converts this object into a json map.
@@ -92,7 +107,13 @@ class Subject {
   }
 
   /// Creates a duplicate of `this`.
-  Subject clone() => Subject.detailed(name, abbr, List.from(onlineGrades), List.from(customGrades), finalSemesterGrade);
+  Subject clone() => Subject.detailed(
+    name,
+    abbr,
+    List.from(onlineGrades),
+    List.from(customGrades),
+    finalSemesterGrade,
+  );
 
   /// Creates a duplicate of `this` without all grades.
   Subject cloneStructure() => Subject.detailed(name, abbr, [], [], null);
@@ -101,7 +122,8 @@ class Subject {
   List<SpecialGrade> get unseenGrades {
     List<SpecialGrade> grades = [];
     for (final grade in allGrades) {
-      if (grade.unSeen) grades.add(SpecialGrade(primary: grade, parentSubject: this));
+      if (grade.unSeen)
+        grades.add(SpecialGrade(primary: grade, parentSubject: this));
     }
     return grades;
   }
@@ -112,7 +134,9 @@ class Subject {
 
     for (final customGrade in customGrades) {
       if (onlineGrades.any(
-        (element) => element.similarTo(customGrade) && customGrade.date.compareToAware(element.date) <= 0,
+        (element) =>
+            element.similarTo(customGrade) &&
+            customGrade.date.compareToAware(element.date) <= 0,
       )) {
         similarGrades.add(
           SpecialGrade(
@@ -120,7 +144,9 @@ class Subject {
             parentSubject: this,
             similarGrades: onlineGrades
                 .where(
-                  (element) => element.similarTo(customGrade) && customGrade.date.compareToAware(element.date) <= 0,
+                  (element) =>
+                      element.similarTo(customGrade) &&
+                      customGrade.date.compareToAware(element.date) <= 0,
                 )
                 .toList(),
           ),
@@ -138,7 +164,9 @@ class Subject {
     List<SpecialGrade> grades = similarGrades;
 
     for (final grade in unseenGrades) {
-      if (!grades.any((element) => element.similarGrades?.contains(grade.primary) ?? false)) {
+      if (!grades.any(
+        (element) => element.similarGrades?.contains(grade.primary) ?? false,
+      )) {
         grades.add(grade);
       }
     }
@@ -177,14 +205,20 @@ class Subject {
   ///
   /// Returns a list of [SpecialGrade] with online grades that have changed.
   /// [customGrades] are overwritten.
-  List<SpecialGrade> addGradesFromSubject(Subject other, {bool keepFinalGrades = false}) {
+  List<SpecialGrade> addGradesFromSubject(
+    Subject other, {
+    bool keepFinalGrades = false,
+  }) {
     if (!keepFinalGrades) finalSemesterGrade = other.finalSemesterGrade;
 
     List<SpecialGrade> changedGrades = [];
 
     for (final grade in other.onlineGrades) {
       // check whether the grade value has changed or not
-      if (onlineGrades.contains(grade) && !grade.similarTo(onlineGrades.firstWhere((element) => element == grade))) {
+      if (onlineGrades.contains(grade) &&
+          !grade.similarTo(
+            onlineGrades.firstWhere((element) => element == grade),
+          )) {
         changedGrades.add(SpecialGrade(primary: grade, parentSubject: this));
       }
       // set the grade to seen, if it already exists
@@ -237,7 +271,8 @@ class Subject {
   double getExamsAvg() => getAvg(exams);
 
   /// Returns the average of the tests. Does not round.
-  double getTestsAvg([List<int>? additionalValues]) => getAvg(tests, additionalValues);
+  double getTestsAvg([List<int>? additionalValues]) =>
+      getAvg(tests, additionalValues);
 
   /// Returns the average of the exams. Does round the final result to two decimal places.
   double getExamsAvgRounded() => roundDecimals(getExamsAvg());
@@ -254,7 +289,10 @@ class Subject {
   /// where `dataWrapper` is the instance of [DataWrapper] used in your application. (See [DataWrapper.calculateExamWeight]).
   ///
   /// [additionalValues] property can be ignored for the regular user, but see [getAvg] for more information.
-  double getTotalAvg(double Function(int) calculateExamWeight, [List<int>? additionalValues]) {
+  double getTotalAvg(
+    double Function(int) calculateExamWeight, [
+    List<int>? additionalValues,
+  ]) {
     double testsAvg = getTestsAvg(additionalValues);
     double examAvg = getExamsAvg();
 
@@ -262,7 +300,9 @@ class Subject {
     if (testsAvg.isNaN && !examAvg.isNaN) return examAvg;
     if (!testsAvg.isNaN && examAvg.isNaN) return testsAvg;
 
-    double examsWeight = calculateExamWeight(exams.where((grade) => grade.hasData).length);
+    double examsWeight = calculateExamWeight(
+      exams.where((grade) => grade.hasData).length,
+    );
     double testsWeight = 1 - examsWeight;
 
     return (examAvg * examsWeight) + (testsAvg * testsWeight);
@@ -290,8 +330,10 @@ class Subject {
     bool keepAvg = false,
     int? gradesCount,
   }) {
-    double? totalAvg = getTotalAvg(calculateExamWeight);
-    if ((AppConfig.isSek2 && totalAvg.round() >= 15 && !keepAvg) ||
+    double totalAvg = getTotalAvg(calculateExamWeight);
+    if (totalAvg.isInfinite ||
+        totalAvg.isNaN ||
+        (AppConfig.isSek2 && totalAvg.round() >= 15 && !keepAvg) ||
         (AppConfig.isSek1 && totalAvg.round() <= 1 && !keepAvg)) {
       return [];
     }
@@ -334,7 +376,9 @@ class Subject {
     if (exams.every((exam) => !exam.hasData)) {
       examsWeight = 0;
     } else {
-      examsWeight = calculateExamWeight(exams.where((grade) => grade.hasData).length);
+      examsWeight = calculateExamWeight(
+        exams.where((grade) => grade.hasData).length,
+      );
     }
 
     testsWeight = 1 - examsWeight;
@@ -343,7 +387,10 @@ class Subject {
     double getRemainingPoints(int amount) {
       double examsAvg = _exams.$1 / _exams.$2;
       double examsAvgWeighted = examsAvg.isNaN ? 0 : examsAvg * examsWeight;
-      return (targetAvg - examsAvgWeighted) * (_tests.$2 + amount) / testsWeight - _tests.$1;
+      return (targetAvg - examsAvgWeighted) *
+              (_tests.$2 + amount) /
+              testsWeight -
+          _tests.$1;
     }
 
     /// evenly distributes the total amount of points over a set count of grades
@@ -376,7 +423,9 @@ class Subject {
       double sum = 0;
       for (final val in values) {
         double delta = (totalAvg - val).abs();
-        double max = keepAvg ? (AppConfig.isSek2 ? 0 : 6) : (AppConfig.isSek2 ? 15 : 1);
+        double max = keepAvg
+            ? (AppConfig.isSek2 ? 0 : 6)
+            : (AppConfig.isSek2 ? 15 : 1);
         double deltaMax = (max - totalAvg).abs();
         sum += (deltaMax - delta) / deltaMax;
       }
@@ -385,7 +434,9 @@ class Subject {
 
     for (int i = 1; i <= (gradesCount ?? 1); i++) {
       double remainingPoints = getRemainingPoints(i);
-      if ((AppConfig.isSek2 && remainingPoints > i * 15) || (AppConfig.isSek2 && remainingPoints < i)) continue;
+      if ((AppConfig.isSek2 && remainingPoints > i * 15) ||
+          (AppConfig.isSek2 && remainingPoints < i))
+        continue;
       var distributedPoints = distributePoints(remainingPoints, i);
       r.add((
         distributedPoints..sort((a, b) => b.compareTo(a)),
