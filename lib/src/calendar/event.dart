@@ -8,6 +8,10 @@ class Event {
   DateTime? from;
   DateTime? to;
   List<int> curseIds;
+  int? fromLesson;
+  int? toLesson;
+  late bool isAllDay;
+  late bool useLessonTimes;
 
   late EventType type;
   bool? triState;
@@ -20,13 +24,19 @@ class Event {
     this.location,
     this.from,
     this.to,
+    this.fromLesson,
+    this.toLesson,
     this.curseIds = const [],
     this.triState,
+    this.isAllDay = true,
+    this.useLessonTimes = false,
   });
   Event.holiday(this.date, {this.comment, this.triState})
     : type = EventType.holiday,
       title = "Ferientag",
-      curseIds = [];
+      curseIds = [],
+      isAllDay = true,
+      useLessonTimes = false;
   Event.missingDay(
     this.date,
     this.title, {
@@ -34,7 +44,9 @@ class Event {
     this.comment,
     this.triState,
   }) : type = EventType.missingDay,
-       curseIds = [];
+       curseIds = [],
+       isAllDay = true,
+       useLessonTimes = false;
 
   Event.eventFromJson(dynamic json)
     : title = json['title'] as String,
@@ -48,7 +60,11 @@ class Event {
           EventType.values.firstWhereOrNull(
             (element) => element.text == json['type'],
           ) ??
-          EventType.custom;
+          EventType.custom,
+      fromLesson = int.tryParse(json['from_lesson'].toString()),
+      toLesson = int.tryParse(json['to_lesson'].toString()),
+      isAllDay = json['is_all_day'] ?? true,
+      useLessonTimes = json['use_lesson_times'] ?? false;
 
   Map<String, dynamic> toJson() => {
     'title': title,
@@ -59,13 +75,25 @@ class Event {
     'to': to?.toIso8601String(),
     'curse_ids': curseIds,
     'type': type.text,
+    'from_lesson': fromLesson,
+    'to_lesson': toLesson,
+    'is_all_day': isAllDay,
+    'use_lesson_times': useLessonTimes,
   };
 
   bool isOn(DateTime date) {
-    if (from != null && to != null) {
+    if (!isAllDay && from != null && to != null) {
       return (date.isAfter(from!) || date.isSameDay(from!)) &&
           (date.isBefore(to!) || date.isSameDay(to!));
     }
     return this.date.isSameDay(date);
+  }
+
+  bool isDuring(int lesson) {
+    if (useLessonTimes) {
+      return (fromLesson == null || fromLesson! <= lesson) &&
+          (toLesson == null || toLesson! >= lesson);
+    }
+    return true;
   }
 }
