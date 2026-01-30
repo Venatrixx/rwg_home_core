@@ -55,7 +55,7 @@ class Event {
       date = DateTime.parse(json['date']),
       from = DateTime.tryParse(json['from'] ?? ''),
       to = DateTime.tryParse(json['to'] ?? ''),
-      curseIds = List<int>.from(json['curseIds'] ?? []),
+      curseIds = List<int>.from(json['curse_ids'] ?? []),
       type =
           EventType.values.firstWhereOrNull(
             (element) => element.text == json['type'],
