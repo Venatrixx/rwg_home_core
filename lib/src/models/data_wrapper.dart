@@ -612,6 +612,7 @@ abstract mixin class DataWrapper {
         scheduleData: debugConfig.schedule,
         hipData: debugConfig.hip,
         vpData: debugConfig.schedule.getCachedData(date),
+        calendarData: debugConfig.calendar,
       );
     } else if (fetch == false && forceFetch == false) {
       return ScheduleDay.fromWrappers(
@@ -619,6 +620,7 @@ abstract mixin class DataWrapper {
         scheduleData: schedule,
         hipData: hip,
         vpData: schedule.getCachedData(date),
+        calendarData: calendar,
       );
     } else {
       try {
@@ -627,11 +629,13 @@ abstract mixin class DataWrapper {
           forceFetch: forceFetch,
           rethrowErrors: true,
         );
+        await calendar.fetchEvents(rethrowErrors: true);
         return ScheduleDay.fromWrappers(
           date: date,
           scheduleData: schedule,
           hipData: hip,
           vpData: vpData,
+          calendarData: calendar,
         );
       } catch (e) {
         return ScheduleDay.fromWrappers(
@@ -639,6 +643,7 @@ abstract mixin class DataWrapper {
           scheduleData: schedule,
           hipData: hip,
           vpData: null,
+          calendarData: calendar,
           error: e,
         );
       }

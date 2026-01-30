@@ -33,6 +33,7 @@ class ScheduleDay {
     required ScheduleWrapper scheduleData,
     required HipWrapper hipData,
     required VPWrapper? vpData,
+    required CalendarWrapper calendarData,
     Object? error,
   }) {
     final scheduleEntries = hipData.lastLessons
@@ -52,6 +53,9 @@ class ScheduleDay {
         );
     final missingHours = hipData.missingHourData?.where(
       (element) => element.date?.isSameDay(date) ?? false,
+    );
+    final events = calendarData.allCalendarEvents.where(
+      (element) => element.isOn(date),
     );
 
     List<ScheduleLesson> lessons = [];
@@ -77,6 +81,7 @@ class ScheduleDay {
                 )
                 .toList() ??
             [],
+        events: events.where((element) => element.isDuring(i)).toList(),
       );
 
       if (noData && lesson.hasData) noData = false;
