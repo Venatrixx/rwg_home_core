@@ -25,7 +25,10 @@ class CalendarWrapper {
   }
 
   CalendarWrapper.fromJson(dynamic json)
-    : customEvents = List<Event>.from(json['custom_events'] ?? []);
+    : customEvents = [
+        for (final event in json['custom_events'] ?? [])
+          Event.eventFromJson(event),
+      ];
 
   Map toJson() => {
     'custom_events': customEvents.map((element) => element.toJson()).toList(),
