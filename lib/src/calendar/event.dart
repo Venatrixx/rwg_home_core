@@ -96,4 +96,19 @@ class Event {
     }
     return true;
   }
+
+  void operator <<(Event other) {
+    title = other.title;
+    comment = other.comment;
+    location = other.location;
+    date = other.date;
+    from = other.from;
+    to = other.to;
+    curseIds = other.curseIds;
+    type = other.type;
+    fromLesson = other.fromLesson;
+    toLesson = other.toLesson;
+    isAllDay = other.isAllDay;
+    useLessonTimes = other.useLessonTimes;
+  }
 }
