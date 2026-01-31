@@ -16,6 +16,7 @@ class ScheduleDay {
   late bool hasComment;
   late bool hasHomework;
   late bool hasMissingHour;
+  late bool hasEvents;
 
   ScheduleDay({
     required this.date,
@@ -26,6 +27,7 @@ class ScheduleDay {
     this.hasComment = false,
     this.hasHomework = false,
     this.hasMissingHour = false,
+    this.hasEvents = false,
   });
 
   factory ScheduleDay.fromWrappers({
@@ -102,6 +104,7 @@ class ScheduleDay {
         (element) => element.forgottenHomework.isNotEmpty,
       ),
       hasMissingHour: lessons.any((element) => element.missingData.isNotEmpty),
+      hasEvents: lessons.any((element) => element.events.isNotEmpty),
     );
   }
 }
