@@ -69,6 +69,11 @@ class HipWrapper {
         lesson.subject ?? '?',
         lesson.date,
         comment: lesson.comment,
+        fromLesson: lesson.lesson?.from,
+        toLesson: lesson.lesson?.to,
+        isAllDay: !(lesson.lesson?.hasLimits ?? false),
+        useLessonTimes: lesson.lesson?.hasLimits ?? false,
+        source: .hip,
       ),
   ];
 

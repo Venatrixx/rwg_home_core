@@ -98,7 +98,7 @@ class CalendarWrapper {
                     (element) =>
                         AppConfig.activeLessonIds.contains(element.toString()),
                   )))
-            Event.eventFromJson(elem),
+            Event.eventFromJson(elem, source: .teacherPortal),
       ];
 
       loadingState = LoadingState.done;
@@ -143,10 +143,11 @@ class CalendarWrapper {
         },
         body: jsonEncode(data),
       );
-      if (res.statusCode >= 400)
+      if (res.statusCode >= 400) {
         throw HttpException(
           "Ereignis konnte nicht hochgeladen werden.\nFehler: ${res.body}",
         );
+      }
 
       loadingState = LoadingState.done;
       return;

@@ -4,17 +4,22 @@ class Event {
   late String title;
   String? comment;
   String? location;
+
   late DateTime date;
   DateTime? from;
   DateTime? to;
+
   List<int> curseIds;
   int? fromLesson;
   int? toLesson;
+
   late bool isAllDay;
   late bool useLessonTimes;
 
   late EventType type;
   bool? triState;
+
+  late EventSource source;
 
   Event(
     this.type,
@@ -30,13 +35,15 @@ class Event {
     this.triState,
     this.isAllDay = true,
     this.useLessonTimes = false,
+    this.source = EventSource.custom,
   });
   Event.holiday(this.date, {this.comment, this.triState})
-    : type = EventType.holiday,
+    : type = .holiday,
       title = "Ferientag",
       curseIds = [],
       isAllDay = true,
-      useLessonTimes = false;
+      useLessonTimes = false,
+      source = .hip;
   Event.missingDay(
     this.date,
     this.title, {
@@ -46,9 +53,10 @@ class Event {
   }) : type = EventType.missingDay,
        curseIds = [],
        isAllDay = true,
-       useLessonTimes = false;
+       useLessonTimes = false,
+       source = .hip;
 
-  Event.eventFromJson(dynamic json)
+  Event.eventFromJson(dynamic json, {EventSource? source})
     : title = json['title'] as String,
       comment = json['comment'] as String?,
       location = json['location'] as String?,
@@ -64,7 +72,9 @@ class Event {
       fromLesson = int.tryParse(json['from_lesson'].toString()),
       toLesson = int.tryParse(json['to_lesson'].toString()),
       isAllDay = json['is_all_day'] ?? true,
-      useLessonTimes = json['use_lesson_times'] ?? false;
+      useLessonTimes = json['use_lesson_times'] ?? false,
+      source =
+          source ?? EventSource.tryParse(json['source']) ?? EventSource.custom;
 
   Map<String, dynamic> toJson() => {
     'title': title,
@@ -79,6 +89,7 @@ class Event {
     'to_lesson': toLesson,
     'is_all_day': isAllDay,
     'use_lesson_times': useLessonTimes,
+    'source': source.text,
   };
 
   bool isOn(DateTime date) {
@@ -110,5 +121,6 @@ class Event {
     toLesson = other.toLesson;
     isAllDay = other.isAllDay;
     useLessonTimes = other.useLessonTimes;
+    source = other.source;
   }
 }

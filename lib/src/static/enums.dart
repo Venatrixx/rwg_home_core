@@ -1,3 +1,5 @@
+import 'package:rwg_home_core/rwg_home_core.dart';
+
 enum LoadingState {
   /// The current state is unknown. Default case, if no process is running.
   unknown(false),
@@ -41,8 +43,31 @@ enum EventType {
 
   hikingDay("Wandertag");
 
-  const EventType([this.text]);
-  final String? text;
+  const EventType(this.text);
+  final String text;
+
+  factory EventType.parse(String? text) {
+    return values.firstWhere((element) => element.text == text);
+  }
+}
+
+enum EventSource {
+  custom("Benutzerdefiniert"),
+
+  hip("NotenOnline"),
+
+  teacherPortal("Lehrerportal");
+
+  const EventSource(this.text);
+  final String text;
+
+  factory EventSource.parse(String text) {
+    return values.firstWhere((element) => element.text == text);
+  }
+
+  static EventSource? tryParse(String? text) {
+    return values.firstWhereOrNull((element) => element.text == text);
+  }
 }
 
 enum TaskStatus {
