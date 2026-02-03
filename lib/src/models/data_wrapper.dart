@@ -503,6 +503,48 @@ abstract mixin class DataWrapper {
     _loadingState = LoadingState.done;
   }
 
+  /// Calls the [CalendarWrapper.fetchEvents] function and stores the data appropriately (locally and/or in the cloud).
+  Future<void> fetchCalendarData() async {
+    error = null;
+
+    _loadingState = LoadingState.loading;
+
+    if (useDebugConfig) {
+      loadDebugData();
+      _loadingState = LoadingState.done;
+      return;
+    }
+
+    try {
+      await _loadData();
+    } catch (e) {
+      error = e;
+      _loadingState = LoadingState.error;
+      return;
+    }
+
+    try {
+      await calendar.fetchEvents(rethrowErrors: true);
+    } catch (e) {
+      error = e;
+      try {
+        await _loadData();
+      } catch (_) {}
+      _loadingState = LoadingState.error;
+      return;
+    }
+
+    try {
+      await _saveData();
+    } catch (e) {
+      error = e;
+      _loadingState = LoadingState.error;
+      return;
+    }
+
+    _loadingState = LoadingState.done;
+  }
+
   /// Fetches all new data for [hip], [schedule] and [calendar] and saves the data appropriately (locally and/or in the cloud).
   Future<void> fetchAll() async {
     error = null;
