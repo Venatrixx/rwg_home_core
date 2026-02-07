@@ -254,7 +254,7 @@ abstract mixin class DataWrapper {
       }
     } else {
       try {
-        calendar = CalendarWrapper.fromJsonFile(aLevelPath)
+        calendar = CalendarWrapper.fromJsonFile(calendarPath)
           ..onLoadingStateChanged = onCalendarLoadingStateChanged;
       } catch (e) {
         error = e;
@@ -310,7 +310,7 @@ abstract mixin class DataWrapper {
       calendar = CalendarWrapper.fromJson(onlineData['calendar_data'])
         ..onLoadingStateChanged = onCalendarLoadingStateChanged;
     } else {
-      calendar = CalendarWrapper.fromJsonFile(aLevelPath)
+      calendar = CalendarWrapper.fromJsonFile(calendarPath)
         ..onLoadingStateChanged = onCalendarLoadingStateChanged;
     }
 
