@@ -1,16 +1,7 @@
 import 'dart:async';
 import 'dart:io';
-
-import 'package:rwg_home_core/src/a_level/a_level_wrapper.dart';
-import 'package:rwg_home_core/src/calendar/calendar_wrapper.dart';
-import 'package:rwg_home_core/src/errors/hip_format_exception.dart';
-import 'package:rwg_home_core/src/hip/hip_wrapper.dart';
-import 'package:rwg_home_core/src/models/cloud_storage.dart';
+import 'package:rwg_home_core/rwg_home_core.dart';
 import 'package:rwg_home_core/src/models/debug_config.dart';
-import 'package:rwg_home_core/src/models/schedule_day.dart';
-import 'package:rwg_home_core/src/schedule/schedule_wrapper.dart';
-import 'package:rwg_home_core/src/static/app_config.dart';
-import 'package:rwg_home_core/src/static/enums.dart';
 
 abstract mixin class DataWrapper {
   /// A function that gets called every time new data has loaded in.
@@ -645,8 +636,9 @@ abstract mixin class DataWrapper {
 
   FutureOr<ScheduleDay> getScheduleDay(
     DateTime date, {
-    bool fetch = false,
-    bool forceFetch = false,
+    bool fetchSchedule = false,
+    bool fetchCalendar = false,
+    bool forceFetchSchedule = false,
   }) async {
     if (useDebugConfig) {
       return ScheduleDay.fromWrappers(
@@ -656,39 +648,34 @@ abstract mixin class DataWrapper {
         vpData: debugConfig.schedule.getCachedData(date),
         calendarData: debugConfig.calendar,
       );
-    } else if (fetch == false && forceFetch == false) {
-      return ScheduleDay.fromWrappers(
-        date: date,
-        scheduleData: schedule,
-        hipData: hip,
-        vpData: schedule.getCachedData(date),
-        calendarData: calendar,
-      );
-    } else {
+    }
+
+    Object? error;
+
+    VPWrapper? vpData;
+    if (fetchSchedule) {
       try {
-        final vpData = await schedule.fetchData(
+        vpData = await schedule.fetchData(
           dateToFetch: date,
-          forceFetch: forceFetch,
+          forceFetch: forceFetchSchedule,
           rethrowErrors: true,
         );
-        await calendar.fetchEvents(rethrowErrors: true);
-        return ScheduleDay.fromWrappers(
-          date: date,
-          scheduleData: schedule,
-          hipData: hip,
-          vpData: vpData,
-          calendarData: calendar,
-        );
       } catch (e) {
-        return ScheduleDay.fromWrappers(
-          date: date,
-          scheduleData: schedule,
-          hipData: hip,
-          vpData: null,
-          calendarData: calendar,
-          error: e,
-        );
+        error = e;
       }
     }
+
+    if (fetchCalendar == true) {
+      await calendar.fetchEvents();
+    }
+
+    return ScheduleDay.fromWrappers(
+      date: date,
+      scheduleData: schedule,
+      hipData: hip,
+      vpData: vpData,
+      calendarData: calendar,
+      error: error,
+    );
   }
 }

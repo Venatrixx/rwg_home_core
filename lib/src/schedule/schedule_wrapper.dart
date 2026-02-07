@@ -29,10 +29,13 @@ class ScheduleWrapper {
 
   ScheduleWrapper.fromJson(dynamic json)
     : vpCache = {
-        for (final entry in ((json['vpCache'] as Map?) ?? {}).entries) entry.key: VPWrapper.fromJson(entry.value),
+        for (final entry in ((json['vpCache'] as Map?) ?? {}).entries)
+          entry.key: VPWrapper.fromJson(entry.value),
       };
 
-  dynamic toJson() => {for (final entry in vpCache.entries) entry.key: entry.value.toJson()};
+  dynamic toJson() => {
+    for (final entry in vpCache.entries) entry.key: entry.value.toJson(),
+  };
 
   /// Writes the content of this [ScheduleWrapper] object to the file at the given path.
   void saveToFile(String path) {
@@ -84,7 +87,9 @@ class ScheduleWrapper {
   /// Removes data from [vpCache] that is older than 30 days.
   void garbageCollectCache() {
     vpCache.removeWhere((key, _) {
-      final difference = DateTime.now().difference(FixedDateTimeFormatter('YYYYMMDD').decode(key));
+      final difference = DateTime.now().difference(
+        FixedDateTimeFormatter('YYYYMMDD').decode(key),
+      );
       return difference.inDays > 35;
     });
   }
@@ -107,19 +112,25 @@ class ScheduleWrapper {
 
     if (cachedData == null) return defaultDuration;
 
-    final classInstance = cachedData.classes.firstWhereOrNull((element) => element.name == AppConfig.userClass);
+    final classInstance = cachedData.classes.firstWhereOrNull(
+      (element) => element.name == AppConfig.userClass,
+    );
 
     if (classInstance == null) return defaultDuration;
 
     final lessons = classInstance.lessons
-        .where((element) => AppConfig.activeLessonIds.contains(element.id.toString()))
+        .where(
+          (element) =>
+              AppConfig.activeLessonIds.contains(element.id.toString()),
+        )
         .toList();
 
     if (lessons.isEmpty) return defaultDuration;
 
     try {
       final time = AppConfig.scheduleHours[lessons.last.hour]!;
-      return Duration(hours: time.endHour!, minutes: time.endMinute!) - Duration(minutes: 15);
+      return Duration(hours: time.endHour!, minutes: time.endMinute!) -
+          Duration(minutes: 15);
     } catch (_) {
       return defaultDuration;
     }
@@ -130,7 +141,11 @@ class ScheduleWrapper {
   /// If [dateToFetch] is `null`, [getNextDate] will be called to determine the next date.
   ///
   /// Returns cached data for dates that are at least one day ago if possible. This behavior can be overridden by setting [forceFetch] to `true`.
-  Future<VPWrapper> fetchData({DateTime? dateToFetch, bool forceFetch = false, bool rethrowErrors = false}) async {
+  Future<VPWrapper> fetchData({
+    DateTime? dateToFetch,
+    bool forceFetch = false,
+    bool rethrowErrors = false,
+  }) async {
     loadingState = LoadingState.loading;
 
     error = null;
@@ -139,7 +154,8 @@ class ScheduleWrapper {
 
     if (vpDataToday != null &&
         !forceFetch &&
-        (dateToFetch == null || dateToFetch.isSameDay(getNextDate(lastLessonEndingTime())))) {
+        (dateToFetch == null ||
+            dateToFetch.isSameDay(getNextDate(lastLessonEndingTime())))) {
       loadingState = LoadingState.done;
       return vpDataToday!;
     }
@@ -154,13 +170,23 @@ class ScheduleWrapper {
 
     DateTime date = dateToFetch ?? getNextDate(lastLessonEndingTime());
 
+    if (AppConfig.isHoliday(date)) {
+      loadingState = .done;
+      return VPWrapper.empty();
+    }
+
     await initializeDateFormatting('de_DE');
 
     Response res;
 
     try {
       res = await Client()
-          .get(Uri.https('www.rwg-waren.de', '/stundenplan/vplan/mobdaten/PlanKl${date.toVpFormat()}.xml'))
+          .get(
+            Uri.https(
+              'www.rwg-waren.de',
+              '/stundenplan/vplan/mobdaten/PlanKl${date.toVpFormat()}.xml',
+            ),
+          )
           .timeout(shortTimeoutDuration);
     } catch (e) {
       error = e;
@@ -179,18 +205,23 @@ class ScheduleWrapper {
     // convert response to xml. throws error if vp not available and cancels task
     final xml = XmlDocument.parse(utf8.decode(res.bodyBytes));
 
-    AppConfig.holidayStrings = [for (final entry in xml.findAllElements('ft')) entry.text.trim()];
+    AppConfig.holidayStrings = [
+      for (final entry in xml.findAllElements('ft')) entry.text.trim(),
+    ];
 
     final vpData = VPWrapper.fromXML(utf8.decode(res.bodyBytes));
 
     AppConfig.updateActiveLessonIds(vpData);
 
-    final userVpClass = vpData.classes.firstWhereOrNull((element) => element.name == AppConfig.userClass);
+    final userVpClass = vpData.classes.firstWhereOrNull(
+      (element) => element.name == AppConfig.userClass,
+    );
     if (userVpClass != null) {
       AppConfig.updateScheduleHours(userVpClass.times);
     }
 
-    vpCache[date.toVpFormat()] = vpData.filterClasses(AppConfig.userClass)..cached = true;
+    vpCache[date.toVpFormat()] = vpData.filterClasses(AppConfig.userClass)
+      ..cached = true;
 
     loadingState = LoadingState.done;
 
@@ -222,7 +253,11 @@ class ScheduleWrapper {
     return data.classes
         .firstWhere((cl) => cl.name == AppConfig.userClass)
         .lessons
-        .where((lesson) => ["-1", ...AppConfig.lessonIds].contains(lesson.id.toString()) && lesson.hasAnyChange)
+        .where(
+          (lesson) =>
+              ["-1", ...AppConfig.lessonIds].contains(lesson.id.toString()) &&
+              lesson.hasAnyChange,
+        )
         .toList();
   }
 }
