@@ -25,17 +25,22 @@ class CalendarWrapper {
   }
 
   CalendarWrapper.fromJson(dynamic json)
-    : customEvents = [
+    : events = [
+        for (final event in json['events'] ?? []) Event.eventFromJson(event),
+      ],
+      customEvents = [
         for (final event in json['custom_events'] ?? [])
           Event.eventFromJson(event),
       ];
 
-  Map toJson() => {
+  Map toJson({bool withGlobalEvents = false}) => {
+    if (withGlobalEvents)
+      'events': events.map((element) => element.toJson()).toList(),
     'custom_events': customEvents.map((element) => element.toJson()).toList(),
   };
 
   void saveToFile(String path) {
-    File(path).writeAsStringSync(jsonEncode(toJson()));
+    File(path).writeAsStringSync(jsonEncode(toJson(withGlobalEvents: true)));
   }
 
   /// Stores a reference to an error if the latest fetch process returns an error.
