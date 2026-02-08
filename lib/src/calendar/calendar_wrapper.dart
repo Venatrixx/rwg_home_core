@@ -9,7 +9,7 @@ part 'event.dart';
 class CalendarWrapper {
   void Function(LoadingState, [Object?])? onLoadingStateChanged;
 
-  LoadingState _loadingState = LoadingState.unknown;
+  LoadingState _loadingState = LoadingState.done;
 
   LoadingState get loadingState => _loadingState;
   set loadingState(LoadingState value) {
