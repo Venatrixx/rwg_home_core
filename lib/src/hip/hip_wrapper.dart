@@ -290,6 +290,28 @@ class HipWrapper {
     return r;
   }
 
+  Future<void> fetchMetaData() async {
+    error = null;
+    _loadingState = .loading;
+
+    final client = HipClient(await AppConfig.userHipConfig);
+
+    try {
+      await client.fetch();
+    } catch (e) {
+      error = e;
+      _loadingState = LoadingState.error;
+      rethrow;
+    }
+
+    final rawData = await client.asJson();
+
+    AppConfig.setLevel(rawData['level']);
+    AppConfig.setUserClass(rawData['class']);
+
+    _loadingState = .done;
+  }
+
   /// Initializes the semesters based on the current [AppConfig.level].
   Future<void> initializeSemesters() async {
     error = null;
