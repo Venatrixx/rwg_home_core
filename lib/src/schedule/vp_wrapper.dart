@@ -102,7 +102,7 @@ class VPWrapper {
       for (final lesson in classInstance.lessons.where(
         (element) => element.teacher == teacherAbbr,
       )) {
-        lessons.add(lesson..comment = classInstance.name);
+        lessons.add(lesson..className = classInstance.name);
       }
     }
 

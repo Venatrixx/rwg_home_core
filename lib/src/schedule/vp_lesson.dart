@@ -7,12 +7,14 @@ class VPLesson {
   late String room;
   late int id;
   String? comment;
+  String? className;
 
   bool hasChangedRoom = false;
   bool hasChangedTeacher = false;
   bool hasChangedSubject = false;
 
-  bool get hasAnyChange => hasChangedRoom || hasChangedTeacher || hasChangedSubject;
+  bool get hasAnyChange =>
+      hasChangedRoom || hasChangedTeacher || hasChangedSubject;
 
   VPLesson({
     required this.hour,
@@ -21,6 +23,7 @@ class VPLesson {
     required this.room,
     required this.id,
     this.comment,
+    this.className,
     this.hasChangedRoom = false,
     this.hasChangedTeacher = false,
     this.hasChangedSubject = false,
