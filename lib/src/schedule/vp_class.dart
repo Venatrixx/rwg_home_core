@@ -63,10 +63,9 @@ class VPClass {
       }
     }
 
-    for (var key in result.keys) {
-      key = "${key[0].toUpperCase()}${key.substring(1)}";
-    }
-
-    return result;
+    return {
+      for (final entry in result.entries)
+        "${entry.key[0].toUpperCase()}${entry.key.substring(1)}": entry.value,
+    };
   }
 }
