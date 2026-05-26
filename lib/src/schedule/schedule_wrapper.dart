@@ -68,7 +68,7 @@ class ScheduleWrapper {
 
   /// Returns the cached vp data for the given date.
   ///
-  /// Accepts [DateTime] objects, Strings formatted as `yyyyMMdd` and `null` (which is equal to calling the method with [getNextDate] and therefor the default behavior).
+  /// Accepts [DateTime] objects, Strings formatted as `yyyyMMdd` and `null` (which is equal to calling the method with [getNextDate] and therefore the default behavior).
   /// Returns `null` if no data is cached.
   VPWrapper? getCachedData([dynamic date]) {
     if (![DateTime, String, Null].contains(date.runtimeType)) throw TypeError();
@@ -259,5 +259,70 @@ class ScheduleWrapper {
               lesson.hasAnyChange,
         )
         .toList();
+  }
+
+  /// Returns a list of teacher abbreviations for the given [date].
+  ///
+  /// If [date] is `null`, [getNextDate] is used to determine the next date to fetch.
+  ///
+  /// Will throw [HolidayException] if [date] is not `null` and [date] is a holiday.
+  Future<List<String>> getTeacherNames([DateTime? date]) async {
+    VPWrapper data;
+
+    if (date == null && getCachedData() != null) {
+      data = getCachedData()!;
+    } else {
+      date ??= getNextDate(lastLessonEndingTime());
+      if (AppConfig.isHoliday(date)) {
+        throw HolidayException(date);
+      }
+
+      data = await fetchData(dateToFetch: date);
+    }
+
+    Set<String> teachers = {};
+
+    for (final classInstance in data.classes) {
+      for (final subject in classInstance.subjects) {
+        teachers.add(subject.teacher);
+      }
+    }
+
+    return teachers.toList()..sort((a, b) => a.compareTo(b));
+  }
+
+  /// Returns all [VPLesson] elements for one teacher, identified by [teacherAbbr] and for the given [date].
+  ///
+  /// If [date] is `null`, [getNextDate] is used to determine the next date to fetch.
+  ///
+  /// Will throw [HolidayException] if [date] is not `null` and [date] is a holiday.
+  Future<List<VPLesson>> getTeacherLessons(
+    String teacherAbbr, [
+    DateTime? date,
+  ]) async {
+    VPWrapper data;
+
+    if (date == null && getCachedData() != null) {
+      data = getCachedData()!;
+    } else {
+      date ??= getNextDate(lastLessonEndingTime());
+      if (AppConfig.isHoliday(date)) {
+        throw HolidayException(date);
+      }
+
+      data = await fetchData(dateToFetch: date);
+    }
+
+    List<VPLesson> lessons = [];
+
+    for (final classInstance in data.classes) {
+      for (final lesson in classInstance.lessons.where(
+        (element) => element.teacher == teacherAbbr,
+      )) {
+        lessons.add(lesson..comment = classInstance.name);
+      }
+    }
+
+    return lessons;
   }
 }
