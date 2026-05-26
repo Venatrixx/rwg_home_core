@@ -87,6 +87,7 @@ class VPWrapper {
 
     for (final classInstance in classes) {
       for (final subject in classInstance.subjects) {
+        if (subject.teacher.trim() == '') continue;
         teachers.add(subject.teacher);
       }
     }
