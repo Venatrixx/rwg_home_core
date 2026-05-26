@@ -96,7 +96,7 @@ class VPWrapper {
 
   /// Returns all [VPLesson] elements for one teacher, identified by [teacherAbbr] and for the given [date].
   List<VPLesson> getTeacherLessons(String teacherAbbr) {
-    Set<VPLesson> lessons = {};
+    List<VPLesson> lessons = [];
 
     for (final classInstance in classes) {
       for (final lesson in classInstance.lessons.where(
@@ -106,6 +106,6 @@ class VPWrapper {
       }
     }
 
-    return lessons.toList();
+    return lessons.toSet().toList();
   }
 }
