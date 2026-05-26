@@ -82,7 +82,7 @@ class VPWrapper {
       classes.firstWhereOrNull((element) => element.name == className);
 
   /// Returns a list of teacher abbreviations for the given [date].
-  Future<List<String>> getTeacherNames() async {
+  List<String> getTeacherNames() {
     Set<String> teachers = {};
 
     for (final classInstance in classes) {
@@ -95,7 +95,7 @@ class VPWrapper {
   }
 
   /// Returns all [VPLesson] elements for one teacher, identified by [teacherAbbr] and for the given [date].
-  Future<List<VPLesson>> getTeacherLessons(String teacherAbbr) async {
+  List<VPLesson> getTeacherLessons(String teacherAbbr) {
     List<VPLesson> lessons = [];
 
     for (final classInstance in classes) {
