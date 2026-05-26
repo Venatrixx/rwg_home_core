@@ -64,7 +64,8 @@ class VPClass {
     }
 
     return {
-      for (final entry in result.entries)
+      for (final entry
+          in result.entries.toList()..sort((a, b) => a.key.compareTo(b.key)))
         "${entry.key[0].toUpperCase()}${entry.key.substring(1)}": entry.value
           ..sort(
             (a, b) =>
