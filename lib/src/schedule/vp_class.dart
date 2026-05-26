@@ -65,7 +65,11 @@ class VPClass {
 
     return {
       for (final entry in result.entries)
-        "${entry.key[0].toUpperCase()}${entry.key.substring(1)}": entry.value,
+        "${entry.key[0].toUpperCase()}${entry.key.substring(1)}": entry.value
+          ..sort(
+            (a, b) =>
+                (a.secondaryID ?? a.label).compareTo(b.secondaryID ?? b.label),
+          ),
     };
   }
 }
