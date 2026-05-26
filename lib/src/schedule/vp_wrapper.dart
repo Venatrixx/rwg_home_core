@@ -80,4 +80,32 @@ class VPWrapper {
 
   VPClass? getClassByName(String className) =>
       classes.firstWhereOrNull((element) => element.name == className);
+
+  /// Returns a list of teacher abbreviations for the given [date].
+  Future<List<String>> getTeacherNames() async {
+    Set<String> teachers = {};
+
+    for (final classInstance in classes) {
+      for (final subject in classInstance.subjects) {
+        teachers.add(subject.teacher);
+      }
+    }
+
+    return teachers.toList()..sort((a, b) => a.compareTo(b));
+  }
+
+  /// Returns all [VPLesson] elements for one teacher, identified by [teacherAbbr] and for the given [date].
+  Future<List<VPLesson>> getTeacherLessons(String teacherAbbr) async {
+    List<VPLesson> lessons = [];
+
+    for (final classInstance in classes) {
+      for (final lesson in classInstance.lessons.where(
+        (element) => element.teacher == teacherAbbr,
+      )) {
+        lessons.add(lesson..comment = classInstance.name);
+      }
+    }
+
+    return lessons;
+  }
 }
